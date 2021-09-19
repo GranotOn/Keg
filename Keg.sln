@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Keg", "Keg\Keg.vcxproj", "{4E0F9E7C-295E-44BD-8860-74273905A83E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{AB2294E4-B46D-46E3-B8E0-D1A974E40BD0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E0F9E7C-295E-44BD-8860-74273905A83E}.Debug|x64.ActiveCfg = Debug|x64
+		{4E0F9E7C-295E-44BD-8860-74273905A83E}.Debug|x64.Build.0 = Debug|x64
+		{4E0F9E7C-295E-44BD-8860-74273905A83E}.Release|x64.ActiveCfg = Release|x64
+		{4E0F9E7C-295E-44BD-8860-74273905A83E}.Release|x64.Build.0 = Release|x64
+		{AB2294E4-B46D-46E3-B8E0-D1A974E40BD0}.Debug|x64.ActiveCfg = Debug|x64
+		{AB2294E4-B46D-46E3-B8E0-D1A974E40BD0}.Debug|x64.Build.0 = Debug|x64
+		{AB2294E4-B46D-46E3-B8E0-D1A974E40BD0}.Release|x64.ActiveCfg = Release|x64
+		{AB2294E4-B46D-46E3-B8E0-D1A974E40BD0}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {631751E3-343A-4CFA-9662-DB7E98604548}
+	EndGlobalSection
+EndGlobal
