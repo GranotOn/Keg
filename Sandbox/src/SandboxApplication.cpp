@@ -1,6 +1,5 @@
 #include <Keg.h>
 #include <EntryPoint.h>
-#include <iostream>
 
 class SandboxApplication : public Keg::Application
 {
@@ -9,7 +8,10 @@ public:
 
 	SandboxApplication()
 	{
-		std::cout << "Hello from Sandbox" << std::endl;
+		KEG_APP_TRACE("Trace from, {0}", "Application");
+		KEG_APP_INFO("Info from, {0}", "Application");
+		KEG_APP_WARN("Warn from, {0}", "Application");
+		KEG_APP_ERROR("Error from, {0}", "Application");
 	}
 
 };
