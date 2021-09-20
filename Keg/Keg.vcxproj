@@ -116,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Keg\Vendor\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,10 +140,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\Logger.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Keg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\Logger.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\EntryPoint.h" />
   </ItemGroup>
