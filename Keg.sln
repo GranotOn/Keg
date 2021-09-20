@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Keg", "Keg\Keg.vcxproj", "{4E0F9E7C-295E-44BD-8860-74273905A83E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox.vcxproj", "{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{AB2294E4-B46D-46E3-B8E0-D1A974E40BD0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{53E47842-3FC8-3998-A828-34EB942B241A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLAD", "Keg\Vendor\glad\GLAD.vcxproj", "{5D4A857C-4981-860D-F26D-6C10DE83020F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLFW", "Keg\Vendor\GLFW\GLFW.vcxproj", "{154B857C-0182-860D-AA6E-6C109684020F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Keg", "Keg.vcxproj", "{5CFF870B-C808-887C-5184-9E7CBD8C937C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +17,28 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4E0F9E7C-295E-44BD-8860-74273905A83E}.Debug|x64.ActiveCfg = Debug|x64
-		{4E0F9E7C-295E-44BD-8860-74273905A83E}.Debug|x64.Build.0 = Debug|x64
-		{4E0F9E7C-295E-44BD-8860-74273905A83E}.Release|x64.ActiveCfg = Release|x64
-		{4E0F9E7C-295E-44BD-8860-74273905A83E}.Release|x64.Build.0 = Release|x64
-		{AB2294E4-B46D-46E3-B8E0-D1A974E40BD0}.Debug|x64.ActiveCfg = Debug|x64
-		{AB2294E4-B46D-46E3-B8E0-D1A974E40BD0}.Debug|x64.Build.0 = Debug|x64
-		{AB2294E4-B46D-46E3-B8E0-D1A974E40BD0}.Release|x64.ActiveCfg = Release|x64
-		{AB2294E4-B46D-46E3-B8E0-D1A974E40BD0}.Release|x64.Build.0 = Release|x64
+		{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}.Debug|x64.ActiveCfg = Debug|x64
+		{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}.Debug|x64.Build.0 = Debug|x64
+		{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}.Release|x64.ActiveCfg = Release|x64
+		{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}.Release|x64.Build.0 = Release|x64
+		{5D4A857C-4981-860D-F26D-6C10DE83020F}.Debug|x64.ActiveCfg = Debug|x64
+		{5D4A857C-4981-860D-F26D-6C10DE83020F}.Debug|x64.Build.0 = Debug|x64
+		{5D4A857C-4981-860D-F26D-6C10DE83020F}.Release|x64.ActiveCfg = Release|x64
+		{5D4A857C-4981-860D-F26D-6C10DE83020F}.Release|x64.Build.0 = Release|x64
+		{154B857C-0182-860D-AA6E-6C109684020F}.Debug|x64.ActiveCfg = Debug|x64
+		{154B857C-0182-860D-AA6E-6C109684020F}.Debug|x64.Build.0 = Debug|x64
+		{154B857C-0182-860D-AA6E-6C109684020F}.Release|x64.ActiveCfg = Release|x64
+		{154B857C-0182-860D-AA6E-6C109684020F}.Release|x64.Build.0 = Release|x64
+		{5CFF870B-C808-887C-5184-9E7CBD8C937C}.Debug|x64.ActiveCfg = Debug|x64
+		{5CFF870B-C808-887C-5184-9E7CBD8C937C}.Debug|x64.Build.0 = Debug|x64
+		{5CFF870B-C808-887C-5184-9E7CBD8C937C}.Release|x64.ActiveCfg = Release|x64
+		{5CFF870B-C808-887C-5184-9E7CBD8C937C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {631751E3-343A-4CFA-9662-DB7E98604548}
+	GlobalSection(NestedProjects) = preSolution
+		{5D4A857C-4981-860D-F26D-6C10DE83020F} = {53E47842-3FC8-3998-A828-34EB942B241A}
+		{154B857C-0182-860D-AA6E-6C109684020F} = {53E47842-3FC8-3998-A828-34EB942B241A}
 	EndGlobalSection
 EndGlobal
