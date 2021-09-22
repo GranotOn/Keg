@@ -1,3 +1,9 @@
 [submodule "Keg/Vendor/spdlog"]
 	path = Keg/Vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "Keg/Vendor/glfw"]
+	path = Keg/Vendor/glfw
+	url = https://github.com/OwenGranot/glfw
+[submodule "Keg/Vendor/glad"]
+	path = Keg/Vendor/glad
+	url = https://github.com/OwenGranot/glad
