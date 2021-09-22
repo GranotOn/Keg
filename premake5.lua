@@ -25,6 +25,7 @@ project "Keg"
         "Keg/Vendor/spdlog/include",
         "Keg/Vendor/glad/include",
         "Keg/Vendor/glfw/include",
+        "Keg/src"
     }
 
 project "Sandbox"

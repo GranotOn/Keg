@@ -4,19 +4,34 @@
     <Filter Include="Core">
       <UniqueIdentifier>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keg\src\Application.h" />
+    <ClInclude Include="Keg\src\Core\Event.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="Keg\src\Core\Logger.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Keg\src\EntryPoint.h" />
     <ClInclude Include="Keg\src\Keg.h" />
+    <ClInclude Include="Keg\src\Platform\Window.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Keg\src\Platform\WindowsWindow.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Keg\src\Application.cpp" />
     <ClCompile Include="Keg\src\Core\Logger.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Keg\src\Platform\WindowsWindow.cpp">
+      <Filter>Platform</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
