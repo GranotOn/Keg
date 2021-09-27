@@ -7,8 +7,6 @@
 
 namespace Keg
 {
-	
-
 	class WindowsWindow : public Window
 	{
 	public:
