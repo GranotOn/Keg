@@ -1,10 +1,19 @@
 #pragma once
 
-// To be used the Client
 #include "Application.h"
-#include "Core/Logger.h"
-#include "Core/Event.h"
+#include "Core/Logger/Logger.h"
 
-// Platform 
+// Events & Input
+#include "Core/Event/Event.h"
+#include "Core/Event/KeyEvent.h"
+#include "Core/Event/MouseEvent.h"
+#include "Core/KeyCodes.h"
+#include "Core/MouseCodes.h"
+
+// Layers
+#include "Core/Layer/Layer.h"
+#include "Core/Layer/LayerStack.h"
+
+// Window
 #include "Platform/Window.h"
 #include "Platform/WindowsWindow.h"

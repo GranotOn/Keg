@@ -14,7 +14,7 @@ namespace Keg
 		~Application();
 
 
-	private:
+	protected:
 		bool m_Running;
 		Window* m_Window;
 
