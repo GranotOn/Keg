@@ -1,4 +1,3 @@
-#include <glad/glad.h>
 #include <functional>
 #include <string>
 #include <utility>

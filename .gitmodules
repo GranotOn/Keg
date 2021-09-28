@@ -4,6 +4,7 @@
 [submodule "Keg/Vendor/glad"]
 	path = Keg/Vendor/glad
 	url = https://github.com/OwenGranot/glad
+	branche = glad2
 [submodule "Keg/Vendor/glfw"]
 	path = Keg/Vendor/glfw
 	url = https://github.com/OwenGranot/glfw

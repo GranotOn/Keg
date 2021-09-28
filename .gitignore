@@ -23,6 +23,7 @@ mono_crash.*
 [Rr]eleases/
 x64/
 x86/
+bin-int/
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
@@ -69,6 +70,8 @@ ScaffoldingReadMe.txt
 StyleCopReport.xml
 
 # Files built by Visual Studio
+*.sln
+*.vcxproj*
 *_i.c
 *_p.c
 *_h.h
@@ -389,5 +392,6 @@ FodyWeavers.xsd
 
 # debug folders
 x64/
+bin-int/
 Keg/x64/
 Sandbox/x64/
