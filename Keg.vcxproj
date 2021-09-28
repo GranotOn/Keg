@@ -82,6 +82,7 @@
     <ClInclude Include="Keg\src\Core\Event\Event.h" />
     <ClInclude Include="Keg\src\Core\Event\KeyEvent.h" />
     <ClInclude Include="Keg\src\Core\Event\MouseEvent.h" />
+    <ClInclude Include="Keg\src\Core\Event\WindowEvent.h" />
     <ClInclude Include="Keg\src\Core\KeyCodes.h" />
     <ClInclude Include="Keg\src\Core\Layer\Layer.h" />
     <ClInclude Include="Keg\src\Core\Logger\Logger.h" />

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Platform/Window.h"
+#include "Core/Event/KeyEvent.h"
+#include "Core/Event/WindowEvent.h"
 
 // Defnition for main (imported in EntryPoint.h)
 int main(int argc, char** argv);
@@ -12,6 +14,11 @@ namespace Keg
 	public:
 		Application();
 		~Application();
+
+		// Event handlers
+		bool OnKeyPress(KeyPressedEvent &e);
+		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
 
 	protected:
