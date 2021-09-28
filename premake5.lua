@@ -2,6 +2,7 @@ workspace "Keg"
     architecture "x86_64"
     startproject "Sandbox"
     configurations { "Debug", "Release", "Distribution" }
+    linkoptions { "/NODEFAULTLIB:msvcrt.lib", "/NODEFAULTLIB:libcmtd.lib" }
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
