@@ -4,16 +4,51 @@
     <Filter Include="Core">
       <UniqueIdentifier>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Application">
+      <UniqueIdentifier>{F1A4822F-DD9D-A181-06D0-8606F227818D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Event">
+      <UniqueIdentifier>{FF1F37CD-EBD7-781A-54DF-517640B6130B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Layer">
+      <UniqueIdentifier>{7A9BAACD-6653-EC1A-CF5A-C576BB31870B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Logger">
+      <UniqueIdentifier>{3D8AF183-A93F-6A79-3234-64509EE8607D}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Keg\src\Application.h" />
+    <ClInclude Include="Keg\src\Core\Application\Application.h">
+      <Filter>Core\Application</Filter>
+    </ClInclude>
     <ClInclude Include="Keg\src\Core\Event\Event.h">
+      <Filter>Core\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Keg\src\Core\Event\KeyEvent.h">
+      <Filter>Core\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Keg\src\Core\Event\MouseEvent.h">
+      <Filter>Core\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Keg\src\Core\Event\WindowEvent.h">
+      <Filter>Core\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Keg\src\Core\KeyCodes.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Keg\src\Core\Layer\Layer.h">
+      <Filter>Core\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="Keg\src\Core\Layer\LayerStack.h">
+      <Filter>Core\Layer</Filter>
+    </ClInclude>
     <ClInclude Include="Keg\src\Core\Logger\Logger.h">
+      <Filter>Core\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Keg\src\Core\MouseCodes.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Keg\src\EntryPoint.h" />
@@ -24,22 +59,19 @@
     <ClInclude Include="Keg\src\Platform\WindowsWindow.h">
       <Filter>Platform</Filter>
     </ClInclude>
-    <ClInclude Include="Keg\src\Core\Event\KeyEvent.h" />
-    <ClInclude Include="Keg\src\Core\KeyCodes.h" />
-    <ClInclude Include="Keg\src\Core\Event\MouseEvent.h" />
-    <ClInclude Include="Keg\src\Core\Layer\LayerStack.h" />
-    <ClInclude Include="Keg\src\Core\Layer\Layer.h" />
-    <ClInclude Include="Keg\src\Core\MouseCodes.h" />
-    <ClInclude Include="Keg\src\Core\Event\WindowEvent.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Keg\src\Application.cpp" />
+    <ClCompile Include="Keg\src\Core\Application\Application.cpp">
+      <Filter>Core\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Keg\src\Core\Layer\LayerStack.cpp">
+      <Filter>Core\Layer</Filter>
+    </ClCompile>
     <ClCompile Include="Keg\src\Core\Logger\Logger.cpp">
-      <Filter>Core</Filter>
+      <Filter>Core\Logger</Filter>
     </ClCompile>
     <ClCompile Include="Keg\src\Platform\WindowsWindow.cpp">
       <Filter>Platform</Filter>
     </ClCompile>
-    <ClCompile Include="Keg\src\Core\Layer\LayerStack.cpp" />
   </ItemGroup>
 </Project>
