@@ -4,26 +4,28 @@
 
 ### KeyPressedEvent
 
-```cpp
+```clike
 class KeyPressedEvent
 {
     KeyCode GetKey(); // Get the keycode
     bool IsRepeated(); // Is press in repeat mode
 }
 ```
+
 ### KeyReleasedEvent
-```cpp
+
+```clike
 class KeyPressedEvent
 {
     KeyCode GetKey(); // Get the keycode
 }
 ```
 
-
 ## Mouse Events
 
 ### CursorMovedEvent
-```cpp
+
+```clike
 class CursorMovedEvent
 {
     // Position
@@ -32,8 +34,10 @@ class CursorMovedEvent
     std::pair<double, double> GetPosition();
 }
 ```
+
 ### MousePressedEvent
-```cpp
+
+```clike
 class MousePressedEvent
 {
     MouseCode GetButton(); // Get the mousecode
@@ -44,8 +48,10 @@ class MousePressedEvent
     std::pair<double, double> GetPosition();
 }
 ```
+
 ### MouseReleasedEvent
-```cpp
+
+```clike
 class MouseReleasedEvent
 {
     MouseCode GetButton(); // Get the mousecode
@@ -56,8 +62,10 @@ class MouseReleasedEvent
     std::pair<double, double> GetPosition();
 }
 ```
+
 ### MouseScrolledEvent
-```cpp
+
+```clike
 class MouseScrolledEvent
 {
     // Offset
@@ -71,8 +79,10 @@ class MouseScrolledEvent
     std::pair<double, double> GetPosition();
 }
 ```
+
 ### CursorEnteredEvent
-```cpp
+
+```clike
 class CursorEnteredEvent
 {
     // Position
@@ -81,8 +91,10 @@ class CursorEnteredEvent
     std::pair<double, double> GetPosition();
 }
 ```
+
 ### CursorLeftEvent
-```cpp
+
+```clike
 class CursorLeftEvent
 {
     // Last known position
@@ -95,15 +107,18 @@ class CursorLeftEvent
 ## Window Events
 
 ### WindowCloseEvent
-```cpp
+
+```clike
 class WindowCloseEvent
 {
     // There aren't any methods here.
     // Generally this will be handled by the engine.
 }
 ```
+
 ### WindowResizeEvent
-```cpp
+
+```clike
 class WindowResizeEvent
 {
     // Measurements
