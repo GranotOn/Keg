@@ -142,6 +142,21 @@ namespace Keg
 			}
 		});
 
+		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
+			{
+				WindowData* data = (WindowData*)glfwGetWindowUserPointer(window);
+				WindowCloseEvent e = WindowCloseEvent();
+				data->EventCallback(e);
+			});
+
+		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+			{
+				WindowData* data = (WindowData*)glfwGetWindowUserPointer(window);
+				WindowResizeEvent e = WindowResizeEvent(width, height);
+				data->EventCallback(e);
+
+			});
+
 		glfwSetErrorCallback(GLFWErrorCallback);
 	}
 

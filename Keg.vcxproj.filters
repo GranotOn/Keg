@@ -30,6 +30,7 @@
     <ClInclude Include="Keg\src\Core\Layer\LayerStack.h" />
     <ClInclude Include="Keg\src\Core\Layer\Layer.h" />
     <ClInclude Include="Keg\src\Core\MouseCodes.h" />
+    <ClInclude Include="Keg\src\Core\Event\WindowEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Keg\src\Application.cpp" />

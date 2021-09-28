@@ -7,6 +7,7 @@
 #include "Core/Event/Event.h"
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/MouseEvent.h"
+#include "Core/Event/WindowEvent.h"
 #include "Core/KeyCodes.h"
 #include "Core/MouseCodes.h"
 

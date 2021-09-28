@@ -34,12 +34,25 @@ namespace Keg
         return true;
     }
 
+    bool Application::OnWindowResize(WindowResizeEvent& e)
+    {
+        KEG_APP_INFO("Window resized - Width({0}) Height({1})", e.GetWidth(), e.GetHeight());
+        return true;
+    }
+
+    bool Application::OnWindowClose(WindowCloseEvent& e)
+    {
+        KEG_APP_INFO("Window is closing per callback from window class");
+        m_Running = false;
+        return true;
+    }
 
     void Application::OnEvent(Event& e)
     {
-        EventDispatcher KeyPressedDispatcher = EventDispatcher(e);
-        KeyPressedDispatcher.Dispatch<KeyPressedEvent>(EVENT_FUNC(Application::OnKeyPress));
-
+        EventDispatcher dispatcher = EventDispatcher(e);
+        dispatcher.Dispatch<KeyPressedEvent>(EVENT_FUNC(Application::OnKeyPress));
+        dispatcher.Dispatch<WindowCloseEvent>(EVENT_FUNC(Application::OnWindowClose));
+        dispatcher.Dispatch<WindowResizeEvent>(EVENT_FUNC(Application::OnWindowResize));
 
         if (e.GetEventType().compare("KeyReleased") == 0)
         {
