@@ -1,7 +1,8 @@
 workspace "Keg"
     architecture "x86_64"
     startproject "Sandbox"
-    configurations { "Debug", "Release" }
+    configurations { "Debug", "Release", "Distribution" }
+    linkoptions { "/NODEFAULTLIB:msvcrt.lib", "/NODEFAULTLIB:libcmtd.lib" }
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -27,6 +28,31 @@ project "Keg"
         "Keg/Vendor/glfw/include",
         "Keg/src"
     }
+
+    links
+    {
+        "GLFW",
+        "GLAD",
+        "opengl32.lib",
+    }
+
+    filter "configurations:Debug"
+		defines "KEG_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+
+	filter "configurations:Release"
+		defines "KEG_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Distribution"
+		defines "KEG_DISTRIBUTION"
+		runtime "Release"
+		optimize "on"
+
+
 
 project "Sandbox"
     kind "ConsoleApp"
@@ -54,10 +80,25 @@ project "Sandbox"
     links
     {
         "Keg",
-        "GLAD",
-        "GLFW",
-        "opengl32.lib",
     }
+
+    
+    filter "configurations:Debug"
+		defines "KEG_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+
+	filter "configurations:Release"
+		defines "KEG_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Distribution"
+		defines "KEG_DISTRIBUTION"
+		runtime "Release"
+		optimize "on"
+
 
 group "Dependencies"
 	include "Keg/Vendor/GLFW"
