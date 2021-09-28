@@ -26,7 +26,7 @@ namespace Keg
 	public:
 		CursorMovedEvent(double x, double y) : MouseEvent(x, y) {}
 		
-		EVENT_STATIC_TYPE("CurosrMoved");
+		EVENT_STATIC_TYPE("CursorMoved");
 	};
 
 	class MousePressedEvent : public MouseEvent
