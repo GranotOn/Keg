@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="keg" src="./docs/_media/icon.svg">
+    <img alt="keg" src="./_media/icon.svg">
 </p>
 
 <p align="center">
