@@ -27,8 +27,7 @@ namespace Keg
 			KeyEvent(kc), m_IsRepeated(repeated) {};
 
 		bool IsRepeated() { return m_IsRepeated;  }
-		std::string GetStaticType() { return "KeyPressedEvent";  }
-	
+		EVENT_STATIC_TYPE("KeyPressed");
 	public:
 		bool m_IsRepeated;
 	};
@@ -37,6 +36,6 @@ namespace Keg
 	{
 	public:
 		KeyReleasedEvent(const KeyCode kc) : KeyEvent(kc) {}
-		std::string GetStaticType() { return "KeyReleasedEvent"; }
+		EVENT_STATIC_TYPE("KeyReleased");
 	};
 }

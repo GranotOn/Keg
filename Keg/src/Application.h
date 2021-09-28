@@ -13,6 +13,8 @@ namespace Keg
 		Application();
 		~Application();
 
+		bool OnKeyPress(KeyPressedEvent &e);
+
 
 	protected:
 		bool m_Running;

@@ -25,8 +25,8 @@ namespace Keg
 	{
 	public:
 		CursorMovedEvent(double x, double y) : MouseEvent(x, y) {}
-
-		std::string GetStaticType() override { return "CursorMovedEvent"; }
+		
+		EVENT_STATIC_TYPE("CurosrMoved");
 	};
 
 	class MousePressedEvent : public MouseEvent
@@ -35,8 +35,8 @@ namespace Keg
 		MousePressedEvent(double x, double y, MouseCode button) : MouseEvent(x, y), m_Button(button) {}
 
 		MouseCode GetButton() { return m_Button;  }
-
-		std::string GetStaticType() override { return "MousePressedEvent"; }
+		
+		EVENT_STATIC_TYPE("MousePressed");
 
 	private: 
 		MouseCode m_Button;
@@ -48,7 +48,7 @@ namespace Keg
 		MouseReleasedEvent(double x, double y, MouseCode button) : MouseEvent(x, y), m_Button(button) {}
 		MouseCode GetButton() { return m_Button; }
 
-		std::string GetStaticType() override { return "MouseReleasedEvent"; }
+		EVENT_STATIC_TYPE("MouseReleased");
 
 	private:
 		MouseCode m_Button;
@@ -64,7 +64,7 @@ namespace Keg
 
 		std::pair<double, double> GetOffset() { return std::make_pair(m_XOffset, m_YOffset); }
 
-		std::string GetStaticType() override { return "MouseScrolledEvent"; }
+		EVENT_STATIC_TYPE("MouseScrolled");
 
 	private:
 		double m_XOffset;
@@ -76,7 +76,7 @@ namespace Keg
 	public:
 		CursorEnteredEvent(double x, double y) : MouseEvent(x, y) {}
 
-		std::string GetStaticType() override { return "CursorEnteredEvent"; }
+		EVENT_STATIC_TYPE("CursorEntered");
 	};
 
 	class CursorLeftEvent : public MouseEvent
@@ -84,7 +84,7 @@ namespace Keg
 	public:
 		CursorLeftEvent(double x, double y) : MouseEvent(x, y) {}
 
-		std::string GetStaticType() override { return "CursorLeftEvent"; }
+		EVENT_STATIC_TYPE("CursorLeft");
 	};
 
 }
