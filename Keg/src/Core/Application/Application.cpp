@@ -35,7 +35,7 @@ namespace Keg
 
     bool Application::OnWindowResize(WindowResizeEvent& e)
     {
-        KEG_APP_INFO("Window resized - Width({0}) Height({1})", e.GetWidth(), e.GetHeight());
+        KEG_APP_INFO("Window resized - Width({0}) Height({1}), Minimized({2})", e.GetWidth(), e.GetHeight(), e.IsMinimized());
         return true;
     }
 

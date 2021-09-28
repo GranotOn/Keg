@@ -125,5 +125,7 @@ class WindowResizeEvent
     int GetWidth();
     int GetHeight();
     std::pair<int, int> GetSize();
+
+    bool IsMinimized() 
 }
 ```
