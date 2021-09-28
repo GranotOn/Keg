@@ -79,17 +79,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Keg\src\Application.h" />
-    <ClInclude Include="Keg\src\Core\Event.h" />
-    <ClInclude Include="Keg\src\Core\Logger.h" />
+    <ClInclude Include="Keg\src\Core\Event\Event.h" />
+    <ClInclude Include="Keg\src\Core\Event\KeyEvent.h" />
+    <ClInclude Include="Keg\src\Core\Event\MouseEvent.h" />
+    <ClInclude Include="Keg\src\Core\Event\WindowEvent.h" />
+    <ClInclude Include="Keg\src\Core\KeyCodes.h" />
+    <ClInclude Include="Keg\src\Core\Layer\Layer.h" />
+    <ClInclude Include="Keg\src\Core\Logger\Logger.h" />
     <ClInclude Include="Keg\src\EntryPoint.h" />
     <ClInclude Include="Keg\src\Keg.h" />
+    <ClInclude Include="Keg\src\Core\MouseCodes.h" />
     <ClInclude Include="Keg\src\Platform\Window.h" />
     <ClInclude Include="Keg\src\Platform\WindowsWindow.h" />
+    <ClInclude Include="Keg\src\Core\Layer\LayerStack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Keg\src\Application.cpp" />
-    <ClCompile Include="Keg\src\Core\Logger.cpp" />
+    <ClCompile Include="Keg\src\Core\Logger\Logger.cpp" />
     <ClCompile Include="Keg\src\Platform\WindowsWindow.cpp" />
+    <ClCompile Include="Keg\src\Core\Layer\LayerStack.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
