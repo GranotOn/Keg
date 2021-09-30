@@ -10,7 +10,7 @@ The helper object responsible for reading and dispatching an event is the `Event
 
 ```clike
 class EventDispatcher
-	{
+{
 	public:
 		EventDispatcher(Event& e) // The event recieved in the OnEvent() method.
 
@@ -19,6 +19,7 @@ class EventDispatcher
         * @output: bool (Did this method invoktion caused the function invoktion).
         **/
 		bool Dispatch(const F& func);
+}
 ```
 
 ### Usage
@@ -31,18 +32,18 @@ class DispatcherExample
 {
     bool OnKeyPressedEvent(KeyPressedEvent &e)
     {
-        std::cout << `A key was pressed!` << std::endl;
+        // Event recieved
     }
 
-}
-void OnEvent(Event &e)
-{
-    // Step 1: Initialize dispatcher with the desired type and pass the recieved event to it.
-    EventDispatcher<KeyPressedEvent> dispatcher(e);
+    void OnEvent(Event &e)
+    {
+        // Step 1: Initialize dispatcher with the desired type and pass the recieved event to it.
+        EventDispatcher<KeyPressedEvent> dispatcher(e);
 
-    // Step 2: Call the Dispatch() method and pass a binded function to it, that should be activated iif the event is of type KeyPressedEvent.
-    dispatcher.Dispatch(std::bind(&DispatcherExample::OnKeyPressedEvent, this, std::placeholders::_1)); 
+        // Step 2: Call the Dispatch() method and pass a binded function to it, that should be activated iif the event is of type KeyPressedEvent.
+        dispatcher.Dispatch(std::bind(&DispatcherExample::OnKeyPressedEvent, this, std::placeholders::_1)); 
 
+    }
 }
 ```
 
