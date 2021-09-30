@@ -1,5 +1,51 @@
 # Events
 
+## Receiving Events (EventDispatcher)
+
+The helper object responsible for reading and dispatching an event is the `EventDispatcher`.
+
+### Declaration
+
+* Declared in `Keg/src/Core/Event/Event.h`
+
+```clike
+class EventDispatcher
+	{
+	public:
+		EventDispatcher(Event& e) // The event recieved in the OnEvent() method.
+
+        /**
+        * @input: F& func (The boolean function that should be called when the event type is encountered).
+        * @output: bool (Did this method invoktion caused the function invoktion).
+        **/
+		bool Dispatch(const F& func);
+```
+
+### Usage
+
+In this example we will use an EventDispatcher to capture an event of type `KeyPressedEvent`.
+
+In our class:
+```clike
+class DispatcherExample
+{
+    bool OnKeyPressedEvent(KeyPressedEvent &e)
+    {
+        std::cout << `A key was pressed!` << std::endl;
+    }
+
+}
+void OnEvent(Event &e)
+{
+    // Step 1: Initialize dispatcher with the desired type and pass the recieved event to it.
+    EventDispatcher<KeyPressedEvent> dispatcher(e);
+
+    // Step 2: Call the Dispatch() method and pass a binded function to it, that should be activated iif the event is of type KeyPressedEvent.
+    dispatcher.Dispatch(std::bind(&DispatcherExample::OnKeyPressedEvent, this, std::placeholders::_1)); 
+
+}
+```
+
 ## Key Events
 
 ### KeyPressedEvent
