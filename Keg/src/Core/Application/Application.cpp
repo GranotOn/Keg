@@ -13,6 +13,7 @@ namespace Keg
     {
         m_Running = true;
         m_Window = NULL;
+        m_Layers = new LayerStack();
     }
 
     Application::~Application()
@@ -20,10 +21,8 @@ namespace Keg
 
     }
 
-    bool Application::OnKeyPress(KeyPressedEvent& e) {
-        
-        KEG_APP_TRACE("{0} was pressed, repeated: {1}", e.GetKey(), e.IsRepeated());
-
+    bool Application::OnKeyPress(KeyPressedEvent& e) 
+    {
         if (e.GetKey() == Key::Escape)
         {
             KEG_APP_INFO("Application closing because user clicked on Escape");
@@ -33,11 +32,6 @@ namespace Keg
         return true;
     }
 
-    bool Application::OnWindowResize(WindowResizeEvent& e)
-    {
-        KEG_APP_INFO("Window resized - Width({0}) Height({1}), Minimized({2})", e.GetWidth(), e.GetHeight(), e.IsMinimized());
-        return true;
-    }
 
     bool Application::OnWindowClose(WindowCloseEvent& e)
     {
@@ -51,55 +45,10 @@ namespace Keg
         EventDispatcher dispatcher = EventDispatcher(e);
         dispatcher.Dispatch<KeyPressedEvent>(EVENT_FUNC(Application::OnKeyPress));
         dispatcher.Dispatch<WindowCloseEvent>(EVENT_FUNC(Application::OnWindowClose));
-        dispatcher.Dispatch<WindowResizeEvent>(EVENT_FUNC(Application::OnWindowResize));
 
-        if (e.GetEventType().compare("KeyReleased") == 0)
+        for (auto it = m_Layers->rbegin(); it != m_Layers->rend(); ++it)
         {
-            KeyReleasedEvent* ke = dynamic_cast<KeyReleasedEvent*>(&e);
-
-            KEG_APP_TRACE("{0} was released", ke->GetKey());
-        }
-
-        else if (e.GetEventType().compare("CursorMoved") == 0)
-        {
-            CursorMovedEvent* me = dynamic_cast<CursorMovedEvent*>(&e);
-
-            KEG_APP_TRACE("Cursor moved: x({0}) y({1})", me->GetXPosition(), me->GetYPosition());
-        }
-
-        else if (e.GetEventType().compare("MousePressed") == 0)
-        {
-            MousePressedEvent* me = dynamic_cast<MousePressedEvent*>(&e);
-
-            KEG_APP_TRACE("Mouse clicked: x({0}) y({1}) button({2})", me->GetXPosition(), me->GetYPosition(), me->GetButton());
-        }
-
-        else if (e.GetEventType().compare("MouseReleased") == 0)
-        {
-            MouseReleasedEvent* me = dynamic_cast<MouseReleasedEvent*>(&e);
-
-            KEG_APP_TRACE("Mouse released: x({0}) y({1}) button({2})", me->GetXPosition(), me->GetYPosition(), me->GetButton());
-        }
-
-        else if (e.GetEventType().compare("MouseScrolled") == 0)
-        {
-            MouseScrolledEvent* me = dynamic_cast<MouseScrolledEvent*>(&e);
-
-            KEG_APP_TRACE("Mouse scrolled: x({0}) y({1}) xOff({2}) yOff({3})", me->GetXPosition(), me->GetYPosition(), me->GetXOffset(), me->GetYOffset());
-        }
-
-        else if (e.GetEventType().compare("CursorEntered") == 0)
-        {
-            CursorEnteredEvent* me = dynamic_cast<CursorEnteredEvent*>(&e);
-
-            KEG_APP_TRACE("Cursor entered window: x({0}) y({1})", me->GetXPosition(), me->GetYPosition());
-        }
-
-        else if (e.GetEventType().compare("CursorLeft") == 0)
-        {
-            CursorLeftEvent* me = dynamic_cast<CursorLeftEvent*>(&e);
-
-            KEG_APP_TRACE("Cursor left window: x({0}) y({1})", me->GetXPosition(), me->GetYPosition());
+            (*it)->OnEvent(e);
         }
     }
 
@@ -126,9 +75,14 @@ namespace Keg
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            m_Window->OnUpdate();
-
             
+            // Update layers
+            for (auto& layer : *m_Layers)
+            {
+                layer->OnUpdate();
+            }
+
+            m_Window->OnUpdate();
         }
 
         delete m_Window;

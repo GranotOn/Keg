@@ -3,6 +3,7 @@
 #include "Platform/Window.h"
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/WindowEvent.h"
+#include "Core/Layer/LayerStack.h"
 
 // Defnition for main (imported in EntryPoint.h)
 int main(int argc, char** argv);
@@ -18,12 +19,12 @@ namespace Keg
 		// Event handlers
 		bool OnKeyPress(KeyPressedEvent &e);
 		bool OnWindowClose(WindowCloseEvent& e);
-		bool OnWindowResize(WindowResizeEvent& e);
 
 
 	protected:
 		bool m_Running;
 		Window* m_Window;
+		LayerStack* m_Layers;
 
 
 	private:
