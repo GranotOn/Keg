@@ -1,5 +1,6 @@
 * [**Home**](/)
 * [**Framework**](/framework.md)
+  - [Key & Mouse Codes](codes.md)
   - [Events](events.md)
   - [Layers](layers.md)
   - [Input](input.md)
