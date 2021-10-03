@@ -1,7 +1,7 @@
 #pragma once
 
-
-#include "Keg.h"
+#include "Core/Application/Application.h"
+#include "Core/Logger/Logger.h"
 
 extern Keg::Application* Keg::CreateApplication();
 
