@@ -1,10 +1,13 @@
-#include "Keg.h"
 #include "WindowsWindow.h"
+
+#include "Core/Event/KeyEvent.h"
+#include "Core/Event/MouseEvent.h"
+#include "Core/Event/WindowEvent.h"
+
+#include "Core/Logger/Logger.h"
 
 namespace Keg
 {
-
-	GLFWwindow* WindowsWindow::m_Window = NULL;
 
 	static void GLFWErrorCallback(int error, const char* description)
 	{
@@ -12,7 +15,7 @@ namespace Keg
 	}
 
 
-	void WindowsWindow::Init() const {
+	void WindowsWindow::Init() {
 
 		/* Initialize GLFW */
 		if (!glfwInit())
@@ -29,8 +32,7 @@ namespace Keg
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-
-		WindowsWindow::m_Window = glfwCreateWindow(m_Data.width, m_Data.height, m_Data.title, NULL, NULL);
+		m_Window = glfwCreateWindow(m_Data.width, m_Data.height, m_Data.title, NULL, NULL);
 
 		if (!WindowsWindow::m_Window)
 		{
@@ -171,6 +173,7 @@ namespace Keg
 		m_Data.height = height;
 		m_Data.width = width;
 		m_Data.title = title;
+		m_Window = nullptr;
 	}
 
 	void WindowsWindow::Shutdown() const

@@ -2,24 +2,31 @@
 #include <string>
 #include <utility>
 
-#include "Keg.h"
 #include "Application.h"
+#include "Platform/WindowsWindow.h"
 
 #define EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
 
 namespace Keg
 {
+    Application* Application::s_Instance = nullptr;
+
     Application::Application()
     {
+        if (s_Instance)
+        {
+            KEG_ENGINE_ERROR("Application already exists!");
+        }
+
         m_Running = true;
-        m_Window = NULL;
         m_Layers = new LayerStack();
+        s_Instance = this;
+
+        m_Window = new WindowsWindow();
+        m_Window->SetEventCallback(EVENT_FUNC(Application::OnEvent));
     }
 
-    Application::~Application()
-    {
 
-    }
 
     bool Application::OnKeyPress(KeyPressedEvent& e) 
     {
@@ -55,9 +62,7 @@ namespace Keg
 
     void Application::Run()
     {
-        // Create & Initialize Window
-        m_Window = new WindowsWindow();
-        m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+        // Initialize Window
         m_Window->Init();
 
         // Assert that a window exists
@@ -87,4 +92,14 @@ namespace Keg
 
         delete m_Window;
 	}
+
+    Window* Application::GetWindow()
+    {
+        return m_Window;
+    }
+
+    Application::~Application()
+    {
+
+    }
 }

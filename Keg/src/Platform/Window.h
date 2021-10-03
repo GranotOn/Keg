@@ -1,9 +1,7 @@
 #pragma once
 #include "Core/Event/Event.h"
-#include "Core/Event/KeyEvent.h"
+
 #include <functional>
-
-
 
 namespace Keg
 {
@@ -25,7 +23,7 @@ namespace Keg
 		virtual void SetEventCallback(const EventCallbackFn &cb) = 0;
 
 		// Initialization & Destruction
-		virtual void Init() const = 0;
+		virtual void Init() = 0;
 		virtual void Shutdown() const = 0;
 	};
 }
