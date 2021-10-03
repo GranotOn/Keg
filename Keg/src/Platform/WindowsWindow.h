@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Window.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
-#include "Window.h"
 
 namespace Keg
 {
@@ -13,7 +13,7 @@ namespace Keg
 
 		WindowsWindow(const char* title = "Keg Engine", int width = 800, int height = 600);
 		// Initialization & Destruction
-		virtual void Init() const override;
+		virtual void Init() override;
 		virtual ~WindowsWindow() override;
 		virtual void Shutdown() const override;
 
@@ -23,6 +23,8 @@ namespace Keg
 		virtual void PollEvents() const override;
 		virtual bool HasWindow() const override;
 		virtual void OnUpdate() const override;
+
+		GLFWwindow* GetWindow() { return m_Window;  }
 
 
 	private:
@@ -37,7 +39,7 @@ namespace Keg
 		};
 
 		WindowData m_Data;
-		static GLFWwindow* m_Window;
+		GLFWwindow* m_Window;
 	};
 }
 

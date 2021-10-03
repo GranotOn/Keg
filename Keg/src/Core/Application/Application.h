@@ -20,6 +20,9 @@ namespace Keg
 		bool OnKeyPress(KeyPressedEvent &e);
 		bool OnWindowClose(WindowCloseEvent& e);
 
+		static Application* GetInstance() { return s_Instance;  }
+		Window* GetWindow();
+
 
 	protected:
 		bool m_Running;
@@ -31,6 +34,9 @@ namespace Keg
 		friend int ::main(int argc, char** argv);
 		void Run(); // Main loop is here
 		void OnEvent(Event& e);
+	
+	private:
+		static Application* s_Instance;
 	};
 
 	// This is the client application

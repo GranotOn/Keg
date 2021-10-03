@@ -37,11 +37,12 @@ class DispatcherExample
 
     void OnEvent(Event &e)
     {
-        // Step 1: Initialize dispatcher with the desired type and pass the recieved event to it.
-        EventDispatcher<KeyPressedEvent> dispatcher(e);
+        // Step 1: Initialize dispatcher and pass the recieved event to it.
+        EventDispatcher dispatcher(e);
 
-        // Step 2: Call the Dispatch() method and pass a binded function to it, that should be activated iif the event is of type KeyPressedEvent.
-        dispatcher.Dispatch(std::bind(&DispatcherExample::OnKeyPressedEvent, this, std::placeholders::_1)); 
+        // Step 2: Call the Dispatch() method with the desired type,
+        // and pass a binded function to it, that should be activated iif the event is of type KeyPressedEvent.
+        dispatcher.Dispatch<KeyPressedEvent>(std::bind(&DispatcherExample::OnKeyPressedEvent, this, std::placeholders::_1)); 
 
     }
 }
