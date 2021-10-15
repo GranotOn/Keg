@@ -14,6 +14,10 @@ namespace Keg
 		KEG_ENGINE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
+	void* WindowsWindow::GetProcAddress()
+	{
+		return glfwGetProcAddress;
+	}
 
 	void WindowsWindow::Init() {
 
@@ -49,12 +53,7 @@ namespace Keg
 		// this data on each event.
 		glfwSetWindowUserPointer(m_Window, (void *) &m_Data);
 
-		// TOOD: Move this to the renderer possibly (Because it's glad)
-		/* Load GLAD */
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			KEG_ENGINE_ERROR("glad load gl proc");
-		}
+		
 
 
 		KEG_ENGINE_TRACE("gladLoadGLLoader succesfull");

@@ -24,6 +24,9 @@ namespace Keg
 
         m_Window = new WindowsWindow();
         m_Window->SetEventCallback(EVENT_FUNC(Application::OnEvent));
+
+        m_Renderer = new OpenGLRenderer();
+        
     }
 
 
@@ -44,12 +47,14 @@ namespace Keg
     {
         KEG_APP_INFO("Window is closing per callback from window class");
         m_Running = false;
+
         return true;
     }
 
     void Application::OnEvent(Event& e)
     {
         EventDispatcher dispatcher = EventDispatcher(e);
+
         dispatcher.Dispatch<KeyPressedEvent>(EVENT_FUNC(Application::OnKeyPress));
         dispatcher.Dispatch<WindowCloseEvent>(EVENT_FUNC(Application::OnWindowClose));
 
@@ -65,6 +70,10 @@ namespace Keg
         // Initialize Window
         m_Window->Init();
 
+        // Initialize Renderer
+        // IMPORTANT: Must happen after m_Window->Init();
+        m_Renderer->Init(m_Window->GetProcAddress());
+
         // Assert that a window exists
         if (!m_Window->HasWindow())
         {
@@ -76,9 +85,9 @@ namespace Keg
         /* Loop until the user closes the window */
         while (m_Running)
         {
-            /* Render here */
-            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+
+            m_Renderer->Update();
+            
 
             
             // Update layers
