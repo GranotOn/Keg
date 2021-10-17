@@ -20,7 +20,6 @@ namespace Keg
 	public:
 		class EventDispatcher(Event& e) : m_Event(e) {};
 		
-
 		template<typename T, typename F>
 		bool Dispatch(const F& func)
 		{

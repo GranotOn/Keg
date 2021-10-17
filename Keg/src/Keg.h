@@ -18,3 +18,7 @@
 #include "Platform/Window.h"
 #include "Platform/WindowsWindow.h"
 #include "Platform/WindowsInput.h"
+
+// Renderer
+#include "Renderer/Renderer.h"
+#include "Renderer/OpenGLRenderer.h"

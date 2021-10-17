@@ -1,9 +1,12 @@
 #pragma once
 
-#include "Platform/Window.h"
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/WindowEvent.h"
 #include "Core/Layer/LayerStack.h"
+
+#include "Platform/Window.h"
+#include "Renderer/OpenGLRenderer.h"
+
 
 // Defnition for main (imported in EntryPoint.h)
 int main(int argc, char** argv);
@@ -28,6 +31,7 @@ namespace Keg
 		bool m_Running;
 		Window* m_Window;
 		LayerStack* m_Layers;
+		Renderer* m_Renderer;
 
 
 	private:

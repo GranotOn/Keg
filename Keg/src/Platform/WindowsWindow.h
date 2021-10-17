@@ -2,7 +2,6 @@
 
 #include "Window.h"
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace Keg
@@ -23,6 +22,7 @@ namespace Keg
 		virtual void PollEvents() const override;
 		virtual bool HasWindow() const override;
 		virtual void OnUpdate() const override;
+		virtual void* GetProcAddress() override;
 
 		GLFWwindow* GetWindow() { return m_Window;  }
 

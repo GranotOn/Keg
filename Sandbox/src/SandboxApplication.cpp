@@ -10,7 +10,7 @@ public:
 
 	SandboxApplication()
 	{
-		
+		m_Layers->AddLayer(new TestLayer());
 	}
 
 };
