@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 
 #include "Vertex.h"
+#include "Shader.h"
 
 namespace Keg
 {
@@ -17,6 +18,10 @@ namespace Keg
 			Vertex(0.5f, -0.5f, 0.0f),
 			Vertex(0.0f, 0.5f, 0.0f)
 		};
+
+		Shader shader("C:/Users/grano/Desktop/Keg/Keg/assets/Shaders/4.6.shader.vs", "C:/Users/grano/Desktop/Keg/Keg/assets/Shaders/4.6.shader.fs");
+
+		shader.Use();
 
 		unsigned int VBO, VAO;
 		glGenVertexArrays(1, &VAO);
@@ -33,6 +38,7 @@ namespace Keg
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+
 	}
 
 	void OpenGLRenderer::Init(void* glfwGetProcAddress)

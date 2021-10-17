@@ -18,7 +18,7 @@ project "Keg"
     files
     {
         "Keg/src/**.h",
-        "Keg/src/**.cpp"
+        "Keg/src/**.cpp",
     }
 
     includedirs
