@@ -5,6 +5,7 @@ workspace "Keg"
     linkoptions { "/NODEFAULTLIB:msvcrt.lib", "/NODEFAULTLIB:libcmtd.lib" }
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+assetdir = "%{wks.location}/bin/" .. outputdir .. "/assets"
 
 project "Keg"
     kind "StaticLib"
@@ -15,10 +16,17 @@ project "Keg"
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
+    defines { "GLFW_INCLUDE_NONE", 'KEG_ASSETS="%{assetdir}"'}
+
+    postbuildcommands
+    {
+        "{COPY} %{prj.name}/assets %{assetdir}"
+    }
+
     files
     {
         "Keg/src/**.h",
-        "Keg/src/**.cpp"
+        "Keg/src/**.cpp",
     }
 
     includedirs
@@ -26,6 +34,7 @@ project "Keg"
         "Keg/Vendor/spdlog/include",
         "Keg/Vendor/glad/include",
         "Keg/Vendor/glfw/include",
+        "Keg/Vendor/glm/include",
         "Keg/src"
     }
 
@@ -63,6 +72,8 @@ project "Sandbox"
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
+    defines { 'KEG_ASSETS="%{assetdir}"' }
+
     files
     {
         "Sandbox/src/**.h",
@@ -75,6 +86,7 @@ project "Sandbox"
         "%{wks.location}/Keg/Vendor/spdlog/include",
         "%{wks.location}/Keg/Vendor/glfw/include",
         "%{wks.location}/Keg/Vendor/glad/include",
+        "%{wks.location}/Keg/Vendor/glm/include",
     }
 
     links

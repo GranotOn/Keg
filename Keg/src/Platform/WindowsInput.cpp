@@ -1,8 +1,8 @@
 #include "WindowsInput.h"
+#include <GLFW/glfw3.h>
 
 #include "WindowsWindow.h"
 #include "Core/Application/Application.h"
-#include <GLFW/glfw3.h>
 
 namespace Keg
 {

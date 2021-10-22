@@ -1,9 +1,13 @@
 #include <functional>
 #include <string>
 #include <utility>
+#include <glad/glad.h>
+#include <glm.hpp>
 
 #include "Application.h"
 #include "Platform/WindowsWindow.h"
+#include "Renderer/Vertex.h"
+
 
 #define EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
 
@@ -81,6 +85,28 @@ namespace Keg
             m_Running = false;
         }
 
+        std::vector<Vertex> vertices({
+            Vertex(-1.0f, -0.5f, 0.0f),
+            Vertex(0.0f, -0.5f, 0.0f),
+            Vertex(-0.5f, 0.5f, 0.0f),
+            });
+
+        std::vector<uint32_t> elements({0, 1, 2});
+
+        std::vector<Vertex> vertices2({
+            Vertex(0.0f, -0.5f, 0.0f),
+            Vertex(0.5f, 0.5f, 0.0f),
+            Vertex(1.0f, -0.5f, 0.0f),
+            });
+
+        std::vector<uint32_t> elements2({0, 1, 2});
+        
+        DrawDetails d = m_Renderer->CreateDrawable(vertices, elements);
+        d.SetColor(1.0f, 0.0f, 0.0f);
+        DrawDetails d1 = m_Renderer->CreateDrawable(vertices2, elements2);
+        d1.SetColor(0.0f, 0.0f, 1.0f);
+        m_Renderer->AddDrawable(d);
+        m_Renderer->AddDrawable(d1);
 
         /* Loop until the user closes the window */
         while (m_Running)

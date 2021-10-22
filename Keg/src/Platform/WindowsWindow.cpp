@@ -56,8 +56,7 @@ namespace Keg
 		
 
 
-		KEG_ENGINE_TRACE("gladLoadGLLoader succesfull");
-		KEG_ENGINE_INFO("OpenGL Version: {0}", glGetString(GL_VERSION));
+		
 		
 		///////////////////////
 		//// Callbacks
