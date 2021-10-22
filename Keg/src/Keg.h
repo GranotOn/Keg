@@ -18,3 +18,12 @@
 #include "Platform/Window.h"
 #include "Platform/WindowsWindow.h"
 #include "Platform/WindowsInput.h"
+
+// Renderer
+#include "Renderer/Renderer.h"
+#include "Renderer/OpenGLRenderer.h"
+
+// Rendering Items
+#include "Renderer/Vertex.h"
+#include "Renderer/Shader.h"
+#include "Renderer/DrawDetails.h"

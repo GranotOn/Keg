@@ -1,9 +1,13 @@
 #include <functional>
 #include <string>
 #include <utility>
+#include <glad/glad.h>
+#include <glm.hpp>
 
 #include "Application.h"
 #include "Platform/WindowsWindow.h"
+#include "Renderer/Vertex.h"
+
 
 #define EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
 
@@ -24,6 +28,9 @@ namespace Keg
 
         m_Window = new WindowsWindow();
         m_Window->SetEventCallback(EVENT_FUNC(Application::OnEvent));
+
+        m_Renderer = new OpenGLRenderer();
+        
     }
 
 
@@ -44,12 +51,14 @@ namespace Keg
     {
         KEG_APP_INFO("Window is closing per callback from window class");
         m_Running = false;
+
         return true;
     }
 
     void Application::OnEvent(Event& e)
     {
         EventDispatcher dispatcher = EventDispatcher(e);
+
         dispatcher.Dispatch<KeyPressedEvent>(EVENT_FUNC(Application::OnKeyPress));
         dispatcher.Dispatch<WindowCloseEvent>(EVENT_FUNC(Application::OnWindowClose));
 
@@ -65,6 +74,10 @@ namespace Keg
         // Initialize Window
         m_Window->Init();
 
+        // Initialize Renderer
+        // IMPORTANT: Must happen after m_Window->Init();
+        m_Renderer->Init(m_Window->GetProcAddress());
+
         // Assert that a window exists
         if (!m_Window->HasWindow())
         {
@@ -72,13 +85,35 @@ namespace Keg
             m_Running = false;
         }
 
+        std::vector<Vertex> vertices({
+            Vertex(-1.0f, -0.5f, 0.0f),
+            Vertex(0.0f, -0.5f, 0.0f),
+            Vertex(-0.5f, 0.5f, 0.0f),
+            });
+
+        std::vector<uint32_t> elements({0, 1, 2});
+
+        std::vector<Vertex> vertices2({
+            Vertex(0.0f, -0.5f, 0.0f),
+            Vertex(0.5f, 0.5f, 0.0f),
+            Vertex(1.0f, -0.5f, 0.0f),
+            });
+
+        std::vector<uint32_t> elements2({0, 1, 2});
+        
+        DrawDetails d = m_Renderer->CreateDrawable(vertices, elements);
+        d.SetColor(1.0f, 0.0f, 0.0f);
+        DrawDetails d1 = m_Renderer->CreateDrawable(vertices2, elements2);
+        d1.SetColor(0.0f, 0.0f, 1.0f);
+        m_Renderer->AddDrawable(d);
+        m_Renderer->AddDrawable(d1);
 
         /* Loop until the user closes the window */
         while (m_Running)
         {
-            /* Render here */
-            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+
+            m_Renderer->Update();
+            
 
             
             // Update layers

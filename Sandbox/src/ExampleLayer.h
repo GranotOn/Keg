@@ -4,7 +4,7 @@
 
 class TestLayer : public Keg::Layer
 {
-	virtual void OnAttach() { }
+	virtual void OnAttach() {}
 	virtual void OnDetach() { }
 	virtual void OnUpdate() { }
 
@@ -18,13 +18,14 @@ class TestLayer : public Keg::Layer
 
 		KEG_APP_TRACE("Key Pressed: ({0})", e.GetKey());
 		return true;
+
+		delete wi;
 	}
 
 	virtual void OnEvent(Keg::Event& e) {
 		Keg::EventDispatcher dispatcher(e);
+
 		dispatcher.Dispatch<Keg::KeyPressedEvent>(std::bind(&TestLayer::OnKeyPress, this, std::placeholders::_1));
-
-
 	}
 
 #ifdef KEG_DEBUG
