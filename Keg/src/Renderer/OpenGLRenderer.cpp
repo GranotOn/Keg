@@ -4,8 +4,9 @@
 #include "OpenGLRenderer.h"
 #include "Core/Logger/Logger.h"
 
-#include "Vertex.h"
-#include "Shader.h"
+#include "Renderer/OpenGLTexture.h"
+#include "Renderer/Vertex.h"
+#include "Renderer/Shader.h"
 
 
 namespace Keg
@@ -23,6 +24,7 @@ namespace Keg
 
 			if (CC != NULL)
 			{
+				
 				// ----------
 				// Color Uniform
 				// ----------
@@ -32,7 +34,20 @@ namespace Keg
 							drawable.GetColor().y, drawable.GetColor().z, 1.0f);
 			}
 
+
 			OpenGLVAO vao = drawable.GetVAO();
+
+			OpenGLTexture* tex = drawable.GetTexture();
+
+			if (tex)
+			{
+				tex->Bind();
+			}
+			else
+			{
+				glBindTexture(GL_TEXTURE_2D, 0);
+			}
+			
 			vao.Bind();
 
 			glDrawElements(GL_TRIANGLES, drawable.GetElementsCount(), GL_UNSIGNED_INT, nullptr);
@@ -56,7 +71,6 @@ namespace Keg
 		}
 
 		// Shader Init
-
 		AddShader(RENDERER_SHADER_COLOR, std::string(KEG_ASSETS) + "/Shaders/4.6.shader.vs", std::string(KEG_ASSETS) + "/Shaders/4.6.shader.fs");
 	}
 
@@ -78,7 +92,10 @@ namespace Keg
 
 
 		// Attribs linking:
+		// Position attribute
 		vao.LinkAttrib(0, 3, GL_FLOAT, sizeof(Vertex), 0);
+		// Texture attribute
+		vao.LinkAttrib(1, 2, GL_FLOAT, sizeof(Vertex), 3 * sizeof(float));
 		
 		return vao;
 	}

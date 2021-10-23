@@ -10,8 +10,8 @@ namespace Keg
 	Shader::Shader(const char* vertexPath, const char* fragmentPath)
 	{
 		KEG_ENGINE_INFO("Attempting to load shaders \n\
-							\tVertex: {0} \n\
-							\tFragment: {1}", vertexPath, fragmentPath);
+							Vertex: {0} \n\
+							Fragment: {1}", vertexPath, fragmentPath);
 
 		std::string vertexCode, fragmentCode;
 		std::ifstream vShaderFile, fShaderFile;

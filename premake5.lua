@@ -35,6 +35,7 @@ project "Keg"
         "Keg/Vendor/glad/include",
         "Keg/Vendor/glfw/include",
         "Keg/Vendor/glm/include",
+        "Keg/Vendor/stb_image", 
         "Keg/src"
     }
 

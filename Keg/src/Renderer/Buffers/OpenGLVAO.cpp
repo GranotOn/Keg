@@ -29,7 +29,6 @@ namespace Keg
 			Bind();
 			glVertexAttribPointer(layout, size, type, GL_FALSE, stride, (void*)offset);
 			glEnableVertexAttribArray(layout);
-			UnBind();
 		}
 	}
 

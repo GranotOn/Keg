@@ -26,4 +26,5 @@
 // Rendering Items
 #include "Renderer/Vertex.h"
 #include "Renderer/Shader.h"
+#include "Renderer/OpenGLTexture.h"
 #include "Renderer/DrawDetails.h"

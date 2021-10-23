@@ -7,7 +7,7 @@
 #include "Application.h"
 #include "Platform/WindowsWindow.h"
 #include "Renderer/Vertex.h"
-
+#include "Renderer/OpenGLTextureManager.h"
 
 #define EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
 
@@ -86,35 +86,52 @@ namespace Keg
         }
 
         std::vector<Vertex> vertices({
-            Vertex(-1.0f, -0.5f, 0.0f),
-            Vertex(0.0f, -0.5f, 0.0f),
-            Vertex(-0.5f, 0.5f, 0.0f),
+            Vertex(-1.0f, -0.5f, 0.0f,
+                    0.0f, 0.0f),
+            Vertex(0.0f, -0.5f, 0.0f,
+                    1.0f, 0.0f),
+            Vertex(-1.0f, 0.5f, 0.0f,
+                    0.0f, 1.0f),
+            Vertex(0.0f, 0.5f, 0.0f,
+                    1.0f, 1.0f),
             });
 
-        std::vector<uint32_t> elements({0, 1, 2});
+        std::vector<uint32_t> elements({0, 1, 2,
+                                        1, 2, 3});
 
         std::vector<Vertex> vertices2({
-            Vertex(0.0f, -0.5f, 0.0f),
-            Vertex(0.5f, 0.5f, 0.0f),
-            Vertex(1.0f, -0.5f, 0.0f),
+            Vertex(0.0f, -0.5f, 0.0f,
+                    0.0f, 0.0f),
+            Vertex(1.0f, -0.5f, 0.0f,
+                    1.0f, 0.0f),
+            Vertex(0.0f, 0.5f, 0.0f,
+                    0.0f, 1.0f),
+            Vertex(1.0f, 0.5f, 0.0f,
+                    1.0f, 1.0f),
             });
 
-        std::vector<uint32_t> elements2({0, 1, 2});
-        
+        std::vector<uint32_t> elements2({0, 1, 2,
+                                         1, 2, 3});
+
+        OpenGLTextureManager::GetInstance()->LoadTexture("container", std::string(std::string(KEG_ASSETS) + "/Textures/container.jpg").c_str());
+        OpenGLTexture* t = OpenGLTextureManager::GetInstance()->GetTexture("container");
+
         DrawDetails d = m_Renderer->CreateDrawable(vertices, elements);
-        d.SetColor(1.0f, 0.0f, 0.0f);
+        d.SetTexture(t);
+
         DrawDetails d1 = m_Renderer->CreateDrawable(vertices2, elements2);
-        d1.SetColor(0.0f, 0.0f, 1.0f);
+        d1.SetColor(1.0f, 0.0f, 0.0f);
+        d1.SetTexture(t);
+
+
         m_Renderer->AddDrawable(d);
         m_Renderer->AddDrawable(d1);
+
 
         /* Loop until the user closes the window */
         while (m_Running)
         {
-
             m_Renderer->Update();
-            
-
             
             // Update layers
             for (auto& layer : *m_Layers)
