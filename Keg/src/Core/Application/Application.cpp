@@ -10,6 +10,8 @@
 #include "Renderer/OpenGLTextureManager.h"
 #include "Renderer/RendererBuilder.h"
 
+#include "Core/Layer/ImGuiLayer.h"
+
 #define EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
 
 namespace Keg
@@ -85,6 +87,8 @@ namespace Keg
             KEG_ENGINE_ERROR("Can't start application - window isn't intialized");
             m_Running = false;
         }
+
+        m_Layers->AddOverlay(new ImGuiLayer());
 
         // Activate OnAttach on each layer because no renderer is initialized
         for (Layer* layer : m_Layers->GetLayers())

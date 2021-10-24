@@ -13,6 +13,7 @@
 
 // Layers
 #include "Core/Layer/Layer.h"
+#include "Core/Layer/ImGuiLayer.h"
 
 // Window & Input
 #include "Platform/Window.h"

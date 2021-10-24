@@ -36,6 +36,7 @@ project "Keg"
         "Keg/Vendor/glfw/include",
         "Keg/Vendor/glm/include",
         "Keg/Vendor/stb_image", 
+        "Keg/Vendor/imgui", 
         "Keg/src"
     }
 
@@ -88,6 +89,7 @@ project "Sandbox"
         "%{wks.location}/Keg/Vendor/glfw/include",
         "%{wks.location}/Keg/Vendor/glad/include",
         "%{wks.location}/Keg/Vendor/glm/include",
+        "%{wks.location}/Keg/Vendor/imgui",
     }
 
     links
