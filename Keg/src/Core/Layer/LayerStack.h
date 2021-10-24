@@ -15,7 +15,11 @@ namespace Keg
 		{
 			KEG_ENGINE_INFO("Adding layer ({0})", layer->GetDebugName());
 			m_Layers.insert(m_Layers.begin() + m_layerCount++, layer);
-			layer->OnAttach();
+			
+			if (m_isRunning)
+			{
+				layer->OnAttach();
+			}
 		}
 
 		void RemoveLayer(Layer* layer)
@@ -69,12 +73,16 @@ namespace Keg
 		std::vector<Layer*>::const_reverse_iterator rbegin() const { return m_Layers.rbegin(); }
 		std::vector<Layer*>::const_reverse_iterator rend() const { return m_Layers.rend(); }
 
+		void SetRunning(bool predicat) { m_isRunning = predicat; }
+		std::vector<Layer*> GetLayers() { return m_Layers; }
 
 		LayerStack()
 		{
 			KEG_ENGINE_INFO("Layer stack initialized");
 			m_layerCount = 0;
+			m_isRunning = false;
 		}
+
 		~LayerStack()
 		{
 			KEG_ENGINE_INFO("Destructcing layer stack");
@@ -87,6 +95,7 @@ namespace Keg
 		}
 	private:
 		std::vector<Layer*> m_Layers;
+		bool m_isRunning;
 		unsigned short m_layerCount;
 	};
 }

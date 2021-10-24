@@ -5,7 +5,7 @@
 #include "Core/Layer/LayerStack.h"
 
 #include "Platform/Window.h"
-#include "Renderer/OpenGLRenderer.h"
+#include "Renderer/Renderer.h"
 
 
 // Defnition for main (imported in EntryPoint.h)

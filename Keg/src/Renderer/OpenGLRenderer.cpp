@@ -11,6 +11,17 @@
 
 namespace Keg
 {
+	OpenGLRenderer* OpenGLRenderer::s_Renderer = nullptr;
+
+	OpenGLRenderer* OpenGLRenderer::GetInstance()
+	{
+		if (s_Renderer == nullptr)
+		{
+			s_Renderer = new OpenGLRenderer();
+		}
+
+		return s_Renderer;
+	}
 	void OpenGLRenderer::Update()
 	{
 		/* Render here */
