@@ -120,8 +120,7 @@ namespace Keg
         d.SetTexture(t);
 
         DrawDetails d1 = m_Renderer->CreateDrawable(vertices2, elements2);
-        d1.SetColor(1.0f, 0.0f, 0.0f);
-        d1.SetTexture(t);
+        d1.SetColor(1.0f, 1.0f, 0.0f);
 
 
         m_Renderer->AddDrawable(d);

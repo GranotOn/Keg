@@ -22,30 +22,31 @@ namespace Keg
 		{
 			Shader* CC = GetShader(RENDERER_SHADER_COLOR);
 
-			if (CC != NULL)
-			{
-				
-				// ----------
-				// Color Uniform
-				// ----------
-				int colorLocation = glGetUniformLocation(CC->GetID(), "Color");
-				CC->Use();
-				glUniform4f(colorLocation, drawable.GetColor().x, 
-							drawable.GetColor().y, drawable.GetColor().z, 1.0f);
-			}
+			// ----------
+			// Color Uniform
+			// ----------
+			int colorLocation = glGetUniformLocation(CC->GetID(), "Color");
+			CC->Use();
+			glUniform4f(colorLocation, drawable.GetColor().x, 
+						drawable.GetColor().y, drawable.GetColor().z, 1.0f);
 
 
 			OpenGLVAO vao = drawable.GetVAO();
 
 			OpenGLTexture* tex = drawable.GetTexture();
 
+			// To indicate if a texture exists or not
+			int textureSampleLocation = glGetUniformLocation(CC->GetID(), "textureSample");
+
 			if (tex)
 			{
 				tex->Bind();
+				glUniform1i(textureSampleLocation, 1);
 			}
 			else
 			{
 				glBindTexture(GL_TEXTURE_2D, 0);
+				glUniform1i(textureSampleLocation, 0);
 			}
 			
 			vao.Bind();
