@@ -3,6 +3,7 @@
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/WindowEvent.h"
 #include "Core/Layer/LayerStack.h"
+#include "Core/ImGui/ImGuiLayer.h"
 
 #include "Platform/Window.h"
 #include "Renderer/Renderer.h"
@@ -26,12 +27,15 @@ namespace Keg
 		static Application* GetInstance() { return s_Instance;  }
 		Window* GetWindow();
 
+		inline ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
+
 
 	protected:
 		bool m_Running;
 		Window* m_Window;
 		LayerStack* m_Layers;
 		Renderer* m_Renderer;
+		ImGuiLayer* m_ImGuiLayer;
 
 
 	private:

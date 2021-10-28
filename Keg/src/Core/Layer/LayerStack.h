@@ -44,7 +44,11 @@ namespace Keg
 		{
 			KEG_ENGINE_INFO("Adding overlay ({0})", layer->GetDebugName());
 			m_Layers.push_back(layer);
-			layer->OnAttach();
+
+			if (m_isRunning)
+			{
+				layer->OnAttach();
+			}
 		}
 
 		void RemoveOverlay()

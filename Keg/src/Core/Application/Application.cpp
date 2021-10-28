@@ -10,8 +10,6 @@
 #include "Renderer/OpenGLTextureManager.h"
 #include "Renderer/RendererBuilder.h"
 
-#include "Core/Layer/ImGuiLayer.h"
-
 #define EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
 
 namespace Keg
@@ -33,7 +31,8 @@ namespace Keg
         m_Window->SetEventCallback(EVENT_FUNC(Application::OnEvent));
 
         m_Renderer = RendererBuilder::GetInstance()->GetRenderer();
-        
+
+        m_ImGuiLayer = new ImGuiLayer();
     }
 
 
@@ -88,7 +87,7 @@ namespace Keg
             m_Running = false;
         }
 
-        m_Layers->AddOverlay(new ImGuiLayer());
+        m_Layers->AddOverlay(m_ImGuiLayer);
 
         // Activate OnAttach on each layer because no renderer is initialized
         for (Layer* layer : m_Layers->GetLayers())
@@ -108,6 +107,16 @@ namespace Keg
             {
                 layer->OnUpdate();
             }
+
+            // ImGui Rendering
+            m_ImGuiLayer->Begin();
+            {
+                for (auto& layer : *m_Layers)
+                {
+                    layer->OnImGuiUpdate();
+                }
+            }
+            m_ImGuiLayer->End();
 
             m_Window->OnUpdate();
         }
