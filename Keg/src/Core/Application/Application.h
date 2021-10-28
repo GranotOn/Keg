@@ -26,6 +26,7 @@ namespace Keg
 
 		static Application* GetInstance() { return s_Instance;  }
 		Window* GetWindow();
+		Renderer* GetRenderer() { return m_Renderer; }
 
 		inline ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 

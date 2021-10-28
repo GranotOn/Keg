@@ -24,6 +24,9 @@ namespace Keg
 		virtual void OnUpdate() const override;
 		virtual void* GetProcAddress() override;
 
+		inline virtual int GetWidth() { return m_Data.width; }
+		inline virtual int GetHeight() { return m_Data.height; }
+
 		GLFWwindow* GetWindow() { return m_Window;  }
 		void* GetNativeWindow() { return m_Window;  }
 

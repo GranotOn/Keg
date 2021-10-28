@@ -31,6 +31,7 @@ namespace Keg
 
 		for (auto& drawable : m_Drawables)
 		{
+
 			Shader* CC = GetShader(RENDERER_SHADER_COLOR);
 
 			// ----------
@@ -38,13 +39,13 @@ namespace Keg
 			// ----------
 			int colorLocation = glGetUniformLocation(CC->GetID(), "Color");
 			CC->Use();
-			glUniform4f(colorLocation, drawable.GetColor().x, 
-						drawable.GetColor().y, drawable.GetColor().z, 1.0f);
+			glUniform4f(colorLocation, drawable->GetColor().x, 
+						drawable->GetColor().y, drawable->GetColor().z, 1.0f);
 
 
-			OpenGLVAO vao = drawable.GetVAO();
+			OpenGLVAO vao = drawable->GetVAO();
 
-			OpenGLTexture* tex = drawable.GetTexture();
+			OpenGLTexture* tex = drawable->GetTexture();
 
 			// To indicate if a texture exists or not
 			int textureSampleLocation = glGetUniformLocation(CC->GetID(), "textureSample");
@@ -62,7 +63,7 @@ namespace Keg
 			
 			vao.Bind();
 
-			glDrawElements(GL_TRIANGLES, drawable.GetElementsCount(), GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, drawable->GetElementsCount(), GL_UNSIGNED_INT, nullptr);
 
 			vao.UnBind();
 		}
@@ -112,10 +113,10 @@ namespace Keg
 		return vao;
 	}
 
-	DrawDetails OpenGLRenderer::CreateDrawable(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements)
+	DrawDetails* OpenGLRenderer::CreateDrawable(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements)
 	{
 		OpenGLVAO VAO = CreateVAO(vertices, elements);
-		return DrawDetails(vertices, VAO, static_cast<uint32_t>(elements.size()));
+		return new DrawDetails(vertices, VAO, static_cast<uint32_t>(elements.size()));
 	}
 
 	void OpenGLRenderer::AddShader(const std::string &name, const std::string &vs, const std::string &fs)
@@ -156,7 +157,7 @@ namespace Keg
 		}
 	}
 
-	void OpenGLRenderer::AddDrawable(DrawDetails& d)
+	void OpenGLRenderer::AddDrawable(DrawDetails *d)
 	{
 		m_Drawables.push_back(d);
 	}

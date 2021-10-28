@@ -15,8 +15,10 @@ namespace Keg
 		virtual void Shutdown() = 0;
 		
 		// Drawables
-		virtual void AddDrawable(DrawDetails& d) = 0;
-		virtual DrawDetails CreateDrawable(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements) = 0;
+		virtual void AddDrawable(DrawDetails *d) = 0;
+		virtual DrawDetails* CreateDrawable(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements) = 0;
+		virtual std::vector<DrawDetails *> GetDrawables() = 0;
+		virtual DrawDetails* GetDrawable(int index) = 0;
 
 		// Shaders
 		virtual void AddShader(const std::string& name, const std::string& vs, const std::string& fs) = 0;

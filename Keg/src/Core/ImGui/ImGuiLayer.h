@@ -21,7 +21,5 @@ namespace Keg
 #ifdef KEG_DEBUG
 		virtual std::string GetDebugName();
 #endif
-	private:
-		bool m_ShowDemoWindow = true;
 	};
 }
