@@ -14,6 +14,9 @@ namespace Keg
 	class OpenGLRenderer : public Renderer
 	{
 	public:
+
+		static OpenGLRenderer* GetInstance();
+
 		virtual void Update();
 		virtual void Init(void* glfwGetProcAddress);
 		virtual void Shutdown();
@@ -27,11 +30,12 @@ namespace Keg
 		virtual Shader* GetShader(const std::string& name);
 
 		~OpenGLRenderer();
-		OpenGLRenderer() = default;
 
 	private:
+		OpenGLRenderer() = default;
 		std::vector<DrawDetails> m_Drawables;
 		std::map<std::string, Shader*> m_Shaders;
+		static OpenGLRenderer* s_Renderer;
 		
 	private:
 		OpenGLVAO CreateVAO(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements);

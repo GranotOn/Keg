@@ -8,3 +8,6 @@
 [submodule "Keg/Vendor/glfw"]
 	path = Keg/Vendor/glfw
 	url = https://github.com/OwenGranot/glfw
+[submodule "Keg/Vendor/imgui"]
+	path = Keg/Vendor/imgui
+	url = https://github.com/OwenGranot/imgui

@@ -25,6 +25,7 @@ namespace Keg
 		virtual void* GetProcAddress() override;
 
 		GLFWwindow* GetWindow() { return m_Window;  }
+		void* GetNativeWindow() { return m_Window;  }
 
 
 	private:

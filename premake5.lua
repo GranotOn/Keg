@@ -35,6 +35,8 @@ project "Keg"
         "Keg/Vendor/glad/include",
         "Keg/Vendor/glfw/include",
         "Keg/Vendor/glm/include",
+        "Keg/Vendor/stb_image", 
+        "Keg/Vendor/imgui", 
         "Keg/src"
     }
 
@@ -42,6 +44,7 @@ project "Keg"
     {
         "GLFW",
         "GLAD",
+        "ImGui",
         "opengl32.lib",
     }
 
@@ -87,6 +90,8 @@ project "Sandbox"
         "%{wks.location}/Keg/Vendor/glfw/include",
         "%{wks.location}/Keg/Vendor/glad/include",
         "%{wks.location}/Keg/Vendor/glm/include",
+        "%{wks.location}/Keg/Vendor/stb_image",
+        "%{wks.location}/Keg/Vendor/imgui",
     }
 
     links
@@ -115,4 +120,5 @@ project "Sandbox"
 group "Dependencies"
 	include "Keg/Vendor/GLFW"
     include "Keg/Vendor/glad"
+    include "Keg/Vendor/imgui"
 group ""

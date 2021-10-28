@@ -4,12 +4,24 @@
 #include "OpenGLRenderer.h"
 #include "Core/Logger/Logger.h"
 
-#include "Vertex.h"
-#include "Shader.h"
+#include "Renderer/OpenGLTexture.h"
+#include "Renderer/Vertex.h"
+#include "Renderer/Shader.h"
 
 
 namespace Keg
 {
+	OpenGLRenderer* OpenGLRenderer::s_Renderer = nullptr;
+
+	OpenGLRenderer* OpenGLRenderer::GetInstance()
+	{
+		if (s_Renderer == nullptr)
+		{
+			s_Renderer = new OpenGLRenderer();
+		}
+
+		return s_Renderer;
+	}
 	void OpenGLRenderer::Update()
 	{
 		/* Render here */
@@ -21,18 +33,33 @@ namespace Keg
 		{
 			Shader* CC = GetShader(RENDERER_SHADER_COLOR);
 
-			if (CC != NULL)
-			{
-				// ----------
-				// Color Uniform
-				// ----------
-				int colorLocation = glGetUniformLocation(CC->GetID(), "Color");
-				CC->Use();
-				glUniform4f(colorLocation, drawable.GetColor().x, 
-							drawable.GetColor().y, drawable.GetColor().z, 1.0f);
-			}
+			// ----------
+			// Color Uniform
+			// ----------
+			int colorLocation = glGetUniformLocation(CC->GetID(), "Color");
+			CC->Use();
+			glUniform4f(colorLocation, drawable.GetColor().x, 
+						drawable.GetColor().y, drawable.GetColor().z, 1.0f);
+
 
 			OpenGLVAO vao = drawable.GetVAO();
+
+			OpenGLTexture* tex = drawable.GetTexture();
+
+			// To indicate if a texture exists or not
+			int textureSampleLocation = glGetUniformLocation(CC->GetID(), "textureSample");
+
+			if (tex)
+			{
+				tex->Bind();
+				glUniform1i(textureSampleLocation, 1);
+			}
+			else
+			{
+				glBindTexture(GL_TEXTURE_2D, 0);
+				glUniform1i(textureSampleLocation, 0);
+			}
+			
 			vao.Bind();
 
 			glDrawElements(GL_TRIANGLES, drawable.GetElementsCount(), GL_UNSIGNED_INT, nullptr);
@@ -56,7 +83,6 @@ namespace Keg
 		}
 
 		// Shader Init
-
 		AddShader(RENDERER_SHADER_COLOR, std::string(KEG_ASSETS) + "/Shaders/4.6.shader.vs", std::string(KEG_ASSETS) + "/Shaders/4.6.shader.fs");
 	}
 
@@ -78,7 +104,10 @@ namespace Keg
 
 
 		// Attribs linking:
+		// Position attribute
 		vao.LinkAttrib(0, 3, GL_FLOAT, sizeof(Vertex), 0);
+		// Texture attribute
+		vao.LinkAttrib(1, 2, GL_FLOAT, sizeof(Vertex), 3 * sizeof(float));
 		
 		return vao;
 	}

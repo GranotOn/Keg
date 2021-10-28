@@ -13,6 +13,7 @@
 
 // Layers
 #include "Core/Layer/Layer.h"
+#include "Core/ImGui/ImGuiLayer.h"
 
 // Window & Input
 #include "Platform/Window.h"
@@ -22,8 +23,11 @@
 // Renderer
 #include "Renderer/Renderer.h"
 #include "Renderer/OpenGLRenderer.h"
+#include "Renderer/RendererBuilder.h"
 
 // Rendering Items
 #include "Renderer/Vertex.h"
 #include "Renderer/Shader.h"
+#include "Renderer/OpenGLTexture.h"
+#include "Renderer/OpenGLTextureManager.h"
 #include "Renderer/DrawDetails.h"

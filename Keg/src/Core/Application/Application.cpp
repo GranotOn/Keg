@@ -7,7 +7,8 @@
 #include "Application.h"
 #include "Platform/WindowsWindow.h"
 #include "Renderer/Vertex.h"
-
+#include "Renderer/OpenGLTextureManager.h"
+#include "Renderer/RendererBuilder.h"
 
 #define EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
 
@@ -29,8 +30,9 @@ namespace Keg
         m_Window = new WindowsWindow();
         m_Window->SetEventCallback(EVENT_FUNC(Application::OnEvent));
 
-        m_Renderer = new OpenGLRenderer();
-        
+        m_Renderer = RendererBuilder::GetInstance()->GetRenderer();
+
+        m_ImGuiLayer = new ImGuiLayer();
     }
 
 
@@ -85,36 +87,20 @@ namespace Keg
             m_Running = false;
         }
 
-        std::vector<Vertex> vertices({
-            Vertex(-1.0f, -0.5f, 0.0f),
-            Vertex(0.0f, -0.5f, 0.0f),
-            Vertex(-0.5f, 0.5f, 0.0f),
-            });
+        m_Layers->AddOverlay(m_ImGuiLayer);
 
-        std::vector<uint32_t> elements({0, 1, 2});
+        // Activate OnAttach on each layer because no renderer is initialized
+        for (Layer* layer : m_Layers->GetLayers())
+        {
+            layer->OnAttach();
+        }
 
-        std::vector<Vertex> vertices2({
-            Vertex(0.0f, -0.5f, 0.0f),
-            Vertex(0.5f, 0.5f, 0.0f),
-            Vertex(1.0f, -0.5f, 0.0f),
-            });
-
-        std::vector<uint32_t> elements2({0, 1, 2});
-        
-        DrawDetails d = m_Renderer->CreateDrawable(vertices, elements);
-        d.SetColor(1.0f, 0.0f, 0.0f);
-        DrawDetails d1 = m_Renderer->CreateDrawable(vertices2, elements2);
-        d1.SetColor(0.0f, 0.0f, 1.0f);
-        m_Renderer->AddDrawable(d);
-        m_Renderer->AddDrawable(d1);
+        m_Layers->SetRunning(true);
 
         /* Loop until the user closes the window */
         while (m_Running)
         {
-
             m_Renderer->Update();
-            
-
             
             // Update layers
             for (auto& layer : *m_Layers)
@@ -122,8 +108,20 @@ namespace Keg
                 layer->OnUpdate();
             }
 
+            // ImGui Rendering
+            m_ImGuiLayer->Begin();
+            {
+                for (auto& layer : *m_Layers)
+                {
+                    layer->OnImGuiUpdate();
+                }
+            }
+            m_ImGuiLayer->End();
+
             m_Window->OnUpdate();
         }
+
+        m_Layers->SetRunning(false);
 
         delete m_Window;
 	}
