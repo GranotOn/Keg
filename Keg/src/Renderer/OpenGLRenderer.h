@@ -14,15 +14,16 @@ namespace Keg
 	class OpenGLRenderer : public Renderer
 	{
 	public:
-
 		static OpenGLRenderer* GetInstance();
 
 		virtual void Update();
 		virtual void Init(void* glfwGetProcAddress);
 		virtual void Shutdown();
 
-		virtual void AddDrawable(DrawDetails& d);
-		virtual DrawDetails CreateDrawable(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements);
+		virtual void AddDrawable(DrawDetails *d);
+		virtual DrawDetails* CreateDrawable(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements);
+		virtual inline std::vector<DrawDetails*> GetDrawables() { return m_Drawables; }
+		virtual inline DrawDetails* GetDrawable(int index) { if (index > 0 && index < m_Drawables.size()) return m_Drawables[index]; }
 
 		virtual void AddShader(const std::string& name, const std::string& vs, const std::string& fs);
 		virtual void AddShader(const std::string& name, Shader* s);
@@ -33,7 +34,7 @@ namespace Keg
 
 	private:
 		OpenGLRenderer() = default;
-		std::vector<DrawDetails> m_Drawables;
+		std::vector<DrawDetails*> m_Drawables;
 		std::map<std::string, Shader*> m_Shaders;
 		static OpenGLRenderer* s_Renderer;
 		

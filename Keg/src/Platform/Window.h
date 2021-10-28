@@ -23,6 +23,8 @@ namespace Keg
 		virtual void SetEventCallback(const EventCallbackFn &cb) = 0;
 		virtual void* GetProcAddress() = 0;
 		virtual void* GetNativeWindow() = 0;
+		virtual int GetWidth() = 0;
+		virtual int GetHeight() = 0;
 
 		// Initialization & Destruction
 		virtual void Init() = 0;
