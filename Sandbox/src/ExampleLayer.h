@@ -45,8 +45,8 @@ class TestLayer : public Keg::Layer
 
 		Keg::DrawDetails *d1 = renderer->CreateDrawable(vertices2, elements2);
 
-		renderer->AddDrawable(d);
 		renderer->AddDrawable(d1);
+		renderer->AddDrawable(d);
 	}
 
 	virtual void OnDetach() { }
@@ -79,15 +79,21 @@ class TestLayer : public Keg::Layer
 		Keg::Application* app = Keg::Application::GetInstance();
 		Keg::DrawDetails *d = app->GetRenderer()->GetDrawable(1);
 		static float f[3] = { d->GetColor().x, d->GetColor().y, d->GetColor().z };
+		static float s[3] = { d->GetScale().x, d->GetScale().y, d->GetScale().z };
+		static float r[3] = { d->GetRotation().x, d->GetRotation().y, d->GetRotation().z };
 		d->SetColor(f[0], f[1], f[2]);
+		d->SetScale(s[0], s[1], s[2]);
+		d->SetRotate(r[0], r[1], r[2]);
 
-		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+		ImGui::Begin("Test");                          // Create a window called "Hello, world!" and append into it.
 
-		ImGui::Text("Control Color");							// Display some text (you can use a format strings too)
-		ImGui::Checkbox("Demo Window", &showDemo);				// Edit bools storing our window open/close state
+		ImGui::Text("Controlling an entity");							// Display some text (you can use a format strings too)
+		ImGui::Checkbox("Demo Window", &showDemo);						// Edit bools storing our window open/close state
 
-		ImGui::SliderFloat3("color", &f[0], 0.0f, 1.0f);
-		
+		ImGui::SliderFloat3("Color", &f[0], 0.0f, 1.0f);
+		ImGui::SliderFloat3("Scale", &s[0], 1.0f, 3.0f);
+		ImGui::SliderFloat3("Rotation", &r[0], 0.0f, 1.0f);
+
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
 	}

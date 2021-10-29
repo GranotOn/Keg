@@ -37,11 +37,13 @@ namespace Keg
 			// ----------
 			// Color Uniform
 			// ----------
-			int colorLocation = glGetUniformLocation(CC->GetID(), "Color");
 			CC->Use();
+			int colorLocation = glGetUniformLocation(CC->GetID(), "Color");
 			glUniform4f(colorLocation, drawable->GetColor().x, 
 						drawable->GetColor().y, drawable->GetColor().z, 1.0f);
 
+			int transformLocation = glGetUniformLocation(CC->GetID(), "transform");
+			glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(drawable->GetTransform()));
 
 			OpenGLVAO vao = drawable->GetVAO();
 
