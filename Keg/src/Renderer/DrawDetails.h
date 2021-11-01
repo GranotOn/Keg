@@ -57,7 +57,7 @@ namespace Keg
 		inline void UpdateTransform()
 		{
 			glm::mat4 transform = glm::mat4(1.0f);
-			transform = glm::rotate(transform, glm::radians(1.0f), m_Rotate);
+			transform = glm::rotate(transform, glm::radians(90.0f), m_Rotate);
 			transform = glm::scale(transform, m_Scale);
 
 			m_Transform = transform;

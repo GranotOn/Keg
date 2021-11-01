@@ -44,6 +44,7 @@ class TestLayer : public Keg::Layer
 		d->SetTexture(t);
 
 		Keg::DrawDetails *d1 = renderer->CreateDrawable(vertices2, elements2);
+		d1->SetColor(1.0f, 0.0f, 0.0f );
 
 		renderer->AddDrawable(d1);
 		renderer->AddDrawable(d);
@@ -85,8 +86,8 @@ class TestLayer : public Keg::Layer
 		d->SetScale(s[0], s[1], s[2]);
 		d->SetRotate(r[0], r[1], r[2]);
 
+		
 		ImGui::Begin("Test");                          // Create a window called "Hello, world!" and append into it.
-
 		ImGui::Text("Controlling an entity");							// Display some text (you can use a format strings too)
 		ImGui::Checkbox("Demo Window", &showDemo);						// Edit bools storing our window open/close state
 

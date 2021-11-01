@@ -31,3 +31,8 @@
 #include "Renderer/OpenGLTexture.h"
 #include "Renderer/OpenGLTextureManager.h"
 #include "Renderer/DrawDetails.h"
+
+// Scene & Entity
+#include "Scene/Scene.h"
+#include "Scene/Entity.h"
+#include "Scene/Components.h"
