@@ -93,6 +93,7 @@ project "Sandbox"
         "%{wks.location}/Keg/Vendor/glm/include",
         "%{wks.location}/Keg/Vendor/stb_image",
         "%{wks.location}/Keg/Vendor/imgui",
+        "%{wks.location}/Keg/Vendor/entt",
     }
 
     links
