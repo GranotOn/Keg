@@ -47,6 +47,24 @@ class TestLayer : public Keg::Layer
 		Keg::DrawDetails *d1 = renderer->CreateDrawable(vertices2, elements2);
 		d1->SetColor(1.0f, 0.0f, 0.0f );
 
+		Keg::Audio* audio = Keg::AudioBuilder::GetAudio();
+		Keg::Effect* e1 = audio->addEffect("C:/Users/Owner/source/repos/New-OpenAL/sample.ogg");
+		Keg::Effect* e2 = audio->addEffect("C:/Users/Owner/source/repos/New-OpenAL/sample2.ogg");
+		Keg::Effect* e3 = audio->addEffect("C:/Users/Owner/source/repos/New-OpenAL/sample3.ogg");
+
+		e1->Play();
+		e2->Play();
+		e3->Play();
+
+		Sleep(500);
+		e2->pause();
+		Sleep(2000);
+		e2->Play();
+
+
+
+
+
 		renderer->AddDrawable(d1);
 		renderer->AddDrawable(d);
 
