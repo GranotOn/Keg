@@ -6,11 +6,11 @@ in vec2 texCoord;
 
 uniform vec4 Color;
 uniform sampler2D aTexture;
-uniform int textureSample = 1;
+uniform int hasTexture;
 
 void main()
 {
-    if (textureSample)
+    if (hasTexture == 1)
     {
         FragColor = texture(aTexture, texCoord) * Color;
     }

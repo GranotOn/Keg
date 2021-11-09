@@ -37,6 +37,7 @@ class TestLayer : public Keg::Layer
 
 		Keg::Renderer* renderer = Keg::RendererBuilder::GetInstance()->GetRenderer();
 		// Loading a texture to TextureManager
+
 		Keg::OpenGLTextureManager::GetInstance()->LoadTexture("container", std::string(std::string(KEG_ASSETS) + "/Textures/container.jpg").c_str());
 		Keg::OpenGLTexture* t = Keg::OpenGLTextureManager::GetInstance()->GetTexture("container");
 
@@ -48,6 +49,8 @@ class TestLayer : public Keg::Layer
 
 		renderer->AddDrawable(d1);
 		renderer->AddDrawable(d);
+
+		Keg::Scene* scene = Keg::Scene::Create();
 	}
 
 	virtual void OnDetach() { }
