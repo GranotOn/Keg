@@ -3,12 +3,11 @@
 #include <entt.hpp>
 
 #include <string>
-
-#include "Scene/Scene.h"
 #include "Scene/Components.h"
 
 namespace Keg
 {
+	class Scene;
 	class Entity
 	{
 	public:

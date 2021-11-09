@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Scene/Scene.h"
 
 namespace Keg
 {
@@ -32,6 +33,7 @@ namespace Keg
 		if (HasComponent<T>)
 		{
 			m_Scene->m_Registery.erase<T>(m_Handle);
+			return true;
 		}
 
 		return false;

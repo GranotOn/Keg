@@ -50,7 +50,7 @@ namespace Keg
 			OpenGLTexture* tex = drawable->GetTexture();
 
 			// To indicate if a texture exists or not
-			int textureSampleLocation = glGetUniformLocation(CC->GetID(), "textureSample");
+			int textureSampleLocation = glGetUniformLocation(CC->GetID(), "hasTexture");
 
 			if (tex)
 			{
