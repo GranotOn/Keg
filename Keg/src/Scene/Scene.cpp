@@ -1,9 +1,34 @@
 #include "Scene/Scene.h"
 #include "Scene/Entity.h"
 #include "Scene/Components.h"
+#include "Renderer/Renderer.h"
+#include "Core/Application/Application.h"
 
 namespace Keg
 {
+
+	void Scene::OnUpdate()
+	{
+
+		/////////////////////
+		// Rendering Entities
+		/////////////////////
+		Renderer* renderer = Application::GetInstance()->GetRenderer();
+
+		renderer->BeginRender();
+
+		{
+			/*auto view = m_Registery.view<TransformComponent, MeshComponent>();
+
+			view.each([&renderer](TransformComponent& tc, MeshComponent& mc)
+				{
+					renderer->Render(tc, mc);
+				});*/
+		}
+
+		renderer->EndRender();
+	}
+
 	Entity Scene::CreateEntity(std::string tag)
 	{
 		Entity entity = { this, m_Registery.create() };

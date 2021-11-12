@@ -17,6 +17,8 @@ namespace Keg
 		static Scene* Deserialize(char* file);
 		static bool Serialize(Scene* scene);
 
+		void OnUpdate();
+
 		std::string SetName(std::string newName);
 		std::string GetName();
 

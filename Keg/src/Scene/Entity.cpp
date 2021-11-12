@@ -16,15 +16,25 @@ namespace Keg
 		return m_Scene->m_Registery.get<T>(m_Handle);
 	}
 
-	template<typename T, typename ...Args>
-	T& Entity::AddComponent(Args && ...args)
+	/*template<typename T>
+	T& Entity::AddComponent()
 	{
 		if (!HasComponent<T>)
 		{
-			m_Scene->m_Registery.emplace<T>(m_Handle, std::forward<Args>(args)...);
+			m_Scene->m_Registery.emplace<T>(m_Handle);
 		}
 
 		return GetComponent<T>();
+	}*/
+
+	void Entity::AddComponent(MeshComponent& mc)
+	{
+		m_Scene->m_Registery.emplace<MeshComponent>(m_Handle, std::move(mc));
+	}
+
+	void Entity::AddComponent(TransformComponent& tc)
+	{
+		m_Scene->m_Registery.emplace<TransformComponent>(m_Handle);
 	}
 
 	template<typename T>

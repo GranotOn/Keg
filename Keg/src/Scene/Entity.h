@@ -16,8 +16,8 @@ namespace Keg
 		template <typename T>
 		T& GetComponent();
 
-		template <typename T, typename... Args>
-		T& AddComponent(Args&& ...args);
+		void AddComponent(TransformComponent& tc);
+		void AddComponent(MeshComponent& mc);
 
 		template <typename T>
 		bool RemoveComponent();

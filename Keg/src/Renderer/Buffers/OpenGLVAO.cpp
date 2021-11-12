@@ -22,7 +22,7 @@ namespace Keg
 		glBindVertexArray(0);
 	}
 
-	void OpenGLVAO::LinkAttrib(uint32_t layout, uint32_t size, uint32_t type, int stride, uint32_t offset)
+	void OpenGLVAO::LinkAttrib(uint32_t layout, uint32_t size, uint32_t type, int stride, uint64_t offset)
 	{
 		if (m_ID)
 		{

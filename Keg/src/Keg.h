@@ -33,6 +33,6 @@
 #include "Renderer/DrawDetails.h"
 
 // Scene & Entity
+#include "Scene/Components.h"
 #include "Scene/Scene.h"
 #include "Scene/Entity.h"
-#include "Scene/Components.h"

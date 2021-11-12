@@ -4,6 +4,7 @@ namespace Keg
 {
 	DrawDetails::~DrawDetails()
 	{
+
 	}
 
 	std::vector<Vertex> DrawDetails::GetVertices()

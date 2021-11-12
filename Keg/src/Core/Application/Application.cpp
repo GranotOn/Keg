@@ -107,8 +107,6 @@ namespace Keg
         /* Loop until the user closes the window */
         while (m_Running)
         {
-            m_Renderer->Update();
-            
             // Update layers
             for (auto& layer : *m_Layers)
             {

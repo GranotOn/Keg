@@ -24,53 +24,69 @@ namespace Keg
 
 		return s_Renderer;
 	}
-	void OpenGLRenderer::Update()
+
+	void OpenGLRenderer::BeginRender()
 	{
-		/* Render here */
 		glClearColor(0.079f, 0.079f, 0.079f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 
-		for (auto& drawable : m_Drawables)
+		Shader* CC = GetShader(RENDERER_SHADER_COLOR);
+		m_Shader = CC;
+		CC->Use();
+
+		/////////////////////
+		/// 3D Space Uniforms
+		/////////////////////
+		glm::mat4 view = glm::mat4(1.0f);
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+		glm::mat4 projection = m_Projection;
+
+
+		int viewLocation = glGetUniformLocation(CC->GetID(), "view");
+		int projectionLocation = glGetUniformLocation(CC->GetID(), "projection");
+		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+	}
+
+	void OpenGLRenderer::EndRender()
+	{
+
+	}
+
+	void OpenGLRenderer::Render(TransformComponent& transformComponent, MeshComponent& meshComponent)
+	{
+		// Color
+		int colorLocation = glGetUniformLocation(m_Shader->GetID(), "Color");
+		glUniform4f(colorLocation, 1.0f, 0.0f, 0.0f, 1.0f);
+
+		int modelLocation = glGetUniformLocation(m_Shader->GetID(), "model");
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(transformComponent.GetTransform()));
+	
+		OpenGLVAO vao = meshComponent.VAO;
+
+		//OpenGLTexture* tex = drawable->GetTexture();
+
+		// To indicate if a texture exists or not
+		/*int textureSampleLocation = glGetUniformLocation(CC->GetID(), "hasTexture");
+
+		if (tex)
 		{
-
-			Shader* CC = GetShader(RENDERER_SHADER_COLOR);
-
-			// ----------
-			// Color Uniform
-			// ----------
-			CC->Use();
-			int colorLocation = glGetUniformLocation(CC->GetID(), "Color");
-			glUniform4f(colorLocation, drawable->GetColor().x, 
-						drawable->GetColor().y, drawable->GetColor().z, 1.0f);
-
-			int transformLocation = glGetUniformLocation(CC->GetID(), "transform");
-			glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(drawable->GetTransform()));
-
-			OpenGLVAO vao = drawable->GetVAO();
-
-			OpenGLTexture* tex = drawable->GetTexture();
-
-			// To indicate if a texture exists or not
-			int textureSampleLocation = glGetUniformLocation(CC->GetID(), "hasTexture");
-
-			if (tex)
-			{
-				tex->Bind();
-				glUniform1i(textureSampleLocation, 1);
-			}
-			else
-			{
-				glBindTexture(GL_TEXTURE_2D, 0);
-				glUniform1i(textureSampleLocation, 0);
-			}
-			
-			vao.Bind();
-
-			glDrawElements(GL_TRIANGLES, drawable->GetElementsCount(), GL_UNSIGNED_INT, nullptr);
-
-			vao.UnBind();
+			tex->Bind();
+			glUniform1i(textureSampleLocation, 1);
 		}
+		else
+		{
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glUniform1i(textureSampleLocation, 0);
+		}*/
+
+		vao.Bind();
+
+		glDrawElements(GL_TRIANGLES, meshComponent.Elements, GL_UNSIGNED_INT, nullptr);
+
+		vao.UnBind();
 	}
 
 	
@@ -92,7 +108,7 @@ namespace Keg
 		//////////
 		AddShader(RENDERER_SHADER_COLOR, std::string(KEG_ASSETS) + "/Shaders/4.6.shader.vs", std::string(KEG_ASSETS) + "/Shaders/4.6.shader.fs");
 	
-		//////////////
+		/////////////
 		// Properties
 		/////////////
 		m_FOV = 45.0;
@@ -135,10 +151,12 @@ namespace Keg
 		return vao;
 	}
 
-	DrawDetails* OpenGLRenderer::CreateDrawable(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements)
+	MeshComponent OpenGLRenderer::CreateMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements)
 	{
 		OpenGLVAO VAO = CreateVAO(vertices, elements);
-		return new DrawDetails(vertices, VAO, static_cast<uint32_t>(elements.size()));
+
+		MeshComponent m(vertices, VAO, static_cast<int>(elements.size()));
+		return m;
 	}
 
 	void OpenGLRenderer::AddShader(const std::string &name, const std::string &vs, const std::string &fs)
@@ -179,11 +197,6 @@ namespace Keg
 		}
 	}
 
-	void OpenGLRenderer::AddDrawable(DrawDetails *d)
-	{
-		m_Drawables.push_back(d);
-	}
-
 	void OpenGLRenderer::Shutdown()
 	{
 		for (auto it : m_Shaders)
@@ -195,6 +208,7 @@ namespace Keg
 	void OpenGLRenderer::OnViewportChange(int width, int height)
 	{
 		glViewport(0, 0, (GLsizei) width, (GLsizei) height);
+		UpdateProjection(m_FOV, width, height, RENDERER_NEAR_PLANE, RENDERER_FAR_PLANE);
 	}
 
 	void OpenGLRenderer::SetFOV(float fov)

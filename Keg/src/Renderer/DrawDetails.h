@@ -47,7 +47,7 @@ namespace Keg
 		inline void SetScale(glm::vec3 &v) { m_Scale = v; }
 
 		inline glm::vec3 GetRotation() { return m_Rotate; }
-		inline glm::vec3 GetScale() { return m_Scale; }
+		glm::vec3 GetScale() { return m_Scale; }
 
 		inline glm::mat4 GetTransform() { UpdateTransform(); return m_Transform; }
 
@@ -57,7 +57,7 @@ namespace Keg
 		inline void UpdateTransform()
 		{
 			glm::mat4 transform = glm::mat4(1.0f);
-			transform = glm::rotate(transform, glm::radians(90.0f), m_Rotate);
+			transform = glm::rotate(transform, glm::radians(-55.0f), m_Rotate);
 			transform = glm::scale(transform, m_Scale);
 
 			m_Transform = transform;
@@ -74,7 +74,6 @@ namespace Keg
 		glm::vec3 m_Rotate;
 		glm::vec3 m_Scale;
 		glm::mat4 m_Transform;
-
 		
 	};
 }

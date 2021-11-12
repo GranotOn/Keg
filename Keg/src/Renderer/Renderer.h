@@ -4,6 +4,7 @@
 #include <vector>
 #include "Renderer/Vertex.h"
 #include "Renderer/DrawDetails.h"
+#include "Scene/Components.h"
 
 namespace Keg
 {
@@ -13,17 +14,17 @@ namespace Keg
 	class Renderer
 	{
 	public:
-		virtual void Update() = 0;
 		virtual void Init(void* procAddress) = 0;
 		virtual void Shutdown() = 0;
 		virtual void OnViewportChange(int width, int height) = 0;
 		virtual void SetFOV(float fov) = 0;
+
+		virtual void BeginRender() = 0;
+		virtual void EndRender() = 0;
+		virtual void Render(TransformComponent &tranformComponent, MeshComponent &meshComponent) = 0;
 		
-		// Drawables
-		virtual void AddDrawable(DrawDetails *d) = 0;
-		virtual DrawDetails* CreateDrawable(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements) = 0;
-		virtual std::vector<DrawDetails *> GetDrawables() = 0;
-		virtual DrawDetails* GetDrawable(int index) = 0;
+		// Mesh
+		virtual MeshComponent CreateMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements) = 0;
 
 		// Shaders
 		virtual void AddShader(const std::string& name, const std::string& vs, const std::string& fs) = 0;
