@@ -8,6 +8,8 @@
 #include "Renderer/Vertex.h"
 #include "Renderer/Shader.h"
 
+#include "Core/Application/Application.h"
+
 
 namespace Keg
 {
@@ -85,8 +87,26 @@ namespace Keg
 			KEG_ENGINE_INFO("OpenGL Version: {0}", glGetString(GL_VERSION));
 		}
 
-		// Shader Init
+		//////////
+		// Shaders
+		//////////
 		AddShader(RENDERER_SHADER_COLOR, std::string(KEG_ASSETS) + "/Shaders/4.6.shader.vs", std::string(KEG_ASSETS) + "/Shaders/4.6.shader.fs");
+	
+		//////////////
+		// Properties
+		/////////////
+		m_FOV = 45.0;
+		
+		Window* w = Application::GetInstance()->GetWindow();
+		int width = w->GetWidth();
+		int height = w->GetHeight();
+
+		UpdateProjection(m_FOV, width, height, RENDERER_NEAR_PLANE, RENDERER_FAR_PLANE);
+	}
+
+	void OpenGLRenderer::UpdateProjection(float fov, int width, int height, float nearPlane, float farPlane)
+	{
+		m_Projection = glm::perspective(glm::radians(fov), (float)width / (float)height, nearPlane, farPlane);
 	}
 
 	OpenGLVAO OpenGLRenderer::CreateVAO(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements)
@@ -175,6 +195,11 @@ namespace Keg
 	void OpenGLRenderer::OnViewportChange(int width, int height)
 	{
 		glViewport(0, 0, (GLsizei) width, (GLsizei) height);
+	}
+
+	void OpenGLRenderer::SetFOV(float fov)
+	{
+		m_FOV = fov > 45 && fov < 121 ? fov : m_FOV;
 	}
 
 	OpenGLRenderer::~OpenGLRenderer() 

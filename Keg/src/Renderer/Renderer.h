@@ -7,6 +7,9 @@
 
 namespace Keg
 {
+
+#define RENDERER_NEAR_PLANE 0.1f
+#define RENDERER_FAR_PLANE 100.0f
 	class Renderer
 	{
 	public:
@@ -14,6 +17,7 @@ namespace Keg
 		virtual void Init(void* procAddress) = 0;
 		virtual void Shutdown() = 0;
 		virtual void OnViewportChange(int width, int height) = 0;
+		virtual void SetFOV(float fov) = 0;
 		
 		// Drawables
 		virtual void AddDrawable(DrawDetails *d) = 0;

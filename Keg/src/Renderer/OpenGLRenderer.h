@@ -21,6 +21,7 @@ namespace Keg
 		virtual void Shutdown();
 
 		virtual void OnViewportChange(int width, int height);
+		virtual void SetFOV(float fov);
 
 		virtual void AddDrawable(DrawDetails *d);
 		virtual DrawDetails* CreateDrawable(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements);
@@ -39,8 +40,12 @@ namespace Keg
 		std::vector<DrawDetails*> m_Drawables;
 		std::map<std::string, Shader*> m_Shaders;
 		static OpenGLRenderer* s_Renderer;
+
+		float m_FOV;
+		glm::mat4 m_Projection;
 		
 	private:
+		virtual void UpdateProjection(float fov, int width, int height, float nearPlan, float farPlane);
 		OpenGLVAO CreateVAO(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements);
 	};
 }
