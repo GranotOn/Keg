@@ -25,7 +25,7 @@ namespace Keg
 		TransformComponent() = default;
 		
 		glm::mat4 GetTransform()
-		{
+		{ // Returns model matrix
 
 			glm::mat4 transform = glm::mat4(1.0f);
 			transform = glm::rotate(transform, glm::radians(90.0f), Rotation);

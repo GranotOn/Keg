@@ -172,6 +172,11 @@ namespace Keg
 		}
 	}
 
+	void OpenGLRenderer::OnViewportChange(int width, int height)
+	{
+		glViewport(0, 0, (GLsizei) width, (GLsizei) height);
+	}
+
 	OpenGLRenderer::~OpenGLRenderer() 
 	{
 		Shutdown();

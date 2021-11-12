@@ -13,6 +13,7 @@ namespace Keg
 		virtual void Update() = 0;
 		virtual void Init(void* procAddress) = 0;
 		virtual void Shutdown() = 0;
+		virtual void OnViewportChange(int width, int height) = 0;
 		
 		// Drawables
 		virtual void AddDrawable(DrawDetails *d) = 0;

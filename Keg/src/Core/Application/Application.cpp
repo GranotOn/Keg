@@ -57,12 +57,19 @@ namespace Keg
         return true;
     }
 
+    bool Application::OnResize(WindowResizeEvent& e)
+    {
+        m_Renderer->OnViewportChange(e.GetWidth(), e.GetHeight());
+        return false;
+    }
+
     void Application::OnEvent(Event& e)
     {
         EventDispatcher dispatcher = EventDispatcher(e);
 
         dispatcher.Dispatch<KeyPressedEvent>(EVENT_FUNC(Application::OnKeyPress));
         dispatcher.Dispatch<WindowCloseEvent>(EVENT_FUNC(Application::OnWindowClose));
+        dispatcher.Dispatch<WindowResizeEvent>(EVENT_FUNC(Application::OnResize));
 
         for (auto it = m_Layers->rbegin(); it != m_Layers->rend(); ++it)
         {

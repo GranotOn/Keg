@@ -20,6 +20,8 @@ namespace Keg
 		virtual void Init(void* glfwGetProcAddress);
 		virtual void Shutdown();
 
+		virtual void OnViewportChange(int width, int height);
+
 		virtual void AddDrawable(DrawDetails *d);
 		virtual DrawDetails* CreateDrawable(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements);
 		virtual inline std::vector<DrawDetails*> GetDrawables() { return m_Drawables; }

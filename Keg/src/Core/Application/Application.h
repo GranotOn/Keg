@@ -23,6 +23,7 @@ namespace Keg
 		// Event handlers
 		bool OnKeyPress(KeyPressedEvent &e);
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnResize(WindowResizeEvent& e);
 
 		static Application* GetInstance() { return s_Instance;  }
 		Window* GetWindow();
