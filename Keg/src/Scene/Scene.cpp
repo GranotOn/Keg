@@ -18,12 +18,12 @@ namespace Keg
 		renderer->BeginRender();
 
 		{
-			/*auto view = m_Registery.view<TransformComponent, MeshComponent>();
+			auto view = m_Registery.view<TransformComponent, MeshComponent>();
 
 			view.each([&renderer](TransformComponent& tc, MeshComponent& mc)
 				{
 					renderer->Render(tc, mc);
-				});*/
+				});
 		}
 
 		renderer->EndRender();
@@ -33,7 +33,7 @@ namespace Keg
 	{
 		Entity entity = { this, m_Registery.create() };
 
-		//entity.AddComponent<TagComponent>(tag);
+		entity.AddComponent<TagComponent>(tag);
 	
 		return entity;
 	}

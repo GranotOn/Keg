@@ -31,7 +31,6 @@ namespace Keg
 		TransformComponent(TransformComponent&&) = default;
 		TransformComponent& operator=(const TransformComponent&) = default;
 		TransformComponent& operator=(TransformComponent&&) = default;
-		virtual ~TransformComponent() = default;
 		
 		glm::mat4 GetTransform()
 		{ // Returns model matrix
@@ -46,13 +45,10 @@ namespace Keg
 
 	struct MeshComponent
 	{
-		std::vector<Vertex>& Vertices;
 		OpenGLVAO VAO;
 		int Elements;
 
-		MeshComponent(std::vector<Vertex>& vertices, OpenGLVAO &vao, int elements)
-			: VAO(vao), Vertices(vertices), Elements(elements)
-		{}
+		MeshComponent(OpenGLVAO& v, int elements) : VAO(v), Elements(elements) {}
 
 		MeshComponent(MeshComponent&&) = default;
 		MeshComponent(const MeshComponent&) = delete;

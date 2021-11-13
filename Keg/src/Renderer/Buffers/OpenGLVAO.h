@@ -1,12 +1,16 @@
 #pragma once
 #include <cstdint>
+#include <vector>
+
+#include "Renderer/Vertex.h"
 
 namespace Keg
 {
 	class OpenGLVAO
 	{
 	public:
-		OpenGLVAO();
+		OpenGLVAO() = delete;
+		OpenGLVAO(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements);
 
 		virtual void Bind();
 		virtual void UnBind();

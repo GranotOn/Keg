@@ -11,6 +11,8 @@ namespace Keg
 
 #define RENDERER_NEAR_PLANE 0.1f
 #define RENDERER_FAR_PLANE 100.0f
+#define RENDERER_FOV 90.0f
+#define RENDERER_DEFAULT_SHADER "ColorShader"
 	class Renderer
 	{
 	public:
@@ -24,7 +26,6 @@ namespace Keg
 		virtual void Render(TransformComponent &tranformComponent, MeshComponent &meshComponent) = 0;
 		
 		// Mesh
-		virtual MeshComponent CreateMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements) = 0;
 
 		// Shaders
 		virtual void AddShader(const std::string& name, const std::string& vs, const std::string& fs) = 0;
@@ -34,4 +35,3 @@ namespace Keg
 	};
 }
 
-#define RENDERER_SHADER_COLOR "ColorShader"

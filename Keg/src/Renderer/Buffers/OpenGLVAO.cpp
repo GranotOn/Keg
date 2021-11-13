@@ -3,10 +3,32 @@
 
 namespace Keg
 {
-
-	OpenGLVAO::OpenGLVAO()
+	OpenGLVAO::OpenGLVAO(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements)
 	{
+		GLuint VBO, EBO;
 		glGenVertexArrays(1, &m_ID);
+
+		Bind();
+
+		glGenBuffers(1, &VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+
+
+		glGenBuffers(1, &EBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(uint32_t), elements.data(), GL_STATIC_DRAW);
+
+
+		/////////////
+		// Attributes
+		/////////////
+		
+		// Position attribute
+		LinkAttrib(0, 3, GL_FLOAT, sizeof(Vertex), 0);
+		
+		// Texture attribute
+		LinkAttrib(1, 2, GL_FLOAT, sizeof(Vertex), 3 * sizeof(float));
 	}
 
 	void OpenGLVAO::Bind()

@@ -25,8 +25,6 @@ namespace Keg
 		virtual void OnViewportChange(int width, int height);
 		virtual void SetFOV(float fov);
 
-		virtual MeshComponent CreateMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements);
-
 		virtual void AddShader(const std::string& name, const std::string& vs, const std::string& fs);
 		virtual void AddShader(const std::string& name, Shader* s);
 		virtual void RemoveShader(const std::string& name);
@@ -39,9 +37,15 @@ namespace Keg
 		~OpenGLRenderer();
 
 	private:
-		OpenGLRenderer() = default;
+		OpenGLRenderer()
+		{
+			m_FOV = RENDERER_FOV;
+			m_Projection = glm::mat4(1.0f);
+			m_UsedShader = RENDERER_DEFAULT_SHADER;
+		}
+
 		std::map<std::string, Shader*> m_Shaders;
-		Shader* m_Shader;
+		std::string m_UsedShader;
 		static OpenGLRenderer* s_Renderer;
 
 		float m_FOV;
@@ -49,6 +53,5 @@ namespace Keg
 		
 	private:
 		virtual void UpdateProjection(float fov, int width, int height, float nearPlan, float farPlane);
-		OpenGLVAO CreateVAO(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements);
 	};
 }

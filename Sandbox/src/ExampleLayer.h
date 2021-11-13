@@ -8,13 +8,13 @@ class TestLayer : public Keg::Layer
 	virtual void OnAttach()
 	{
 		std::vector<Keg::Vertex> vertices({
-			Keg::Vertex(-1.0f, -0.5f, 0.0f,
+			Keg::Vertex(-0.5f, -0.5f, 0.0f,
 					0.0f, 0.0f),
-			Keg::Vertex(0.0f, -0.5f, 0.0f,
+			Keg::Vertex(0.5f, -0.5f, 0.0f,
 					1.0f, 0.0f),
-			Keg::Vertex(-1.0f, 0.5f, 0.0f,
+			Keg::Vertex(-0.5f, 0.5f, 0.0f,
 					0.0f, 1.0f),
-			Keg::Vertex(0.0f, 0.5f, 0.0f,
+			Keg::Vertex(0.5f, 0.5f, 0.0f,
 					1.0f, 1.0f),
 			});
 
@@ -28,19 +28,21 @@ class TestLayer : public Keg::Layer
 		Keg::OpenGLTexture* t = Keg::OpenGLTextureManager::GetInstance()->GetTexture("container");
 
 
-		Keg::Scene* scene = Keg::Scene::Create();
-		auto e = scene->CreateEntity();
+		m_Scene = Keg::Scene::Create();
+		auto e = m_Scene->CreateEntity();
 
-		Keg::TransformComponent tc;
-		
-		Keg::MeshComponent mesh = renderer->CreateMesh(vertices, elements);
+		Keg::OpenGLVAO vao(vertices, elements);
 
-		e.AddComponent(tc);
-		e.AddComponent(mesh);
+		Keg::TransformComponent &tra = e.AddComponent<Keg::TransformComponent>();
+		tra.Rotation = { 1.0f, 0.0f, 0.0f };
+		e.AddComponent<Keg::MeshComponent>(vao, static_cast<int>(elements.size()));
 	}
 
 	virtual void OnDetach() { }
-	virtual void OnUpdate() { }
+	virtual void OnUpdate()
+	{
+		m_Scene->OnUpdate();
+	}
 
 	bool OnKeyPress(Keg::KeyPressedEvent& e)
 	{
@@ -85,6 +87,9 @@ class TestLayer : public Keg::Layer
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
 	}
+
+private:
+	Keg::Scene* m_Scene;
 
 #ifdef KEG_DEBUG
 	std::string GetDebugName() { return "TestLayer"; }

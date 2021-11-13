@@ -27,13 +27,13 @@ namespace Keg
 
 	void OpenGLRenderer::BeginRender()
 	{
-		glClearColor(0.079f, 0.079f, 0.079f, 1.0f);
+		glClearColor(0.79f, 0.79f, 0.78f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 
-		Shader* CC = GetShader(RENDERER_SHADER_COLOR);
-		m_Shader = CC;
-		CC->Use();
+		m_UsedShader = RENDERER_DEFAULT_SHADER;
+		Shader* shader = GetShader(m_UsedShader);
+		shader->Use();
 
 		/////////////////////
 		/// 3D Space Uniforms
@@ -44,8 +44,9 @@ namespace Keg
 		glm::mat4 projection = m_Projection;
 
 
-		int viewLocation = glGetUniformLocation(CC->GetID(), "view");
-		int projectionLocation = glGetUniformLocation(CC->GetID(), "projection");
+		int viewLocation = glGetUniformLocation(shader->GetID(), "view");
+		int projectionLocation = glGetUniformLocation(shader->GetID(), "projection");
+
 		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
 	}
@@ -57,15 +58,20 @@ namespace Keg
 
 	void OpenGLRenderer::Render(TransformComponent& transformComponent, MeshComponent& meshComponent)
 	{
+		Shader* shader = GetShader(m_UsedShader);
+
 		// Color
-		int colorLocation = glGetUniformLocation(m_Shader->GetID(), "Color");
+		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
 		glUniform4f(colorLocation, 1.0f, 0.0f, 0.0f, 1.0f);
 
-		int modelLocation = glGetUniformLocation(m_Shader->GetID(), "model");
+		int modelLocation = glGetUniformLocation(shader->GetID(), "model");
 		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(transformComponent.GetTransform()));
 	
 		OpenGLVAO vao = meshComponent.VAO;
 
+		int textureSampleLocation = glGetUniformLocation(shader->GetID(), "hasTexture");
+		glUniform1i(textureSampleLocation, 0);
+		
 		//OpenGLTexture* tex = drawable->GetTexture();
 
 		// To indicate if a texture exists or not
@@ -106,7 +112,7 @@ namespace Keg
 		//////////
 		// Shaders
 		//////////
-		AddShader(RENDERER_SHADER_COLOR, std::string(KEG_ASSETS) + "/Shaders/4.6.shader.vs", std::string(KEG_ASSETS) + "/Shaders/4.6.shader.fs");
+		AddShader(RENDERER_DEFAULT_SHADER, std::string(KEG_ASSETS) + "/Shaders/4.6.shader.vs", std::string(KEG_ASSETS) + "/Shaders/4.6.shader.fs");
 	
 		/////////////
 		// Properties
@@ -125,39 +131,6 @@ namespace Keg
 		m_Projection = glm::perspective(glm::radians(fov), (float)width / (float)height, nearPlane, farPlane);
 	}
 
-	OpenGLVAO OpenGLRenderer::CreateVAO(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements)
-	{
-		GLuint VBO, EBO;
-		OpenGLVAO vao;
-
-		vao.Bind();
-
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-
-
-		glGenBuffers(1, &EBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(uint32_t), elements.data(), GL_STATIC_DRAW);
-
-
-		// Attribs linking:
-		// Position attribute
-		vao.LinkAttrib(0, 3, GL_FLOAT, sizeof(Vertex), 0);
-		// Texture attribute
-		vao.LinkAttrib(1, 2, GL_FLOAT, sizeof(Vertex), 3 * sizeof(float));
-		
-		return vao;
-	}
-
-	MeshComponent OpenGLRenderer::CreateMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements)
-	{
-		OpenGLVAO VAO = CreateVAO(vertices, elements);
-
-		MeshComponent m(vertices, VAO, static_cast<int>(elements.size()));
-		return m;
-	}
 
 	void OpenGLRenderer::AddShader(const std::string &name, const std::string &vs, const std::string &fs)
 	{
