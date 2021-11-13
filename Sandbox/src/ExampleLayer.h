@@ -8,18 +8,45 @@ class TestLayer : public Keg::Layer
 	virtual void OnAttach()
 	{
 		std::vector<Keg::Vertex> vertices({
-			Keg::Vertex(-0.5f, -0.5f, 0.0f,
-					0.0f, 0.0f),
-			Keg::Vertex(0.5f, -0.5f, 0.0f,
-					1.0f, 0.0f),
-			Keg::Vertex(-0.5f, 0.5f, 0.0f,
-					0.0f, 1.0f),
-			Keg::Vertex(0.5f, 0.5f, 0.0f,
-					1.0f, 1.0f),
+Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 0.0f),
+Keg::Vertex(0.5f, -0.5f, -0.5f,  1.0f, 0.0f),
+Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
+Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
+Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
+Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 0.0f),
+Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
+Keg::Vertex(0.5f, -0.5f,  0.5f,  1.0f, 0.0f),
+Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 1.0f),
+Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 1.0f),
+Keg::Vertex(-0.5f,  0.5f,  0.5f,  0.0f, 1.0f),
+Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
+Keg::Vertex(-0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
+Keg::Vertex(-0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
+Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
+Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
+Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
+Keg::Vertex(-0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
+Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
+Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
+Keg::Vertex(0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
+Keg::Vertex(0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
+Keg::Vertex(0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
+Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
+Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
+Keg::Vertex(0.5f, -0.5f, -0.5f,  1.0f, 1.0f),
+Keg::Vertex(0.5f, -0.5f,  0.5f,  1.0f, 0.0f),
+Keg::Vertex(0.5f, -0.5f,  0.5f,  1.0f, 0.0f),
+Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
+Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
+Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
+Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
+Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
+Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
+Keg::Vertex(-0.5f,  0.5f,  0.5f,  0.0f, 0.0f),
+Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 			});
 
-		std::vector<uint32_t> elements({ 0, 1, 2,
-										1, 2, 3 });
+		std::vector<uint32_t> elements({});
 
 		Keg::Renderer* renderer = Keg::RendererBuilder::GetInstance()->GetRenderer();
 		// Loading a texture to TextureManager
@@ -27,15 +54,37 @@ class TestLayer : public Keg::Layer
 		Keg::OpenGLTextureManager::GetInstance()->LoadTexture("container", std::string(std::string(KEG_ASSETS) + "/Textures/container.jpg").c_str());
 		Keg::OpenGLTexture* t = Keg::OpenGLTextureManager::GetInstance()->GetTexture("container");
 
-
-		m_Scene = Keg::Scene::Create();
-		auto e = m_Scene->CreateEntity();
-
 		Keg::OpenGLVAO vao(vertices, elements);
 
-		Keg::TransformComponent &tra = e.AddComponent<Keg::TransformComponent>();
-		tra.Rotation = { 1.0f, 0.0f, 0.0f };
-		e.AddComponent<Keg::MeshComponent>(vao, static_cast<int>(elements.size()));
+		m_Scene = Keg::Scene::Create();
+
+		glm::vec3 cubePositions[] = {
+			glm::vec3(0.0f,  0.0f,  0.0f),
+			glm::vec3(2.0f,  5.0f, -15.0f),
+			glm::vec3(-1.5f, -2.2f, -2.5f),
+			glm::vec3(-3.8f, -2.0f, -12.3f),
+			glm::vec3(2.4f, -0.4f, -3.5f),
+			glm::vec3(-1.7f,  3.0f, -7.5f),
+			glm::vec3(1.3f, -2.0f, -2.5f),
+			glm::vec3(1.5f,  2.0f, -2.5f),
+			glm::vec3(1.5f,  0.2f, -1.5f),
+			glm::vec3(-1.3f,  1.0f, -1.5f)
+		};
+
+		for (int i = 0; i < 10; ++i)
+		{
+			auto e = m_Scene->CreateEntity();
+			
+			Keg::TransformComponent &tra = e.AddComponent<Keg::TransformComponent>();
+			tra.Rotation = { 0.5f, 1.0f, 0.0f };
+			tra.Translation = cubePositions[i];
+			tra.RotationAngle = 20.0f * (float) i;
+
+			e.AddComponent<Keg::MeshComponent>(vao, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
+
+		}
+
+
 	}
 
 	virtual void OnDetach() { }

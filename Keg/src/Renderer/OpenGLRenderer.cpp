@@ -27,8 +27,8 @@ namespace Keg
 
 	void OpenGLRenderer::BeginRender()
 	{
-		glClearColor(0.79f, 0.79f, 0.78f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 		m_UsedShader = RENDERER_DEFAULT_SHADER;
@@ -62,7 +62,7 @@ namespace Keg
 
 		// Color
 		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
-		glUniform4f(colorLocation, 1.0f, 0.0f, 0.0f, 1.0f);
+		glUniform4f(colorLocation, 0.0f, 0.0f, 1.0f, 1.0f);
 
 		int modelLocation = glGetUniformLocation(shader->GetID(), "model");
 		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(transformComponent.GetTransform()));
@@ -90,7 +90,16 @@ namespace Keg
 
 		vao.Bind();
 
-		glDrawElements(GL_TRIANGLES, meshComponent.Elements, GL_UNSIGNED_INT, nullptr);
+		int n_Elements = meshComponent.Elements;
+
+		if (n_Elements > 0)
+		{
+			glDrawElements(GL_TRIANGLES, n_Elements, GL_UNSIGNED_INT, nullptr);
+		}
+		else
+		{
+			glDrawArrays(GL_TRIANGLES, 0, meshComponent.Vertices);
+		}
 
 		vao.UnBind();
 	}
@@ -108,6 +117,8 @@ namespace Keg
 			KEG_ENGINE_TRACE("gladLoadGLLoader succesfull");
 			KEG_ENGINE_INFO("OpenGL Version: {0}", glGetString(GL_VERSION));
 		}
+
+		glEnable(GL_DEPTH_TEST);
 
 		//////////
 		// Shaders

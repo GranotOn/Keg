@@ -25,6 +25,8 @@ namespace Keg
 		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
+		
+		float RotationAngle = 0.0f;
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
@@ -35,8 +37,11 @@ namespace Keg
 		glm::mat4 GetTransform()
 		{ // Returns model matrix
 
+			static float k = 0;
+			k += 0.001f;
 			glm::mat4 transform = glm::mat4(1.0f);
-			transform = glm::rotate(transform, glm::radians(-55.0f), Rotation);
+			transform = glm::translate(transform, Translation);
+			transform = glm::rotate(transform, k * glm::radians(RotationAngle), Rotation);
 			transform = glm::scale(transform, Scale);
 
 			return transform;
@@ -47,8 +52,9 @@ namespace Keg
 	{
 		OpenGLVAO VAO;
 		int Elements;
+		int Vertices;
 
-		MeshComponent(OpenGLVAO& v, int elements) : VAO(v), Elements(elements) {}
+		MeshComponent(OpenGLVAO& v, int elements, int vertices) : VAO(v), Elements(elements), Vertices(vertices) {}
 
 		MeshComponent(MeshComponent&&) = default;
 		MeshComponent(const MeshComponent&) = delete;

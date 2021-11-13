@@ -24,6 +24,7 @@ namespace Keg
 				{
 					renderer->Render(tc, mc);
 				});
+
 		}
 
 		renderer->EndRender();
