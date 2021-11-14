@@ -92,9 +92,11 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 	}
 
 	virtual void OnDetach() { }
-	virtual void OnUpdate()
+	virtual void OnUpdate(Time &time)
 	{
-		constexpr auto SPEED = 0.1f;
+		constexpr auto SPEED = 10.0f;
+
+		auto movement = (float) ((double)SPEED * time.deltaTime);
 
 		Keg::WindowsInput* wi = new Keg::WindowsInput();
 
@@ -102,29 +104,29 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		{
 			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
 			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
-			cc.Target += glm::vec3(SPEED, 0.0f, 0.0f);
-			tc.Translation += glm::vec3(SPEED, 0.0f, 0.0f);
+			cc.Target += glm::vec3(movement, 0.0f, 0.0f);
+			tc.Translation += glm::vec3(movement, 0.0f, 0.0f);
 		}
 		if (wi->IsKeyPressed(Keg::Key::D))
 		{
 			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
 			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
-			cc.Target += glm::vec3(-SPEED, 0.0f, 0.0f);
-			tc.Translation += glm::vec3(-SPEED, 0.0f, 0.0f);
+			cc.Target += glm::vec3(-movement, 0.0f, 0.0f);
+			tc.Translation += glm::vec3(-movement, 0.0f, 0.0f);
 		}
 		if (wi->IsKeyPressed(Keg::Key::S))
 		{
 			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
 			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
-			cc.Target += glm::vec3(0.0f, 0.0f, -SPEED);
-			tc.Translation += glm::vec3(0.0f, 0.0f, -SPEED);
+			cc.Target += glm::vec3(0.0f, 0.0f, -movement);
+			tc.Translation += glm::vec3(0.0f, 0.0f, -movement);
 		}
 		if (wi->IsKeyPressed(Keg::Key::W))
 		{
 			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
 			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
-			cc.Target += glm::vec3(0.0f, 0.0f, SPEED);
-			tc.Translation += glm::vec3(0.0f, 0.0f, SPEED);
+			cc.Target += glm::vec3(0.0f, 0.0f, movement);
+			tc.Translation += glm::vec3(0.0f, 0.0f, movement);
 		}
 
 		m_Scene->OnUpdate();

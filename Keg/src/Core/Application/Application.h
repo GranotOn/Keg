@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Time.h"
+
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/WindowEvent.h"
 #include "Core/Layer/LayerStack.h"
@@ -47,6 +49,7 @@ namespace Keg
 	
 	private:
 		static Application* s_Instance;
+		Time m_LastUpdate;
 	};
 
 	// This is the client application

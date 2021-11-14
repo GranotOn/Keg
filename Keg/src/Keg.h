@@ -36,3 +36,6 @@
 #include "Scene/Components.h"
 #include "Scene/Scene.h"
 #include "Scene/Entity.h"
+
+// ETC
+#include "Core/Application/Time.h"

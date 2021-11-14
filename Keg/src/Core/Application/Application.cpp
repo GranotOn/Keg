@@ -29,6 +29,8 @@ namespace Keg
 
         m_Window = new WindowsWindow();
         m_Window->SetEventCallback(EVENT_FUNC(Application::OnEvent));
+        
+        m_LastUpdate = { m_Window->GetTime(), 0 };
 
         m_Renderer = RendererBuilder::GetInstance()->GetRenderer();
 
@@ -107,10 +109,13 @@ namespace Keg
         /* Loop until the user closes the window */
         while (m_Running)
         {
+            double time = m_Window->GetTime();
+            m_LastUpdate = { time , m_LastUpdate - time };
+            
             // Update layers
             for (auto& layer : *m_Layers)
             {
-                layer->OnUpdate();
+                layer->OnUpdate(m_LastUpdate);
             }
 
             // ImGui Rendering
