@@ -51,6 +51,8 @@ namespace Keg
 			return false;
 		}
 
+		inline entt::entity GetHandle() { return m_Handle; }
+
 		
 	private:
 		entt::entity m_Handle;

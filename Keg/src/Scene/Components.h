@@ -37,11 +37,9 @@ namespace Keg
 		glm::mat4 GetTransform()
 		{ // Returns model matrix
 
-			static float k = 0;
-			k += 0.001f;
 			glm::mat4 transform = glm::mat4(1.0f);
 			transform = glm::translate(transform, Translation);
-			transform = glm::rotate(transform, k * glm::radians(RotationAngle), Rotation);
+			transform = glm::rotate(transform, glm::radians(RotationAngle), Rotation);
 			transform = glm::scale(transform, Scale);
 
 			return transform;
@@ -60,5 +58,25 @@ namespace Keg
 		MeshComponent(const MeshComponent&) = delete;
 		MeshComponent& operator=(const MeshComponent&) = delete;
 		MeshComponent& operator=(MeshComponent&&) = default;
+	};
+
+	struct CameraComponent
+	{
+		glm::vec3 Target = { 0.0f, 0.0f, 0.0f };
+
+		inline glm::vec3 GetDirection(glm::vec3& position) { return glm::normalize(position - Target); }
+		inline glm::vec3 GetRightVector(glm::vec3& direction) { return glm::normalize(glm::cross({0.0f, 1.0f, 0.0f}, direction)); }
+		inline glm::vec3 GetUpVector(glm::vec3& direction, glm::vec3& rightVector) { return glm::cross(direction, rightVector); }
+		
+		inline glm::mat4 GetViewMatrix(glm::vec3& position)
+		{
+			glm::vec3 direction = GetDirection(position);
+			glm::vec3 rightVector = GetRightVector(direction);
+			glm::vec3 upVector = GetUpVector(direction, rightVector);
+			
+			return glm::lookAt(position, Target, upVector);
+		}
+
+		CameraComponent() {}
 	};
 }

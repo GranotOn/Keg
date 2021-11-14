@@ -25,7 +25,7 @@ namespace Keg
 		return s_Renderer;
 	}
 
-	void OpenGLRenderer::BeginRender()
+	void OpenGLRenderer::BeginRender(glm::mat4 &view)
 	{
 		glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -38,17 +38,22 @@ namespace Keg
 		/////////////////////
 		/// 3D Space Uniforms
 		/////////////////////
-		glm::mat4 view = glm::mat4(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-
 		glm::mat4 projection = m_Projection;
-
 
 		int viewLocation = glGetUniformLocation(shader->GetID(), "view");
 		int projectionLocation = glGetUniformLocation(shader->GetID(), "projection");
 
 		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+	}
+
+
+	void OpenGLRenderer::BeginRender()
+	{
+		glm::mat4 view = glm::mat4(1.0f);
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+		
+		BeginRender(view);
 	}
 
 	void OpenGLRenderer::EndRender()

@@ -22,6 +22,7 @@ namespace Keg
 		virtual void SetFOV(float fov) = 0;
 
 		virtual void BeginRender() = 0;
+		virtual void BeginRender(glm::mat4 &viewMatrix) = 0;
 		virtual void EndRender() = 0;
 		virtual void Render(TransformComponent &tranformComponent, MeshComponent &meshComponent) = 0;
 		

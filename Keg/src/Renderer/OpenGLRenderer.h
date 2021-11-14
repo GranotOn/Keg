@@ -31,6 +31,7 @@ namespace Keg
 		virtual Shader* GetShader(const std::string& name);
 
 		virtual void BeginRender();
+		virtual void BeginRender(glm::mat4& viewMatrix);
 		virtual void EndRender();
 		virtual void Render(TransformComponent &transformComponent, MeshComponent &meshComponent);
 

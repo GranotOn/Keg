@@ -3,8 +3,11 @@
 #include "Keg.h"
 #include <imgui.h>
 
+
 class TestLayer : public Keg::Layer
 {
+public:
+
 	virtual void OnAttach()
 	{
 		std::vector<Keg::Vertex> vertices({
@@ -56,7 +59,7 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 
 		Keg::OpenGLVAO vao(vertices, elements);
 
-		m_Scene = Keg::Scene::Create();
+
 
 		glm::vec3 cubePositions[] = {
 			glm::vec3(0.0f,  0.0f,  0.0f),
@@ -85,16 +88,54 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		}
 
 
+		
 	}
 
 	virtual void OnDetach() { }
 	virtual void OnUpdate()
 	{
+		constexpr auto SPEED = 0.1f;
+
+		Keg::WindowsInput* wi = new Keg::WindowsInput();
+
+		if (wi->IsKeyPressed(Keg::Key::A))
+		{
+			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
+			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
+			cc.Target += glm::vec3(SPEED, 0.0f, 0.0f);
+			tc.Translation += glm::vec3(SPEED, 0.0f, 0.0f);
+		}
+		if (wi->IsKeyPressed(Keg::Key::D))
+		{
+			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
+			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
+			cc.Target += glm::vec3(-SPEED, 0.0f, 0.0f);
+			tc.Translation += glm::vec3(-SPEED, 0.0f, 0.0f);
+		}
+		if (wi->IsKeyPressed(Keg::Key::S))
+		{
+			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
+			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
+			cc.Target += glm::vec3(0.0f, 0.0f, -SPEED);
+			tc.Translation += glm::vec3(0.0f, 0.0f, -SPEED);
+		}
+		if (wi->IsKeyPressed(Keg::Key::W))
+		{
+			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
+			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
+			cc.Target += glm::vec3(0.0f, 0.0f, SPEED);
+			tc.Translation += glm::vec3(0.0f, 0.0f, SPEED);
+		}
+
 		m_Scene->OnUpdate();
+	
+	
 	}
 
 	bool OnKeyPress(Keg::KeyPressedEvent& e)
 	{
+		
+
 		Keg::WindowsInput *wi = new Keg::WindowsInput();
 
 		KEG_APP_TRACE("MouseX ({0}) MouseY ({1}) Is-ALT-Pressed({2}) Is-MB0-Pressed({3})", wi->GetMouseX(), wi->GetMouseY(),
@@ -137,8 +178,16 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		ImGui::End();
 	}
 
+	TestLayer() : m_Scene(Keg::Scene::Create()), m_Camera(m_Scene->CreateEntity())
+	{
+		auto &tc = m_Camera.AddComponent<Keg::TransformComponent>();
+		tc.Translation = { 0.0f, 0.0f, -10.0f };
+		m_Camera.AddComponent<Keg::CameraComponent>();
+	}
+
 private:
 	Keg::Scene* m_Scene;
+	Keg::Entity m_Camera;
 
 #ifdef KEG_DEBUG
 	std::string GetDebugName() { return "TestLayer"; }

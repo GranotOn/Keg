@@ -15,7 +15,22 @@ namespace Keg
 		/////////////////////
 		Renderer* renderer = Application::GetInstance()->GetRenderer();
 
-		renderer->BeginRender();
+
+		auto cameras = m_Registery.view<TransformComponent, CameraComponent>();
+
+		if (cameras.size_hint() == 1)
+		{
+			cameras.each([&renderer](TransformComponent& tc, CameraComponent& cc)
+				{ // This should really only be 1 component
+					glm::mat4 viewMatrix = cc.GetViewMatrix(tc.Translation);
+					renderer->BeginRender(viewMatrix);
+				});
+		}
+		else
+		{
+			renderer->BeginRender();
+		}
+
 
 		{
 			auto view = m_Registery.view<TransformComponent, MeshComponent>();
