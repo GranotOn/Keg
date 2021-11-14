@@ -2,6 +2,7 @@
 
 #include "Renderer/Vertex.h"
 #include "Renderer/Buffers/OpenGLVAO.h"
+#include "Renderer/OpenGLTexture.h"
 
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
@@ -78,5 +79,20 @@ namespace Keg
 		}
 
 		CameraComponent() {}
+	};
+
+	struct ColorComponent
+	{
+		glm::vec3 Color = { 1.0f, 1.0f, 1.0f };
+		float Alpha = 1.0f;
+
+		ColorComponent() {}
+	};
+
+	struct TextureComponent
+	{
+		OpenGLTexture* Texture;
+
+		TextureComponent(OpenGLTexture *texture) : Texture(texture) {}
 	};
 }

@@ -82,6 +82,10 @@ namespace Keg
 
     void Application::Run()
     {
+        ///////////////////////
+        // Initialization Stage
+        ///////////////////////
+        
         // Initialize Window
         m_Window->Init();
 
@@ -106,7 +110,11 @@ namespace Keg
 
         m_Layers->SetRunning(true);
 
-        /* Loop until the user closes the window */
+
+        //////////////
+        // Engine Loop
+        //////////////
+
         while (m_Running)
         {
             double time = m_Window->GetTime();

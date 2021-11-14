@@ -33,7 +33,11 @@ namespace Keg
 		virtual void BeginRender();
 		virtual void BeginRender(glm::mat4& viewMatrix);
 		virtual void EndRender();
-		virtual void Render(TransformComponent &transformComponent, MeshComponent &meshComponent);
+
+		virtual void Render(TransformComponent &transformComponent, MeshComponent &meshComponent,
+			ColorComponent& colorComponent);
+		virtual void Render(TransformComponent& transformComponent, MeshComponent& meshComponent,
+			ColorComponent& colorComponent, TextureComponent& textureComponent);
 
 		~OpenGLRenderer();
 

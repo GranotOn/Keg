@@ -61,37 +61,25 @@ namespace Keg
 
 	}
 
-	void OpenGLRenderer::Render(TransformComponent& transformComponent, MeshComponent& meshComponent)
+	void OpenGLRenderer::Render(TransformComponent& transformComponent, MeshComponent& meshComponent,
+		ColorComponent& colorComponent, TextureComponent& textureComponent)
 	{
 		Shader* shader = GetShader(m_UsedShader);
 
 		// Color
 		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
-		glUniform4f(colorLocation, 0.0f, 0.0f, 1.0f, 1.0f);
+		glUniform4f(colorLocation, colorComponent.Color.x, colorComponent.Color.y, colorComponent.Color.z, colorComponent.Alpha);
 
 		int modelLocation = glGetUniformLocation(shader->GetID(), "model");
 		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(transformComponent.GetTransform()));
-	
+
 		OpenGLVAO vao = meshComponent.VAO;
 
 		int textureSampleLocation = glGetUniformLocation(shader->GetID(), "hasTexture");
-		glUniform1i(textureSampleLocation, 0);
-		
-		//OpenGLTexture* tex = drawable->GetTexture();
+		glUniform1i(textureSampleLocation, 1);
 
-		// To indicate if a texture exists or not
-		/*int textureSampleLocation = glGetUniformLocation(CC->GetID(), "hasTexture");
-
-		if (tex)
-		{
-			tex->Bind();
-			glUniform1i(textureSampleLocation, 1);
-		}
-		else
-		{
-			glBindTexture(GL_TEXTURE_2D, 0);
-			glUniform1i(textureSampleLocation, 0);
-		}*/
+		OpenGLTexture* tex = textureComponent.Texture;
+		tex->Bind();
 
 		vao.Bind();
 
@@ -101,6 +89,43 @@ namespace Keg
 		{
 			glDrawElements(GL_TRIANGLES, n_Elements, GL_UNSIGNED_INT, nullptr);
 		}
+
+		else
+		{
+			glDrawArrays(GL_TRIANGLES, 0, meshComponent.Vertices);
+		}
+
+		vao.UnBind();
+
+	}
+
+
+	void OpenGLRenderer::Render(TransformComponent& transformComponent, MeshComponent& meshComponent,
+		ColorComponent& colorComponent)
+	{
+		Shader* shader = GetShader(m_UsedShader);
+
+		// Color
+		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
+		glUniform4f(colorLocation, colorComponent.Color.x, colorComponent.Color.y, colorComponent.Color.z, colorComponent.Alpha);
+
+		int modelLocation = glGetUniformLocation(shader->GetID(), "model");
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(transformComponent.GetTransform()));
+	
+		OpenGLVAO vao = meshComponent.VAO;
+
+		int textureSampleLocation = glGetUniformLocation(shader->GetID(), "hasTexture");
+		glUniform1i(textureSampleLocation, 0);
+
+		vao.Bind();
+
+		int n_Elements = meshComponent.Elements;
+
+		if (n_Elements > 0)
+		{
+			glDrawElements(GL_TRIANGLES, n_Elements, GL_UNSIGNED_INT, nullptr);
+		}
+
 		else
 		{
 			glDrawArrays(GL_TRIANGLES, 0, meshComponent.Vertices);
@@ -205,7 +230,7 @@ namespace Keg
 		m_FOV = fov > 45 && fov < 121 ? fov : m_FOV;
 	}
 
-	OpenGLRenderer::~OpenGLRenderer() 
+	OpenGLRenderer::~OpenGLRenderer()
 	{
 		Shutdown();
 	}

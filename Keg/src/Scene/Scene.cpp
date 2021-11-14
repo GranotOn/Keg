@@ -33,13 +33,24 @@ namespace Keg
 
 
 		{
-			auto view = m_Registery.view<TransformComponent, MeshComponent>();
+			auto view = m_Registery.view<TransformComponent, MeshComponent, ColorComponent>();
+			auto textureView = m_Registery.view<TransformComponent, MeshComponent,
+												ColorComponent, TextureComponent>();
 
-			view.each([&renderer](TransformComponent& tc, MeshComponent& mc)
+			textureView.each([&renderer](TransformComponent& trans, MeshComponent& mc,
+				ColorComponent& cc, TextureComponent& tex)
 				{
-					renderer->Render(tc, mc);
+					renderer->Render(trans, mc, cc, tex);
 				});
 
+
+
+			view.each([&renderer](TransformComponent& tc, MeshComponent& mc, ColorComponent &cc)
+				{
+					renderer->Render(tc, mc, cc);
+				});
+
+			
 		}
 
 		renderer->EndRender();
@@ -49,8 +60,13 @@ namespace Keg
 	{
 		Entity entity = { this, m_Registery.create() };
 
+		/////////////////////
+		// Default Components
+		/////////////////////
 		entity.AddComponent<TagComponent>(tag);
-	
+		entity.AddComponent<TransformComponent>();
+		entity.AddComponent<ColorComponent>();
+
 		return entity;
 	}
 

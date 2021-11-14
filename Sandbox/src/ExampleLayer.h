@@ -55,11 +55,9 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		// Loading a texture to TextureManager
 
 		Keg::OpenGLTextureManager::GetInstance()->LoadTexture("container", std::string(std::string(KEG_ASSETS) + "/Textures/container.jpg").c_str());
-		Keg::OpenGLTexture* t = Keg::OpenGLTextureManager::GetInstance()->GetTexture("container");
+		Keg::OpenGLTexture* containerTexture = Keg::OpenGLTextureManager::GetInstance()->GetTexture("container");
 
 		Keg::OpenGLVAO vao(vertices, elements);
-
-
 
 		glm::vec3 cubePositions[] = {
 			glm::vec3(0.0f,  0.0f,  0.0f),
@@ -78,17 +76,29 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		{
 			auto e = m_Scene->CreateEntity();
 			
-			Keg::TransformComponent &tra = e.AddComponent<Keg::TransformComponent>();
+			Keg::TransformComponent &tra = e.GetComponent<Keg::TransformComponent>();
 			tra.Rotation = { 0.5f, 1.0f, 0.0f };
 			tra.Translation = cubePositions[i];
 			tra.RotationAngle = 20.0f * (float) i;
 
+			Keg::ColorComponent& color = e.GetComponent<Keg::ColorComponent>();
+			
+			if (i < 3)
+			{
+				e.AddComponent<Keg::TextureComponent>(containerTexture);
+			}
+			else if (i < 6)
+			{
+				color.Color = glm::vec3(0.0f, 0.3f, 1.0f);
+			}
+			else
+			{
+				color.Color = glm::vec3(0.2f, 1.0f, 0.2f);
+			}
+
 			e.AddComponent<Keg::MeshComponent>(vao, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
 
 		}
-
-
-		
 	}
 
 	virtual void OnDetach() { }
@@ -128,6 +138,8 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 			cc.Target += glm::vec3(0.0f, 0.0f, movement);
 			tc.Translation += glm::vec3(0.0f, 0.0f, movement);
 		}
+		
+		delete wi;
 
 		m_Scene->OnUpdate();
 	
@@ -136,18 +148,16 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 
 	bool OnKeyPress(Keg::KeyPressedEvent& e)
 	{
-		
-
-		Keg::WindowsInput *wi = new Keg::WindowsInput();
+		/*Keg::WindowsInput *wi = new Keg::WindowsInput();
 
 		KEG_APP_TRACE("MouseX ({0}) MouseY ({1}) Is-ALT-Pressed({2}) Is-MB0-Pressed({3})", wi->GetMouseX(), wi->GetMouseY(),
 																							wi->IsKeyPressed(Keg::Key::LeftAlt),
 																							wi->IsMousePressed(Keg::Key::Button0));
 
-		KEG_APP_TRACE("Key Pressed: ({0})", e.GetKey());
-		return true;
+		KEG_APP_TRACE("Key Pressed: ({0})", e.GetKey());*/
+		//delete wi;
 
-		delete wi;
+		return true;
 	}
 
 	virtual void OnEvent(Keg::Event& e) 
