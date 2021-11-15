@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Time.h"
+
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/WindowEvent.h"
 #include "Core/Layer/LayerStack.h"
@@ -24,6 +26,7 @@ namespace Keg
 		// Event handlers
 		bool OnKeyPress(KeyPressedEvent &e);
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnResize(WindowResizeEvent& e);
 
 		static Application* GetInstance() { return s_Instance;  }
 		Window* GetWindow();
@@ -50,6 +53,7 @@ namespace Keg
 	
 	private:
 		static Application* s_Instance;
+		Time m_LastUpdate;
 	};
 
 	// This is the client application

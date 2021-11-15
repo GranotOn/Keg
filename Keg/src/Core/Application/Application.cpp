@@ -30,6 +30,8 @@ namespace Keg
 
         m_Window = new WindowsWindow();
         m_Window->SetEventCallback(EVENT_FUNC(Application::OnEvent));
+        
+        m_LastUpdate = { m_Window->GetTime(), 0 };
 
         m_Renderer = RendererBuilder::GetInstance()->GetRenderer();
         //////////
@@ -60,12 +62,19 @@ namespace Keg
         return true;
     }
 
+    bool Application::OnResize(WindowResizeEvent& e)
+    {
+        m_Renderer->OnViewportChange(e.GetWidth(), e.GetHeight());
+        return false;
+    }
+
     void Application::OnEvent(Event& e)
     {
         EventDispatcher dispatcher = EventDispatcher(e);
 
         dispatcher.Dispatch<KeyPressedEvent>(EVENT_FUNC(Application::OnKeyPress));
         dispatcher.Dispatch<WindowCloseEvent>(EVENT_FUNC(Application::OnWindowClose));
+        dispatcher.Dispatch<WindowResizeEvent>(EVENT_FUNC(Application::OnResize));
 
         for (auto it = m_Layers->rbegin(); it != m_Layers->rend(); ++it)
         {
@@ -76,6 +85,10 @@ namespace Keg
 
     void Application::Run()
     {
+        ///////////////////////
+        // Initialization Stage
+        ///////////////////////
+        
         // Initialize Window
         m_Window->Init();
 
@@ -102,15 +115,20 @@ namespace Keg
 
         m_Layers->SetRunning(true);
 
-        /* Loop until the user closes the window */
+
+        //////////////
+        // Engine Loop
+        //////////////
+
         while (m_Running)
         {
-            m_Renderer->Update();
+            double time = m_Window->GetTime();
+            m_LastUpdate = { time , m_LastUpdate - time };
             
             // Update layers
             for (auto& layer : *m_Layers)
             {
-                layer->OnUpdate();
+                layer->OnUpdate(m_LastUpdate);
             }
 
             // ImGui Rendering

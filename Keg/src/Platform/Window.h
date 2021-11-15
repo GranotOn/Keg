@@ -25,6 +25,7 @@ namespace Keg
 		virtual void* GetNativeWindow() = 0;
 		virtual int GetWidth() = 0;
 		virtual int GetHeight() = 0;
+		virtual double GetTime() = 0;
 
 		// Initialization & Destruction
 		virtual void Init() = 0;

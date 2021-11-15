@@ -8,6 +8,8 @@
 #include "Renderer/Vertex.h"
 #include "Renderer/Shader.h"
 
+#include "Core/Application/Application.h"
+
 
 namespace Keg
 {
@@ -22,53 +24,114 @@ namespace Keg
 
 		return s_Renderer;
 	}
-	void OpenGLRenderer::Update()
+
+	void OpenGLRenderer::BeginRender(glm::mat4 &view)
 	{
-		/* Render here */
-		glClearColor(0.079f, 0.079f, 0.079f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-		for (auto& drawable : m_Drawables)
+		m_UsedShader = RENDERER_DEFAULT_SHADER;
+		Shader* shader = GetShader(m_UsedShader);
+		shader->Use();
+
+		/////////////////////
+		/// 3D Space Uniforms
+		/////////////////////
+		glm::mat4 projection = m_Projection;
+
+		int viewLocation = glGetUniformLocation(shader->GetID(), "view");
+		int projectionLocation = glGetUniformLocation(shader->GetID(), "projection");
+
+		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+	}
+
+
+	void OpenGLRenderer::BeginRender()
+	{
+		glm::mat4 view = glm::mat4(1.0f);
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+		
+		BeginRender(view);
+	}
+
+	void OpenGLRenderer::EndRender()
+	{
+
+	}
+
+	void OpenGLRenderer::Render(TransformComponent& transformComponent, MeshComponent& meshComponent,
+		ColorComponent& colorComponent, TextureComponent& textureComponent)
+	{
+		Shader* shader = GetShader(m_UsedShader);
+
+		// Color
+		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
+		glUniform4f(colorLocation, colorComponent.Color.x, colorComponent.Color.y, colorComponent.Color.z, colorComponent.Alpha);
+
+		int modelLocation = glGetUniformLocation(shader->GetID(), "model");
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(transformComponent.GetTransform()));
+
+		OpenGLVAO vao = meshComponent.VAO;
+
+		int textureSampleLocation = glGetUniformLocation(shader->GetID(), "hasTexture");
+		glUniform1i(textureSampleLocation, 1);
+
+		OpenGLTexture* tex = textureComponent.Texture;
+		tex->Bind();
+
+		vao.Bind();
+
+		int n_Elements = meshComponent.Elements;
+
+		if (n_Elements > 0)
 		{
-
-			Shader* CC = GetShader(RENDERER_SHADER_COLOR);
-
-			// ----------
-			// Color Uniform
-			// ----------
-			CC->Use();
-			int colorLocation = glGetUniformLocation(CC->GetID(), "Color");
-			glUniform4f(colorLocation, drawable->GetColor().x, 
-						drawable->GetColor().y, drawable->GetColor().z, 1.0f);
-
-			int transformLocation = glGetUniformLocation(CC->GetID(), "transform");
-			glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(drawable->GetTransform()));
-
-			OpenGLVAO vao = drawable->GetVAO();
-
-			OpenGLTexture* tex = drawable->GetTexture();
-
-			// To indicate if a texture exists or not
-			int textureSampleLocation = glGetUniformLocation(CC->GetID(), "hasTexture");
-
-			if (tex)
-			{
-				tex->Bind();
-				glUniform1i(textureSampleLocation, 1);
-			}
-			else
-			{
-				glBindTexture(GL_TEXTURE_2D, 0);
-				glUniform1i(textureSampleLocation, 0);
-			}
-			
-			vao.Bind();
-
-			glDrawElements(GL_TRIANGLES, drawable->GetElementsCount(), GL_UNSIGNED_INT, nullptr);
-
-			vao.UnBind();
+			glDrawElements(GL_TRIANGLES, n_Elements, GL_UNSIGNED_INT, nullptr);
 		}
+
+		else
+		{
+			glDrawArrays(GL_TRIANGLES, 0, meshComponent.Vertices);
+		}
+
+		vao.UnBind();
+
+	}
+
+
+	void OpenGLRenderer::Render(TransformComponent& transformComponent, MeshComponent& meshComponent,
+		ColorComponent& colorComponent)
+	{
+		Shader* shader = GetShader(m_UsedShader);
+
+		// Color
+		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
+		glUniform4f(colorLocation, colorComponent.Color.x, colorComponent.Color.y, colorComponent.Color.z, colorComponent.Alpha);
+
+		int modelLocation = glGetUniformLocation(shader->GetID(), "model");
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(transformComponent.GetTransform()));
+	
+		OpenGLVAO vao = meshComponent.VAO;
+
+		int textureSampleLocation = glGetUniformLocation(shader->GetID(), "hasTexture");
+		glUniform1i(textureSampleLocation, 0);
+
+		vao.Bind();
+
+		int n_Elements = meshComponent.Elements;
+
+		if (n_Elements > 0)
+		{
+			glDrawElements(GL_TRIANGLES, n_Elements, GL_UNSIGNED_INT, nullptr);
+		}
+
+		else
+		{
+			glDrawArrays(GL_TRIANGLES, 0, meshComponent.Vertices);
+		}
+
+		vao.UnBind();
 	}
 
 	
@@ -85,41 +148,30 @@ namespace Keg
 			KEG_ENGINE_INFO("OpenGL Version: {0}", glGetString(GL_VERSION));
 		}
 
-		// Shader Init
-		AddShader(RENDERER_SHADER_COLOR, std::string(KEG_ASSETS) + "/Shaders/4.6.shader.vs", std::string(KEG_ASSETS) + "/Shaders/4.6.shader.fs");
-	}
+		glEnable(GL_DEPTH_TEST);
 
-	OpenGLVAO OpenGLRenderer::CreateVAO(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements)
-	{
-		GLuint VBO, EBO;
-		OpenGLVAO vao;
-
-		vao.Bind();
-
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-
-
-		glGenBuffers(1, &EBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(uint32_t), elements.data(), GL_STATIC_DRAW);
-
-
-		// Attribs linking:
-		// Position attribute
-		vao.LinkAttrib(0, 3, GL_FLOAT, sizeof(Vertex), 0);
-		// Texture attribute
-		vao.LinkAttrib(1, 2, GL_FLOAT, sizeof(Vertex), 3 * sizeof(float));
+		//////////
+		// Shaders
+		//////////
+		AddShader(RENDERER_DEFAULT_SHADER, std::string(KEG_ASSETS) + "/Shaders/4.6.shader.vs", std::string(KEG_ASSETS) + "/Shaders/4.6.shader.fs");
+	
+		/////////////
+		// Properties
+		/////////////
+		m_FOV = 45.0;
 		
-		return vao;
+		Window* w = Application::GetInstance()->GetWindow();
+		int width = w->GetWidth();
+		int height = w->GetHeight();
+
+		UpdateProjection(m_FOV, width, height, RENDERER_NEAR_PLANE, RENDERER_FAR_PLANE);
 	}
 
-	DrawDetails* OpenGLRenderer::CreateDrawable(std::vector<Vertex>& vertices, std::vector<uint32_t>& elements)
+	void OpenGLRenderer::UpdateProjection(float fov, int width, int height, float nearPlane, float farPlane)
 	{
-		OpenGLVAO VAO = CreateVAO(vertices, elements);
-		return new DrawDetails(vertices, VAO, static_cast<uint32_t>(elements.size()));
+		m_Projection = glm::perspective(glm::radians(fov), (float)width / (float)height, nearPlane, farPlane);
 	}
+
 
 	void OpenGLRenderer::AddShader(const std::string &name, const std::string &vs, const std::string &fs)
 	{
@@ -159,11 +211,6 @@ namespace Keg
 		}
 	}
 
-	void OpenGLRenderer::AddDrawable(DrawDetails *d)
-	{
-		m_Drawables.push_back(d);
-	}
-
 	void OpenGLRenderer::Shutdown()
 	{
 		for (auto it : m_Shaders)
@@ -172,7 +219,18 @@ namespace Keg
 		}
 	}
 
-	OpenGLRenderer::~OpenGLRenderer() 
+	void OpenGLRenderer::OnViewportChange(int width, int height)
+	{
+		glViewport(0, 0, (GLsizei) width, (GLsizei) height);
+		UpdateProjection(m_FOV, width, height, RENDERER_NEAR_PLANE, RENDERER_FAR_PLANE);
+	}
+
+	void OpenGLRenderer::SetFOV(float fov)
+	{
+		m_FOV = fov > 45 && fov < 121 ? fov : m_FOV;
+	}
+
+	OpenGLRenderer::~OpenGLRenderer()
 	{
 		Shutdown();
 	}
