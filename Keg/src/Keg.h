@@ -39,3 +39,10 @@
 
 // ETC
 #include "Core/Application/Time.h"
+#include "Scene/Components.h"
+
+
+#include "Audio/Audio.h"
+#include "Audio/Effect.h"
+#include "Audio/OpenAlAudio.h"
+#include "Audio/AudioBuilder.h"

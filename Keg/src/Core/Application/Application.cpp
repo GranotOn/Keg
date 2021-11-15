@@ -9,6 +9,7 @@
 #include "Renderer/Vertex.h"
 #include "Renderer/OpenGLTextureManager.h"
 #include "Renderer/RendererBuilder.h"
+#include "Audio/AudioBuilder.h"
 
 #define EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
 
@@ -33,6 +34,8 @@ namespace Keg
         m_LastUpdate = { m_Window->GetTime(), 0 };
 
         m_Renderer = RendererBuilder::GetInstance()->GetRenderer();
+        //////////
+        m_Audio = AudioBuilder::GetAudio();
 
         m_ImGuiLayer = new ImGuiLayer();
     }
@@ -92,6 +95,8 @@ namespace Keg
         // Initialize Renderer
         // IMPORTANT: Must happen after m_Window->Init();
         m_Renderer->Init(m_Window->GetProcAddress());
+        ///////////
+        m_Audio->Init();
 
         // Assert that a window exists
         if (!m_Window->HasWindow())
