@@ -1,11 +1,11 @@
 #pragma once
-#include <AL\alc.h>
-#include <AL\al.h>
+#include <alc.h>
+#include <al.h>
 #include <stdio.h>
 #include <exception>
 #include <sndfile.h>
 #include <inttypes.h>
-#include <AL\alext.h>
+#include <alext.h>
 #include "Audio/Effect.h"
 
 namespace Keg {

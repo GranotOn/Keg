@@ -38,6 +38,8 @@ project "Keg"
         "Keg/Vendor/stb_image", 
         "Keg/Vendor/imgui", 
         "Keg/Vendor/entt",
+        "Keg/Vendor/AL",
+        "Keg/Vendor/json",
         "Keg/src"
     }
 
@@ -46,6 +48,7 @@ project "Keg"
         "GLFW",
         "GLAD",
         "ImGui",
+        "OpenAL32.lib",
         "opengl32.lib",
     }
 
@@ -94,6 +97,8 @@ project "Sandbox"
         "%{wks.location}/Keg/Vendor/stb_image",
         "%{wks.location}/Keg/Vendor/imgui",
         "%{wks.location}/Keg/Vendor/entt",
+        "%{wks.location}/Keg/Vendor/AL",
+        "%{wks.location}/Keg/Vendor/json",
     }
 
     links

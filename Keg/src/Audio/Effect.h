@@ -1,10 +1,10 @@
 #pragma once
-#include <AL\al.h>
+#include <al.h>
 #include <stdio.h>
 #include <exception>
 #include <sndfile.h>
 #include <inttypes.h>
-#include <AL\alext.h>
+#include <alext.h>
 
 
 namespace Keg {
