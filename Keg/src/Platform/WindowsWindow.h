@@ -1,7 +1,5 @@
 #pragma once
-
 #include "Window.h"
-
 #include <GLFW/glfw3.h>
 
 namespace Keg
@@ -28,8 +26,8 @@ namespace Keg
 		inline virtual int GetHeight() { return m_Data.height; }
 		inline virtual double GetTime() { return glfwGetTime(); }
 
-		GLFWwindow* GetWindow() { return m_Window;  }
-		void* GetNativeWindow() { return m_Window;  }
+		GLFWwindow* GetWindow() { return m_Window; }
+		void* GetNativeWindow() { return m_Window; }
 
 
 	private:
@@ -47,4 +45,3 @@ namespace Keg
 		GLFWwindow* m_Window;
 	};
 }
-

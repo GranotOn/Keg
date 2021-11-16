@@ -1,3 +1,4 @@
+#include "stadx.h"
 #include "Effect.h"
 #include "Audio/AudioBuilder.h"
 

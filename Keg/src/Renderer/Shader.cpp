@@ -1,5 +1,4 @@
-#include <sstream>
-#include <fstream>
+#include "stadx.h"
 
 #include "Shader.h"
 #include "Core/Logger/Logger.h"

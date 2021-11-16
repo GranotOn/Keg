@@ -2,8 +2,6 @@
 
 #include <entt.hpp>
 
-#include <string>
-
 #include "Scene/Scene.h"
 #include "Scene/Components.h"
 

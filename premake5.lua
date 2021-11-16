@@ -7,6 +7,8 @@ workspace "Keg"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 assetdir = "%{wks.location}/bin/" .. outputdir .. "/assets"
 
+
+
 project "Keg"
     kind "StaticLib"
     language "C++"
@@ -16,7 +18,10 @@ project "Keg"
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
-    defines { "GLFW_INCLUDE_NONE", 'KEG_ASSETS="%{assetdir}"'}
+    pchheader "stadx.h"
+    pchsource "Keg/src/stadx.cpp"
+
+    defines { "_CRT_SECURE_NO_WARNINGS", "GLFW_INCLUDE_NONE", 'KEG_ASSETS="%{assetdir}"'}
 
     postbuildcommands
     {

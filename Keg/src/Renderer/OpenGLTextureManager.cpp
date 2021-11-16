@@ -1,3 +1,4 @@
+#include "stadx.h"
 #include "OpenGLTextureManager.h"
 
 namespace Keg

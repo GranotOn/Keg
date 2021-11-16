@@ -1,3 +1,5 @@
+#include "stadx.h"
+
 #include "DrawDetails.h"
 
 namespace Keg

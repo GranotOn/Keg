@@ -1,8 +1,10 @@
+#include "stadx.h"
+
 #include "Scene/Scene.h"
 #include "Scene/Entity.h"
 #include "Scene/Components.h"
 #include "Renderer/Renderer.h"
-#include "Core/Application/Application.h"
+#include "Renderer/RendererBuilder.h"
 
 namespace Keg
 {
@@ -13,7 +15,7 @@ namespace Keg
 		/////////////////////
 		// Rendering Entities
 		/////////////////////
-		Renderer* renderer = Application::GetInstance()->GetRenderer();
+		Renderer* renderer = RendererBuilder::GetInstance()->GetRenderer();
 
 
 		auto cameras = m_Registery.view<TransformComponent, CameraComponent>();

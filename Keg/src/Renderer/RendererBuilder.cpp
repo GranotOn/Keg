@@ -1,3 +1,4 @@
+#include "stadx.h"
 #include "Renderer/RendererBuilder.h"
 
 namespace Keg

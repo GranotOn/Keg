@@ -1,3 +1,5 @@
+#include "stadx.h"
+
 #include "ImGuiLayer.h"
 #include "Core/Logger/Logger.h"
 #include "Core/Application/Application.h"

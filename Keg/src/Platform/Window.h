@@ -1,14 +1,12 @@
 #pragma once
+#include "stadx.h"
 #include "Core/Event/Event.h"
-
-#include <functional>
 
 namespace Keg
 {
-	
+
 	class Window
 	{
-	
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
 
@@ -30,5 +28,8 @@ namespace Keg
 		// Initialization & Destruction
 		virtual void Init() = 0;
 		virtual void Shutdown() const = 0;
+
 	};
+
+	
 }

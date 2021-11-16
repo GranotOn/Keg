@@ -1,3 +1,5 @@
+#include "stadx.h"
+
 #include "WindowsWindow.h"
 
 #include "Core/Event/KeyEvent.h"

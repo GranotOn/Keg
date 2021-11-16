@@ -8,8 +8,6 @@
 #include "Core/ImGui/ImGuiLayer.h"
 
 #include "Platform/Window.h"
-#include "Renderer/Renderer.h"
-#include "Audio/Audio.h"
 
 
 // Defnition for main (imported in EntryPoint.h)
@@ -30,8 +28,6 @@ namespace Keg
 
 		static Application* GetInstance() { return s_Instance;  }
 		Window* GetWindow();
-		Renderer* GetRenderer() { return m_Renderer; }
-		Audio* GetAudio() { return m_Audio; }
 
 		inline ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 
@@ -40,10 +36,7 @@ namespace Keg
 		bool m_Running;
 		Window* m_Window;
 		LayerStack* m_Layers;
-		Renderer* m_Renderer;
 		ImGuiLayer* m_ImGuiLayer;
-		//////////
-		Audio* m_Audio;
 
 
 	private:
@@ -59,3 +52,4 @@ namespace Keg
 	// This is the client application
 	Application* CreateApplication();
 }
+

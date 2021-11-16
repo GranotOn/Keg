@@ -1,13 +1,8 @@
-#include <functional>
-#include <string>
-#include <utility>
-#include <glad/glad.h>
-#include <glm.hpp>
+#include "stadx.h"
 
 #include "Application.h"
-#include "Platform/WindowsWindow.h"
-#include "Renderer/Vertex.h"
-#include "Renderer/OpenGLTextureManager.h"
+
+#include "Platform/WindowBuilder.h"
 #include "Renderer/RendererBuilder.h"
 #include "Audio/AudioBuilder.h"
 
@@ -28,14 +23,10 @@ namespace Keg
         m_Layers = new LayerStack();
         s_Instance = this;
 
-        m_Window = new WindowsWindow();
+        m_Window = WindowBuilder::GetInstance();
         m_Window->SetEventCallback(EVENT_FUNC(Application::OnEvent));
         
         m_LastUpdate = { m_Window->GetTime(), 0 };
-
-        m_Renderer = RendererBuilder::GetInstance()->GetRenderer();
-        //////////
-        m_Audio = AudioBuilder::GetAudio();
 
         m_ImGuiLayer = new ImGuiLayer();
     }
@@ -64,7 +55,7 @@ namespace Keg
 
     bool Application::OnResize(WindowResizeEvent& e)
     {
-        m_Renderer->OnViewportChange(e.GetWidth(), e.GetHeight());
+        RendererBuilder::GetInstance()->GetRenderer()->OnViewportChange(e.GetWidth(), e.GetHeight());
         return false;
     }
 
@@ -94,9 +85,9 @@ namespace Keg
 
         // Initialize Renderer
         // IMPORTANT: Must happen after m_Window->Init();
-        m_Renderer->Init(m_Window->GetProcAddress());
-        ///////////
-        m_Audio->Init();
+        RendererBuilder::GetInstance()->GetRenderer()->Init(m_Window->GetProcAddress());
+        // Initialize Audio
+        AudioBuilder::GetAudio()->Init();
 
         // Assert that a window exists
         if (!m_Window->HasWindow())

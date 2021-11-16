@@ -1,5 +1,5 @@
+#include "stadx.h"
 #include "Logger.h"
-
 
 namespace Keg
 {

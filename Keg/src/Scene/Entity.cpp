@@ -1,3 +1,4 @@
+#include "stadx.h"
 #include "Entity.h"
 
 namespace Keg

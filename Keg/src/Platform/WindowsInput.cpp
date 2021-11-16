@@ -1,15 +1,16 @@
+#include "stadx.h"
 #include "WindowsInput.h"
-#include <GLFW/glfw3.h>
+#include "WindowBuilder.h"
 
-#include "WindowsWindow.h"
-#include "Core/Application/Application.h"
+#include "Core/Logger/Logger.h"
+#include <GLFW/glfw3.h>
 
 namespace Keg
 {
 
 	GLFWwindow* GetWindow()
 	{
-		return static_cast<WindowsWindow*>(Application::GetInstance()->GetWindow())->GetWindow();
+		return static_cast<GLFWwindow*>(WindowBuilder::GetInstance()->GetNativeWindow());
 	}
 
 
