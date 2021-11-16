@@ -100,7 +100,6 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 
 		}
 
-
 		Keg::Audio* audio = Keg::AudioBuilder::GetAudio();
 		Keg::Effect* e1 = audio->addEffect((std::string(KEG_ASSETS) + "/AudioFiles/sample.ogg").c_str());
 		Keg::Effect* e2 = audio->addEffect((std::string(KEG_ASSETS) + "/AudioFiles/sample2.ogg").c_str());
@@ -109,6 +108,7 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		e2->Play();
 		e3->Play();
 	}
+
 
 	virtual void OnDetach() { }
 	virtual void OnUpdate(Time &time)

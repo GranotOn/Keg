@@ -104,4 +104,8 @@ namespace Keg
 	{
 		return m_Tag;
 	}
+	entt::registry* Scene::GetRegistery()
+	{
+		return &m_Registery;
+	}
 }

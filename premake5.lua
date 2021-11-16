@@ -40,6 +40,7 @@ project "Keg"
         "Keg/Vendor/entt",
         "Keg/Vendor/AL",
         "Keg/Vendor/json",
+        "Keg/Vendor/libsndfile",
         "Keg/src"
     }
 
@@ -99,6 +100,7 @@ project "Sandbox"
         "%{wks.location}/Keg/Vendor/entt",
         "%{wks.location}/Keg/Vendor/AL",
         "%{wks.location}/Keg/Vendor/json",
+        "%{wks.location}/Keg/Vendor/libsndfile",
     }
 
     links
