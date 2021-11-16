@@ -8,8 +8,6 @@ namespace Keg {
 	OpenAlAudio* OpenAlAudio::s_Audio = nullptr;
 	static ALCdevice* p_ALCDevice = nullptr;
 
-
-
 	OpenAlAudio* OpenAlAudio::GetInstance()
 	{
 		if (s_Audio == nullptr)
@@ -115,6 +113,7 @@ namespace Keg {
 			if (sf_command(sndfile, SFC_WAVEX_GET_AMBISONIC, NULL, 0) == SF_AMBISONIC_B_FORMAT)
 				format = AL_FORMAT_BFORMAT3D_16;
 		}
+
 		if (!format)
 		{
 			fprintf(stderr, "Unsupported channel count: %d\n", sfinfo.channels);

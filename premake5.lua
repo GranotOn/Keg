@@ -21,11 +21,11 @@ project "Keg"
     pchheader "stadx.h"
     pchsource "Keg/src/stadx.cpp"
 
-    defines { "_CRT_SECURE_NO_WARNINGS", "GLFW_INCLUDE_NONE", 'KEG_ASSETS="%{assetdir}"'}
-
+    defines { "GLFW_INCLUDE_NONE", "_CRT_SECURE_NO_WARNINGS", 'KEG_ASSETS="%{assetdir}"'}
+    
     postbuildcommands
     {
-        "{COPY} %{prj.name}/assets %{assetdir}"
+        "{COPY} %{prj.name}/assets %{assetdir}",
     }
 
     files
@@ -44,6 +44,7 @@ project "Keg"
         "Keg/Vendor/imgui", 
         "Keg/Vendor/entt",
         "Keg/Vendor/AL",
+        "Keg/Vendor/sndfile",
         "Keg/Vendor/json",
         "Keg/src"
     }
@@ -53,8 +54,9 @@ project "Keg"
         "GLFW",
         "GLAD",
         "ImGui",
-        "OpenAL32.lib",
         "opengl32.lib",
+        "libs/OpenAL32.lib",
+        "libs/sndfile.lib",
     }
 
     filter "configurations:Debug"
@@ -83,8 +85,14 @@ project "Sandbox"
 
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
+    libdir = "%{wks.location}/bin/" .. outputdir .. "/%{prj.name}"
 
-    defines { 'KEG_ASSETS="%{assetdir}"' }
+    defines { "GLFW_INCLUDE_NONE", "_CRT_SECURE_NO_WARNINGS", 'KEG_ASSETS="%{assetdir}"'}
+
+    postbuildcommands
+    {
+        "{COPY} %{wks.location}/libs %{libdir}/",
+    }
 
     files
     {
@@ -103,12 +111,14 @@ project "Sandbox"
         "%{wks.location}/Keg/Vendor/imgui",
         "%{wks.location}/Keg/Vendor/entt",
         "%{wks.location}/Keg/Vendor/AL",
+        "%{wks.location}/Keg/Vendor/sndfile",
         "%{wks.location}/Keg/Vendor/json",
     }
 
     links
     {
         "Keg",
+        "libs/OpenAL32.dll"
     }
 
     
