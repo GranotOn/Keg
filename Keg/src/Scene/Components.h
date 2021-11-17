@@ -64,19 +64,12 @@ namespace Keg
 
 	struct CameraComponent
 	{
-		glm::vec3 Target = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 CameraFront = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 CameraUp = { 0.0f, 1.0f, 0.0f };
 
-		inline glm::vec3 GetDirection(glm::vec3& position) { return glm::normalize(position - Target); }
-		inline glm::vec3 GetRightVector(glm::vec3& direction) { return glm::normalize(glm::cross({0.0f, 1.0f, 0.0f}, direction)); }
-		inline glm::vec3 GetUpVector(glm::vec3& direction, glm::vec3& rightVector) { return glm::cross(direction, rightVector); }
-		
 		inline glm::mat4 GetViewMatrix(glm::vec3& position)
 		{
-			glm::vec3 direction = GetDirection(position);
-			glm::vec3 rightVector = GetRightVector(direction);
-			glm::vec3 upVector = GetUpVector(direction, rightVector);
-			
-			return glm::lookAt(position, Target, upVector);
+			return glm::lookAt(position, CameraFront + position, CameraUp);
 		}
 
 		CameraComponent() {}
