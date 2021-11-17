@@ -104,8 +104,6 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 			e.AddComponent<Keg::MeshComponent>(vao, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
 		}
 
-		auto ExplosionEffect = m_Scene->CreateEntity();
-
 		Keg::Audio* audio = Keg::AudioBuilder::GetAudio();
 		Keg::Effect* e1 = audio->AddEffect((std::string(KEG_ASSETS) + "/AudioFiles/sample.ogg").c_str());
 		//e1->Play();
@@ -114,39 +112,23 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 	virtual void OnDetach() { }
 	virtual void OnUpdate(Time &time)
 	{
-		constexpr auto SPEED = 10.0f;
-
-		auto movement = (float) ((double)SPEED * time.deltaTime);
-
 		Keg::WindowsInput* wi = new Keg::WindowsInput();
 
 		if (wi->IsKeyPressed(Keg::Key::A))
 		{
-			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
-			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
-			cc.Target += glm::vec3(movement, 0.0f, 0.0f);
-			tc.Translation += glm::vec3(movement, 0.0f, 0.0f);
+			m_CameraController->MoveLeft(time);
 		}
 		if (wi->IsKeyPressed(Keg::Key::D))
 		{
-			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
-			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
-			cc.Target += glm::vec3(-movement, 0.0f, 0.0f);
-			tc.Translation += glm::vec3(-movement, 0.0f, 0.0f);
+			m_CameraController->MoveRight(time);
 		}
 		if (wi->IsKeyPressed(Keg::Key::S))
 		{
-			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
-			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
-			cc.Target += glm::vec3(0.0f, 0.0f, -movement);
-			tc.Translation += glm::vec3(0.0f, 0.0f, -movement);
+			m_CameraController->MoveBackward(time);
 		}
 		if (wi->IsKeyPressed(Keg::Key::W))
 		{
-			Keg::TransformComponent& tc = m_Camera.GetComponent<Keg::TransformComponent>();
-			Keg::CameraComponent& cc = m_Camera.GetComponent<Keg::CameraComponent>();
-			cc.Target += glm::vec3(0.0f, 0.0f, movement);
-			tc.Translation += glm::vec3(0.0f, 0.0f, movement);
+			m_CameraController->MoveForward(time);
 		}
 		
 		delete wi;
@@ -223,16 +205,15 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		}
 	}
 
-	TestLayer() : m_Scene(Keg::Scene::Create()), m_Camera(m_Scene->CreateEntity()), m_DemoEntity(m_Scene->CreateEntity())
+	TestLayer() : m_Scene(Keg::Scene::Create()), m_DemoEntity(m_Scene->CreateEntity())
 	{
-		auto &tc = m_Camera.AddComponent<Keg::TransformComponent>();
-		tc.Translation = { 0.0f, 0.0f, -10.0f };
-		m_Camera.AddComponent<Keg::CameraComponent>();
+
+		m_CameraController = new Keg::CameraController(m_Scene);
 	}
 
 private:
 	Keg::Scene* m_Scene;
-	Keg::Entity m_Camera;
+	Keg::CameraController* m_CameraController;
 	Keg::Entity m_DemoEntity;
 
 #ifdef KEG_DEBUG

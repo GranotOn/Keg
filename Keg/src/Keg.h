@@ -36,6 +36,7 @@
 #include "Scene/Components.h"
 #include "Scene/Scene.h"
 #include "Scene/Entity.h"
+#include "Scene/CameraController.h"
 
 // ETC
 #include "Core/Application/Time.h"
