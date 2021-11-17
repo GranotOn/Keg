@@ -114,22 +114,19 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 	{
 		Keg::WindowsInput* wi = new Keg::WindowsInput();
 
+		m_CameraController->OnCursorUpdate(wi->GetMouseX(), wi->GetMouseY());
+		
 		if (wi->IsKeyPressed(Keg::Key::A))
-		{
 			m_CameraController->MoveLeft(time);
-		}
+		
 		if (wi->IsKeyPressed(Keg::Key::D))
-		{
 			m_CameraController->MoveRight(time);
-		}
+		
 		if (wi->IsKeyPressed(Keg::Key::S))
-		{
 			m_CameraController->MoveBackward(time);
-		}
+		
 		if (wi->IsKeyPressed(Keg::Key::W))
-		{
 			m_CameraController->MoveForward(time);
-		}
 		
 		delete wi;
 
@@ -151,12 +148,19 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 
 		return true;
 	}
+	
+	bool OnCursorMovement(Keg::CursorMovedEvent& e)
+	{
+		//m_CameraController->OnCursorUpdate(e.GetXPosition(), e.GetYPosition());
+		return true;
+	}
 
 	virtual void OnEvent(Keg::Event& e) 
 	{
 		Keg::EventDispatcher dispatcher(e);
 
 		dispatcher.Dispatch<Keg::KeyPressedEvent>(std::bind(&TestLayer::OnKeyPress, this, std::placeholders::_1));
+		dispatcher.Dispatch<Keg::CursorMovedEvent>(std::bind(&TestLayer::OnCursorMovement, this, std::placeholders::_1));
 	}
 
 	virtual void OnImGuiUpdate()
