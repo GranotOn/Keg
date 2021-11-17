@@ -21,6 +21,7 @@ namespace Keg
 		std::string Tag;
 	};
 
+
 	struct TransformComponent
 	{
 		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };

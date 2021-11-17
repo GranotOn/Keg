@@ -1,7 +1,11 @@
 #include "stadx.h"
 #include "Audio/OpenAlAudio.h"
-#include <iostream>
 #include <Core/Logger/Logger.h>
+
+
+#include <alc.h>
+#include <sndfile.h>
+#include <alext.h>
 
 namespace Keg {
 
@@ -22,21 +26,22 @@ namespace Keg {
 	void OpenAlAudio::OpenAlDevice() {
 			p_ALCDevice = alcOpenDevice(nullptr); // nullptr = get default device
 			if (!p_ALCDevice)
-				throw("failed to get sound device");
-
+				KEG_ENGINE_ERROR("OpenAlAudio::OpenAlDevice : failed to get sound device")
 			p_ALCContext = alcCreateContext(p_ALCDevice, nullptr);  // create context
+
 			if (!p_ALCContext)
-				throw("Failed to set sound context");
+				KEG_ENGINE_ERROR("OpenAlAudio::OpenAlDevice : Failed to set sound context")
 
 			if (!alcMakeContextCurrent(p_ALCContext))   // make context current
-				throw("failed to make context current");
+				KEG_ENGINE_ERROR("OpenAlAudio::OpenAlDevice : failed to make context current")
 
 			const ALCchar* name = nullptr;
 			if (alcIsExtensionPresent(p_ALCDevice, "ALC_ENUMERATE_ALL_EXT"))
 				name = alcGetString(p_ALCDevice, ALC_ALL_DEVICES_SPECIFIER);
 			if (!name || alcGetError(p_ALCDevice) != 0)
 				name = alcGetString(p_ALCDevice, ALC_DEVICE_SPECIFIER);
-			printf("DEVICE VOICE Opened \"%s\"\n", name);
+			
+			KEG_ENGINE_INFO("OpenAlAudio::OpenAlDevice: DEVICE VOICE Opened {0}", name)
 	};
 
 	void OpenAlAudio::PlayEffect(ALuint buffer, ALuint soundSource, ALuint soundBuffer) {
@@ -51,23 +56,24 @@ namespace Keg {
 
 	bool OpenAlAudio::IsEffectPlaying(ALuint &buffer) {
 		ALint state;
+
 		alGetSourcei(buffer, AL_SOURCE_STATE, &state);
 		if (state == AL_PLAYING && alGetError() == AL_NO_ERROR) {
 			return true;
 		}
+
 		return false;
 	}
 
 
 
 
-	Effect* OpenAlAudio::addEffect(const char* filename) {
+	Effect* OpenAlAudio::AddEffect(const char* filename) {
 
 		ALuint p_sound_Source;
 		ALuint p_sound_Buffer = 0;
 
 		alGenSources(1, &p_sound_Source);
-		KEG_ENGINE_INFO("p_source 1", p_sound_Source);
 		alSourcei(p_sound_Source, AL_BUFFER, p_sound_Buffer);
 
 		Effect* ee = new Effect();
@@ -87,12 +93,12 @@ namespace Keg {
 		sndfile = sf_open(filename, SFM_READ, &sfinfo);
 		if (!sndfile)
 		{
-			fprintf(stderr, "Could not open audio in %s: %s\n", filename, sf_strerror(sndfile));
+			KEG_ENGINE_ERROR("OpenALAudio::AddEffect : Could not open audio in {0} : {1}", filename, sf_strerror(sndfile));
 			return 0;
 		}
 		if (sfinfo.frames < 1 || sfinfo.frames >(sf_count_t)(INT_MAX / sizeof(short)) / sfinfo.channels)
 		{
-			fprintf(stderr, "Bad sample count in %s (%" PRId64 ")\n", filename, sfinfo.frames);
+			KEG_ENGINE_ERROR("OpenALAudio::AddEffect : Bad sample count in {0} : {1}", filename, sfinfo.frames);
 			sf_close(sndfile);
 			return 0;
 		}
@@ -116,7 +122,7 @@ namespace Keg {
 
 		if (!format)
 		{
-			fprintf(stderr, "Unsupported channel count: %d\n", sfinfo.channels);
+			KEG_ENGINE_ERROR("OpenALAudio::AddEffect : Unsupported channel count {0}", sfinfo.channels);
 			sf_close(sndfile);
 			return 0;
 		}
@@ -127,9 +133,9 @@ namespace Keg {
 		num_frames = sf_readf_short(sndfile, membuf, sfinfo.frames);
 		if (num_frames < 1)
 		{
+			KEG_ENGINE_ERROR("OpenALAudio::AddEffect : Failed to read samples in {0} ({1})", filename, num_frames);
 			free(membuf);
 			sf_close(sndfile);
-			fprintf(stderr, "Failed to read samples in %s (%" PRId64 ")\n", filename, num_frames);
 			return 0;
 		}
 		num_bytes = (ALsizei)(num_frames * sfinfo.channels) * (ALsizei)sizeof(short);
@@ -148,13 +154,12 @@ namespace Keg {
 		err = alGetError();
 		if (err != AL_NO_ERROR)
 		{
-			fprintf(stderr, "OpenAL Error: %s\n", alGetString(err));
+			KEG_ENGINE_ERROR("OpenALAudio::AddEffect : Failed to read samples in {0} ({1})", filename, num_frames);
 			if (buffer && alIsBuffer(buffer))
 				alDeleteBuffers(1, &buffer);
 			return 0;
 		}
 
-		//p_SoundEffectBuffers.push_back(buffer);  // add to the list of known buffers
 		ee->SetBuffer(buffer);
 		return ee;
 	}
@@ -165,19 +170,16 @@ namespace Keg {
 		try
 		{
 			OpenAlDevice();
-			//p_SoundEffectBuffers.clear();
 		}
 		catch (std::exception & e)
 		{
-			KEG_ENGINE_ERROR("OpenAL error: Init {0}", e.what());
+			KEG_ENGINE_ERROR("OpenALAudio::AddEffect : OpenAL error: Init {0}", e.what());
 		}
 
 	}
 
 
 	OpenAlAudio::~OpenAlAudio() {
-		//alDeleteBuffers(p_SoundEffectBuffers.size(), p_SoundEffectBuffers.data());
-		//p_SoundEffectBuffers.clear();
 		alcMakeContextCurrent(nullptr);
 		alcDestroyContext(p_ALCContext);
 		alcCloseDevice(p_ALCDevice);

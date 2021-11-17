@@ -4,12 +4,12 @@ namespace Keg {
 	class FileSystem
 	{
 	public:
-		static bool createFolder(std::string folderPath, std::string folderName);
-		static bool removeFolder(std::string folderPath, std::string folderName);
-		static bool changeFolderName(std::string folderPath, std::string newName);
-		static bool copyFile(std::string filePath, std::string fileNewPath);
-		static std::string getPath(std::string path);
-		static std::string getCurrentPath();
+		static bool CreateFolder(std::string folderPath, std::string folderName);
+		static bool RemoveFolder(std::string folderPath, std::string folderName);
+		static bool ChangeFolderName(std::string folderPath, std::string newName);
+		static bool CopyFile(std::string filePath, std::string fileNewPath);
+		static std::string GetPath(std::string path);
+		static std::string GetCurrentPath();
 	};
 }
 
