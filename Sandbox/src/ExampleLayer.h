@@ -114,7 +114,7 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 	{
 		Keg::WindowsInput* wi = new Keg::WindowsInput();
 
-		m_CameraController->OnCursorUpdate(wi->GetMouseX(), wi->GetMouseY());
+		m_CameraController->OnCursorUpdate((float) wi->GetMouseX(), (float) wi->GetMouseY());
 		
 		if (wi->IsKeyPressed(Keg::Key::A))
 			m_CameraController->MoveLeft(time);

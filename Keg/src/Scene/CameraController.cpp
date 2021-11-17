@@ -7,33 +7,33 @@ namespace Keg
 {
 	void CameraController::MoveForward(double& deltaTime)
 	{
-		float movement = (double)m_CameraSpeed * deltaTime;
-		Keg::TransformComponent& tc = m_CameraEntity.GetComponent<Keg::TransformComponent>();
-		Keg::CameraComponent& cc = m_CameraEntity.GetComponent<Keg::CameraComponent>();
+		float movement = m_CameraSpeed * (float)deltaTime;
+		Keg::TransformComponent& tc = GetTransformComponent();
+		Keg::CameraComponent& cc = GetCameraComponent();
 		tc.Translation += cc.CameraFront * movement;
 	}
 
 	void CameraController::MoveBackward(double& deltaTime)
 	{
-		float movement = (double)m_CameraSpeed * deltaTime;
-		Keg::TransformComponent& tc = m_CameraEntity.GetComponent<Keg::TransformComponent>();
-		Keg::CameraComponent& cc = m_CameraEntity.GetComponent<Keg::CameraComponent>();
+		float movement = m_CameraSpeed * (float)deltaTime;
+		Keg::TransformComponent& tc = GetTransformComponent();
+		Keg::CameraComponent& cc = GetCameraComponent();
 		tc.Translation -= cc.CameraFront * movement;
 	}
 
 	void CameraController::MoveLeft(double& deltaTime)
 	{
-		float movement = (double)m_CameraSpeed * deltaTime;
-		Keg::TransformComponent& tc = m_CameraEntity.GetComponent<Keg::TransformComponent>();
-		Keg::CameraComponent& cc = m_CameraEntity.GetComponent<Keg::CameraComponent>();
+		float movement = m_CameraSpeed * (float)deltaTime;
+		Keg::TransformComponent& tc = GetTransformComponent();
+		Keg::CameraComponent& cc = GetCameraComponent();
 		tc.Translation -= glm::normalize(glm::cross(cc.CameraFront, cc.CameraUp)) * movement;
 	}
 	
 	void CameraController::MoveRight(double& deltaTime)
 	{
-		float movement = (double)m_CameraSpeed * deltaTime;
-		Keg::TransformComponent& tc = m_CameraEntity.GetComponent<Keg::TransformComponent>();
-		Keg::CameraComponent& cc = m_CameraEntity.GetComponent<Keg::CameraComponent>();
+		float movement = m_CameraSpeed * (float) deltaTime;
+		Keg::TransformComponent& tc = GetTransformComponent();
+		Keg::CameraComponent& cc = GetCameraComponent();
 		tc.Translation += glm::normalize(glm::cross(cc.CameraFront, cc.CameraUp)) * movement;
 	}
 	void CameraController::OnCursorUpdate(float x, float y)
@@ -65,7 +65,7 @@ namespace Keg
 		direction.y = sin(glm::radians(m_Pitch));
 		direction.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
 
-		CameraComponent& cc = m_CameraEntity.GetComponent<CameraComponent>();
+		CameraComponent& cc = GetCameraComponent();
 		cc.CameraFront = direction;
 	}
 }
