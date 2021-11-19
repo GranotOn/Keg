@@ -8,7 +8,7 @@ namespace Keg
 	{
 	public:
 
-		WindowsWindow(const char* title = "Keg Engine", int width = 800, int height = 600);
+		WindowsWindow(const char* title = "Keg Engine", int width = 1280, int height = 720);
 		// Initialization & Destruction
 		virtual void Init() override;
 		virtual ~WindowsWindow() override;
@@ -26,6 +26,7 @@ namespace Keg
 		inline virtual int GetHeight() { return m_Data.height; }
 		inline virtual double GetTime() { return glfwGetTime(); }
 		virtual void SetCursorVisibility(bool& mode);
+		virtual void SetWindowIcon(const char* path);
 
 		GLFWwindow* GetWindow() { return m_Window; }
 		void* GetNativeWindow() { return m_Window; }
