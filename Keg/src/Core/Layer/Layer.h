@@ -1,7 +1,7 @@
 #pragma once
 #include "stadx.h"
 
-#include "Core/Application/Time.h"
+#include "Core/Time/Time.h"
 #include "Core/Event/Event.h"
 
 namespace Keg
