@@ -25,6 +25,7 @@ namespace Keg
 		inline virtual int GetWidth() { return m_Data.width; }
 		inline virtual int GetHeight() { return m_Data.height; }
 		inline virtual double GetTime() { return glfwGetTime(); }
+		virtual void SetCursorVisibility(bool& mode);
 
 		GLFWwindow* GetWindow() { return m_Window; }
 		void* GetNativeWindow() { return m_Window; }

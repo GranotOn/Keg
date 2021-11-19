@@ -21,6 +21,11 @@ namespace Keg
 		return glfwGetProcAddress;
 	}
 
+	void WindowsWindow::SetCursorVisibility(bool& mode)
+	{
+		glfwSetInputMode(m_Window, GLFW_CURSOR, (mode ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED));
+	}
+
 	void WindowsWindow::Init() {
 
 		/* Initialize GLFW */
@@ -53,12 +58,11 @@ namespace Keg
 
 		// Set the user pointer (the window data). This step is crucial so that we can query
 		// this data on each event.
-		glfwSetWindowUserPointer(m_Window, (void *) &m_Data);
+		glfwSetWindowUserPointer(m_Window, (void*)&m_Data);
 
-		
-
-
-		
+		// Hide cursor on default (So camera isn't limited).
+		// Can revert using SetCursorVisibility(bool &mode);
+		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		
 		///////////////////////
 		//// Callbacks

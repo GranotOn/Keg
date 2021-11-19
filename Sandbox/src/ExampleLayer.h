@@ -101,9 +101,9 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 				color.Color = glm::vec3(0.2f, 1.0f, 0.2f);
 			}
 
-			e.AddComponent<Keg::MeshComponent>(vao, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
+			 e.AddComponent<Keg::MeshComponent>(vao, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
 		}
-
+		
 		Keg::Audio* audio = Keg::AudioBuilder::GetAudio();
 		Keg::Effect* e1 = audio->AddEffect((std::string(KEG_ASSETS) + "/AudioFiles/sample.ogg").c_str());
 		//e1->Play();

@@ -24,6 +24,7 @@ namespace Keg
 		virtual int GetWidth() = 0;
 		virtual int GetHeight() = 0;
 		virtual double GetTime() = 0;
+		virtual void SetCursorVisibility(bool& mode) = 0;
 
 		// Initialization & Destruction
 		virtual void Init() = 0;
