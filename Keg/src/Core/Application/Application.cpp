@@ -82,7 +82,7 @@ namespace Keg
         
         // Initialize Window
         m_Window->Init();
-
+        m_Window->SetWindowIcon("C:\\Users\\grano\\Desktop\\Keg\\Keg\\assets\\Images\\icon.jpg");
         // Initialize Renderer
         // IMPORTANT: Must happen after m_Window->Init();
         RendererBuilder::GetInstance()->GetRenderer()->Init(m_Window->GetProcAddress());
