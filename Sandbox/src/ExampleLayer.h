@@ -107,6 +107,11 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		Keg::Audio* audio = Keg::AudioBuilder::GetAudio();
 		Keg::Effect* e1 = audio->AddEffect((std::string(KEG_ASSETS) + "/AudioFiles/sample.ogg").c_str());
 		//e1->Play();
+
+		Keg::Scene::Serialize(m_Scene);
+		std::string c = (std::string(KEG_ASSETS) + "/Scenes/Scene.json");
+		Keg::Scene::Deserialize(c.c_str());
+
 	}
 
 	virtual void OnDetach() { }
