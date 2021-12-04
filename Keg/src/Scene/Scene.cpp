@@ -35,24 +35,23 @@ namespace Keg
 
 
 		{
-			auto view = m_Registery.view<TransformComponent, MeshComponent, ColorComponent>();
-			auto textureView = m_Registery.view<TransformComponent, MeshComponent,
-												ColorComponent, TextureComponent>();
+			auto view = m_Registery.view<MeshComponent>();
 
-			textureView.each([&renderer](TransformComponent& trans, MeshComponent& mc,
-				ColorComponent& cc, TextureComponent& tex)
-				{
-					renderer->Render(trans, mc, cc, tex);
-				});
+			for (auto entity : view)
+			{
+				// TODO: Ignore LightComponent, should be in a former rendering loop
+				auto [color, transform, mesh] = m_Registery.get<ColorComponent, TransformComponent, MeshComponent>(entity);
+				auto texture = m_Registery.try_get<TextureComponent>(entity);
 
+				bool hasTexture = !!texture;
 
+				if (texture)
+					renderer->Render(transform, mesh, color, m_Registery.get<TextureComponent>(entity));
+				
+				else
+					renderer->Render(transform, mesh, color);
 
-			view.each([&renderer](TransformComponent& tc, MeshComponent& mc, ColorComponent &cc)
-				{
-					renderer->Render(tc, mc, cc);
-				});
-
-			
+			}
 		}
 
 		renderer->EndRender();

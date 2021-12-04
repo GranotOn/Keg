@@ -58,6 +58,7 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		Keg::OpenGLTexture* containerTexture = Keg::OpenGLTextureManager::GetInstance()->GetTexture("container");
 
 		Keg::OpenGLVAO vao(vertices, elements);
+		Keg::OpenGLVAO lightVAO(vertices, elements);
 
 		glm::vec3 cubePositions[] = {
 			glm::vec3(0.0f,  0.0f,  0.0f),
@@ -82,7 +83,6 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 			}
 
 			Keg::TransformComponent &tra = e.GetComponent<Keg::TransformComponent>();
-			tra.Rotation = { 0.5f, 1.0f, 0.0f };
 			tra.Translation = cubePositions[i];
 			tra.RotationAngle = 20.0f * (float) i;
 
@@ -104,6 +104,15 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 			 e.AddComponent<Keg::MeshComponent>(vao, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
 		}
 		
+		auto light = m_Scene->CreateEntity();
+
+		light.AddComponent<Keg::MeshComponent>(lightVAO, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
+		Keg::TransformComponent& ltc = light.GetComponent<Keg::TransformComponent>();
+		Keg::ColorComponent& lcc = light.GetComponent<Keg::ColorComponent>();
+		ltc.Translation = glm::vec3(1.0f, 2.0f, 0.0f);
+		lcc.Color = glm::vec3(1.0f, 1.0f, 1.0f);
+
+
 		Keg::Audio* audio = Keg::AudioBuilder::GetAudio();
 		Keg::Effect* e1 = audio->AddEffect((std::string(KEG_ASSETS) + "/AudioFiles/sample.ogg").c_str());
 		//e1->Play();

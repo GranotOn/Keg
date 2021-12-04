@@ -13,6 +13,8 @@ namespace Keg
 #define RENDERER_FAR_PLANE 100.0f
 #define RENDERER_FOV 90.0f
 #define RENDERER_DEFAULT_SHADER "ColorShader"
+#define RENDERER_LIGHTSOURCE_SHADER "LightSourceShader"
+
 	class Renderer
 	{
 	public:

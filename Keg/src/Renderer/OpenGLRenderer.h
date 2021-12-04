@@ -40,7 +40,6 @@ namespace Keg
 			ColorComponent& colorComponent, TextureComponent& textureComponent);
 
 		~OpenGLRenderer();
-
 	private:
 		OpenGLRenderer()
 		{

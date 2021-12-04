@@ -95,6 +95,7 @@ namespace Keg
 			glDrawArrays(GL_TRIANGLES, 0, meshComponent.Vertices);
 		}
 
+		tex->UnBind();
 		vao.UnBind();
 
 	}
@@ -104,6 +105,7 @@ namespace Keg
 		ColorComponent& colorComponent)
 	{
 		Shader* shader = GetShader(m_UsedShader);
+		
 
 		// Color
 		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
@@ -153,7 +155,8 @@ namespace Keg
 		//////////
 		// Shaders
 		//////////
-		AddShader(RENDERER_DEFAULT_SHADER, std::string(KEG_ASSETS) + "/Shaders/4.6.shader.vs", std::string(KEG_ASSETS) + "/Shaders/4.6.shader.fs");
+		AddShader(RENDERER_DEFAULT_SHADER, std::string(KEG_ASSETS) + "/Shaders/RegularShader/4.6.shader.vs", std::string(KEG_ASSETS) + "/Shaders/RegularShader/4.6.shader.fs");
+		AddShader(RENDERER_LIGHTSOURCE_SHADER, std::string(KEG_ASSETS) + "/Shaders/LightSourceShader/4.6.shader.vs", std::string(KEG_ASSETS) + "/Shaders/LightSourceShader/4.6.shader.fs");
 	
 		/////////////
 		// Properties

@@ -25,7 +25,7 @@ namespace Keg
 	struct TransformComponent
 	{
 		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Rotation = { 0.5f, 1.0f, 0.0f };
 		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
 		
 		float RotationAngle = 0.0f;
@@ -57,8 +57,8 @@ namespace Keg
 		MeshComponent(OpenGLVAO& v, int elements, int vertices) : VAO(v), Elements(elements), Vertices(vertices) {}
 
 		MeshComponent(MeshComponent&&) = default;
-		MeshComponent(const MeshComponent&) = delete;
-		MeshComponent& operator=(const MeshComponent&) = delete;
+		MeshComponent(const MeshComponent&) = default;
+		MeshComponent& operator=(const MeshComponent&) = default;
 		MeshComponent& operator=(MeshComponent&&) = default;
 	};
 
