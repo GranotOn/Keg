@@ -2,6 +2,8 @@
 
 #include <string>
 #include <vector>
+#include <entt.hpp>
+
 #include "Renderer/Vertex.h"
 #include "Renderer/DrawDetails.h"
 #include "Scene/Components.h"
@@ -13,6 +15,8 @@ namespace Keg
 #define RENDERER_FAR_PLANE 100.0f
 #define RENDERER_FOV 90.0f
 #define RENDERER_DEFAULT_SHADER "ColorShader"
+#define RENDERER_LIGHTSOURCE_SHADER "LightSourceShader"
+
 	class Renderer
 	{
 	public:
@@ -23,10 +27,10 @@ namespace Keg
 
 		virtual void BeginRender() = 0;
 		virtual void BeginRender(glm::mat4 &viewMatrix) = 0;
+		virtual void BeginRender(glm::mat4 &viewMatrix, Shader *shader) = 0;
 		virtual void EndRender() = 0;
-		virtual void Render(TransformComponent &tranformComponent, MeshComponent &meshComponent, ColorComponent& colorComponent) = 0;
-		virtual void Render(TransformComponent &tranformComponent, MeshComponent &meshComponent,
-							ColorComponent& colorComponent, TextureComponent &textureComponent) = 0;
+		virtual void Render(entt::registry& registery) = 0;
+		virtual void Draw(entt::registry& registery, entt::entity& entity, Shader* shader) = 0;
 		
 		// Mesh
 

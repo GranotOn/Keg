@@ -21,11 +21,17 @@ namespace Keg
 		std::string Tag;
 	};
 
+	struct LightComponent
+	{
+		glm::vec3 LightColor = { 1.0f, 1.0f, 1.0f };
+		float Intensity = 1.0f;
+	};
+
 
 	struct TransformComponent
 	{
 		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Rotation = { 0.5f, 1.0f, 0.0f };
 		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
 		
 		float RotationAngle = 0.0f;
@@ -57,8 +63,8 @@ namespace Keg
 		MeshComponent(OpenGLVAO& v, int elements, int vertices) : VAO(v), Elements(elements), Vertices(vertices) {}
 
 		MeshComponent(MeshComponent&&) = default;
-		MeshComponent(const MeshComponent&) = delete;
-		MeshComponent& operator=(const MeshComponent&) = delete;
+		MeshComponent(const MeshComponent&) = default;
+		MeshComponent& operator=(const MeshComponent&) = default;
 		MeshComponent& operator=(MeshComponent&&) = default;
 	};
 
@@ -66,6 +72,7 @@ namespace Keg
 	{
 		glm::vec3 CameraFront = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 CameraUp = { 0.0f, 1.0f, 0.0f };
+		bool IsMainCamera = false;
 
 		inline glm::mat4 GetViewMatrix(glm::vec3& position)
 		{

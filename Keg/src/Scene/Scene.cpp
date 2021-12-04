@@ -36,27 +36,7 @@ namespace Keg
 		}
 
 
-		{
-			auto view = m_Registery.view<TransformComponent, MeshComponent, ColorComponent>();
-			auto textureView = m_Registery.view<TransformComponent, MeshComponent,
-												ColorComponent, TextureComponent>();
-
-			textureView.each([&renderer](TransformComponent& trans, MeshComponent& mc,
-				ColorComponent& cc, TextureComponent& tex)
-				{
-					renderer->Render(trans, mc, cc, tex);
-				});
-
-
-
-			view.each([&renderer](TransformComponent& tc, MeshComponent& mc, ColorComponent &cc)
-				{
-					renderer->Render(tc, mc, cc);
-				});
-
-			
-		}
-
+		renderer->Render(m_Registery);
 		renderer->EndRender();
 	}
 

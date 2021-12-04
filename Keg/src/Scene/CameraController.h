@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene/Entity.h"
 #include "Scene/Scene.h"
-#include "Core/Application/Time.h"
+#include "Core/Time/Time.h"
 
 namespace Keg
 {

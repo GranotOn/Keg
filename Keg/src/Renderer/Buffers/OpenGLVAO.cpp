@@ -20,7 +20,6 @@ namespace Keg
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(uint32_t), elements.data(), GL_STATIC_DRAW);
 
-
 		/////////////
 		// Attributes
 		/////////////
@@ -30,6 +29,9 @@ namespace Keg
 		
 		// Texture attribute
 		LinkAttrib(1, 2, GL_FLOAT, sizeof(Vertex), 3 * sizeof(float));
+
+		// Normal attribute
+		LinkAttrib(2, 3, GL_FLOAT, sizeof(Vertex), 5 * sizeof(float));
 	}
 
 	void OpenGLVAO::Bind()

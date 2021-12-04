@@ -10,45 +10,6 @@ public:
 
 	virtual void OnAttach()
 	{
-		std::vector<Keg::Vertex> vertices({
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 0.0f),
-Keg::Vertex(0.5f, -0.5f, -0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 0.0f),
-Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(0.5f, -0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 1.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 1.0f),
-Keg::Vertex(-0.5f,  0.5f,  0.5f,  0.0f, 1.0f),
-Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(-0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(-0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(-0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(0.5f, -0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(0.5f, -0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f, -0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(-0.5f,  0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
-			});
-
 		std::vector<uint32_t> elements({});
 
 		Keg::Renderer* renderer = Keg::RendererBuilder::GetInstance()->GetRenderer();
@@ -57,7 +18,11 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		Keg::OpenGLTextureManager::GetInstance()->LoadTexture("container", std::string(std::string(KEG_ASSETS) + "/Textures/container.jpg").c_str());
 		Keg::OpenGLTexture* containerTexture = Keg::OpenGLTextureManager::GetInstance()->GetTexture("container");
 
+
+		auto vertices = Keg::Meshes::Cube;
+
 		Keg::OpenGLVAO vao(vertices, elements);
+		Keg::OpenGLVAO lightVAO(vertices, elements);
 
 		glm::vec3 cubePositions[] = {
 			glm::vec3(0.0f,  0.0f,  0.0f),
@@ -75,14 +40,8 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		for (int i = 0; i < 10; ++i)
 		{
 			auto e = m_Scene->CreateEntity();
-			
-			if (i == 1)
-			{
-				m_DemoEntity = e;
-			}
 
 			Keg::TransformComponent &tra = e.GetComponent<Keg::TransformComponent>();
-			tra.Rotation = { 0.5f, 1.0f, 0.0f };
 			tra.Translation = cubePositions[i];
 			tra.RotationAngle = 20.0f * (float) i;
 
@@ -104,19 +63,47 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 			 e.AddComponent<Keg::MeshComponent>(vao, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
 		}
 		
+		auto light = m_Scene->CreateEntity();
+		light.AddComponent<Keg::MeshComponent>(lightVAO, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
+		light.AddComponent<Keg::LightComponent>();
+		
+		m_DemoEntity = light;
+
+		Keg::TransformComponent& ltc = light.GetComponent<Keg::TransformComponent>();
+		Keg::ColorComponent& lcc = light.GetComponent<Keg::ColorComponent>();
+		Keg::LightComponent& llc = light.GetComponent<Keg::LightComponent>();
+
+		llc.LightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+		ltc.Translation = glm::vec3(0.0f, 4.0f, 5.0f);
+		lcc.Color = glm::vec3(1.0f, 1.0f, 1.0f);
+
 		Keg::Audio* audio = Keg::AudioBuilder::GetAudio();
 		Keg::Effect* e1 = audio->AddEffect((std::string(KEG_ASSETS) + "/AudioFiles/sample.ogg").c_str());
 		//e1->Play();
 
-		Keg::Scene::Serialize(m_Scene);
-		std::string c = (std::string(KEG_ASSETS) + "/Scenes/Scene.json");
-		Keg::Scene::Deserialize(c.c_str());
+		//Keg::Scene::Serialize(m_Scene);
+		//std::string c = (std::string(KEG_ASSETS) + "/Scenes/Scene.json");
+		//Keg::Scene::Deserialize(c.c_str());
 
 	}
 
 	virtual void OnDetach() { }
 	virtual void OnUpdate(Time &time)
 	{
+
+		// set light position
+		float lightX = 5.0f * sin(time.timeStamp);
+		float lightY = 0.0f;
+		float lightZ = 5.5f * cos(time.timeStamp);
+		float r = 0.5f * cos(time.timeStamp);
+		Keg::TransformComponent& tc = m_DemoEntity.GetComponent<Keg::TransformComponent>();
+	/*	Keg::LightComponent& lc = m_DemoEntity.GetComponent<Keg::LightComponent>();
+		Keg::ColorComponent& cc = m_DemoEntity.GetComponent<Keg::ColorComponent>();
+
+		lc.LightColor.x = r;
+		cc.Color.x = r;*/
+		tc.Translation = glm::vec3(lightX, lightY, lightZ);
+
 		Keg::WindowsInput* wi = new Keg::WindowsInput();
 
 		m_CameraController->OnCursorUpdate((float) wi->GetMouseX(), (float) wi->GetMouseY());
@@ -218,6 +205,7 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 	{
 
 		m_CameraController = new Keg::CameraController(m_Scene);
+		m_CameraController->GetEntity().GetComponent<Keg::CameraComponent>().IsMainCamera = true;
 	}
 
 private:
