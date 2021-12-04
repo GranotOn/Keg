@@ -25,15 +25,21 @@ namespace Keg
 		return s_Renderer;
 	}
 
-	void OpenGLRenderer::BeginRender(glm::mat4 &view)
+	//////////////////////
+	/// Rendering Sequence
+	//////////////////////
+
+	///////////////
+	/// BeginRender
+	///////////////
+
+	void OpenGLRenderer::BeginRender(glm::mat4& view, Shader* shader)
 	{
 		glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-		m_UsedShader = RENDERER_DEFAULT_SHADER;
-		Shader* shader = GetShader(m_UsedShader);
 		shader->Use();
+		m_UsedShader = shader;
 
 		/////////////////////
 		/// 3D Space Uniforms
@@ -47,6 +53,11 @@ namespace Keg
 		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
 	}
 
+	void OpenGLRenderer::BeginRender(glm::mat4 &view)
+	{
+		BeginRender(view, GetShader(RENDERER_DEFAULT_SHADER));
+	}
+
 
 	void OpenGLRenderer::BeginRender()
 	{
@@ -56,15 +67,24 @@ namespace Keg
 		BeginRender(view);
 	}
 
+
+	/////////////
+	/// EndRender
+	/////////////
+
 	void OpenGLRenderer::EndRender()
 	{
 
 	}
 
+	//////////
+	/// Render
+	//////////
+
 	void OpenGLRenderer::Render(TransformComponent& transformComponent, MeshComponent& meshComponent,
 		ColorComponent& colorComponent, TextureComponent& textureComponent)
 	{
-		Shader* shader = GetShader(m_UsedShader);
+		Shader* shader = m_UsedShader;
 
 		// Color
 		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
@@ -104,9 +124,8 @@ namespace Keg
 	void OpenGLRenderer::Render(TransformComponent& transformComponent, MeshComponent& meshComponent,
 		ColorComponent& colorComponent)
 	{
-		Shader* shader = GetShader(m_UsedShader);
-		
 
+		Shader* shader = m_UsedShader;
 		// Color
 		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
 		glUniform4f(colorLocation, colorComponent.Color.x, colorComponent.Color.y, colorComponent.Color.z, colorComponent.Alpha);

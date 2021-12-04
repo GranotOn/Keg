@@ -41,6 +41,7 @@
 // ETC
 #include "Core/Time/Time.h"
 #include "Scene/Components.h"
+#include "Renderer/Meshes.h"
 
 // Audio
 #include "Audio/Audio.h"

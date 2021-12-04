@@ -10,45 +10,6 @@ public:
 
 	virtual void OnAttach()
 	{
-		std::vector<Keg::Vertex> vertices({
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 0.0f),
-Keg::Vertex(0.5f, -0.5f, -0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 0.0f),
-Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(0.5f, -0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 1.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 1.0f),
-Keg::Vertex(-0.5f,  0.5f,  0.5f,  0.0f, 1.0f),
-Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(-0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(-0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(-0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(0.5f, -0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(0.5f, -0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f, -0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(-0.5f, -0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(-0.5f, -0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
-Keg::Vertex(0.5f,  0.5f, -0.5f,  1.0f, 1.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(0.5f,  0.5f,  0.5f,  1.0f, 0.0f),
-Keg::Vertex(-0.5f,  0.5f,  0.5f,  0.0f, 0.0f),
-Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
-			});
-
 		std::vector<uint32_t> elements({});
 
 		Keg::Renderer* renderer = Keg::RendererBuilder::GetInstance()->GetRenderer();
@@ -56,6 +17,9 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 
 		Keg::OpenGLTextureManager::GetInstance()->LoadTexture("container", std::string(std::string(KEG_ASSETS) + "/Textures/container.jpg").c_str());
 		Keg::OpenGLTexture* containerTexture = Keg::OpenGLTextureManager::GetInstance()->GetTexture("container");
+
+
+		auto vertices = Keg::Meshes::Cube;
 
 		Keg::OpenGLVAO vao(vertices, elements);
 		Keg::OpenGLVAO lightVAO(vertices, elements);
@@ -106,6 +70,7 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		
 		auto light = m_Scene->CreateEntity();
 
+
 		light.AddComponent<Keg::MeshComponent>(lightVAO, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
 		Keg::TransformComponent& ltc = light.GetComponent<Keg::TransformComponent>();
 		Keg::ColorComponent& lcc = light.GetComponent<Keg::ColorComponent>();
@@ -117,9 +82,9 @@ Keg::Vertex(-0.5f,  0.5f, -0.5f,  0.0f, 1.0f),
 		Keg::Effect* e1 = audio->AddEffect((std::string(KEG_ASSETS) + "/AudioFiles/sample.ogg").c_str());
 		//e1->Play();
 
-		Keg::Scene::Serialize(m_Scene);
-		std::string c = (std::string(KEG_ASSETS) + "/Scenes/Scene.json");
-		Keg::Scene::Deserialize(c.c_str());
+		//Keg::Scene::Serialize(m_Scene);
+		//std::string c = (std::string(KEG_ASSETS) + "/Scenes/Scene.json");
+		//Keg::Scene::Deserialize(c.c_str());
 
 	}
 

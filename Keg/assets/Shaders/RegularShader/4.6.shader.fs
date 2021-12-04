@@ -3,6 +3,7 @@
 out vec4 FragColor;
 
 in vec2 texCoord;
+in vec3 Norma;
 
 uniform vec4 Color;
 uniform vec3 LightColor;
@@ -14,10 +15,10 @@ void main()
     
     if (hasTexture == 1)
     {
-        FragColor = texture(aTexture, texCoord) * (Color * vec4(LightColor, 1.0f));
+        FragColor = texture(aTexture, texCoord) * Color;
     }
     else
     {
-        FragColor = (Color * vec4(LightColor, 1.0f));
+        FragColor = Color;
     }
 }

@@ -32,6 +32,7 @@ namespace Keg
 
 		virtual void BeginRender();
 		virtual void BeginRender(glm::mat4& viewMatrix);
+		virtual void BeginRender(glm::mat4& viewMatrix, Shader* shader);
 		virtual void EndRender();
 
 		virtual void Render(TransformComponent &transformComponent, MeshComponent &meshComponent,
@@ -45,11 +46,10 @@ namespace Keg
 		{
 			m_FOV = RENDERER_FOV;
 			m_Projection = glm::mat4(1.0f);
-			m_UsedShader = RENDERER_DEFAULT_SHADER;
 		}
 
 		std::map<std::string, Shader*> m_Shaders;
-		std::string m_UsedShader;
+		Shader* m_UsedShader;
 		static OpenGLRenderer* s_Renderer;
 
 		float m_FOV;
