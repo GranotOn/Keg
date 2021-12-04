@@ -21,6 +21,12 @@ namespace Keg
 		std::string Tag;
 	};
 
+	struct LightComponent
+	{
+		glm::vec3 LightColor = { 1.0f, 1.0f, 1.0f };
+		float Intensity = 1.0f;
+	};
+
 
 	struct TransformComponent
 	{
@@ -66,6 +72,7 @@ namespace Keg
 	{
 		glm::vec3 CameraFront = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 CameraUp = { 0.0f, 1.0f, 0.0f };
+		bool IsMainCamera = false;
 
 		inline glm::mat4 GetViewMatrix(glm::vec3& position)
 		{

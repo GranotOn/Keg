@@ -55,7 +55,7 @@ namespace Keg
 
 	void OpenGLRenderer::BeginRender(glm::mat4 &view)
 	{
-		BeginRender(view, GetShader(RENDERER_DEFAULT_SHADER));
+		BeginRender(view, GetShader(RENDERER_LIGHTSOURCE_SHADER));
 	}
 
 
@@ -81,29 +81,29 @@ namespace Keg
 	/// Render
 	//////////
 
-	void OpenGLRenderer::Render(TransformComponent& transformComponent, MeshComponent& meshComponent,
-		ColorComponent& colorComponent, TextureComponent& textureComponent)
+	void OpenGLRenderer::Draw(entt::registry& registery, entt::entity& entity, Shader* shader)
 	{
-		Shader* shader = m_UsedShader;
+		auto [color, transform, mesh] = registery.get<ColorComponent, TransformComponent, MeshComponent>(entity);
+		auto texture = registery.try_get<TextureComponent>(entity);
+		bool hasTexture = !!texture;
 
-		// Color
 		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
-		glUniform4f(colorLocation, colorComponent.Color.x, colorComponent.Color.y, colorComponent.Color.z, colorComponent.Alpha);
+		glUniform4f(colorLocation, color.Color.x, color.Color.y, color.Color.z, color.Alpha);
 
 		int modelLocation = glGetUniformLocation(shader->GetID(), "model");
-		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(transformComponent.GetTransform()));
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(transform.GetTransform()));
 
-		OpenGLVAO vao = meshComponent.VAO;
+		OpenGLVAO vao = mesh.VAO;
 
 		int textureSampleLocation = glGetUniformLocation(shader->GetID(), "hasTexture");
-		glUniform1i(textureSampleLocation, 1);
+		glUniform1i(textureSampleLocation, (hasTexture ? 1 : 0));
 
-		OpenGLTexture* tex = textureComponent.Texture;
-		tex->Bind();
+		if (hasTexture)
+			texture->Texture->Bind();
 
 		vao.Bind();
 
-		int n_Elements = meshComponent.Elements;
+		int n_Elements = mesh.Elements;
 
 		if (n_Elements > 0)
 		{
@@ -112,49 +112,84 @@ namespace Keg
 
 		else
 		{
-			glDrawArrays(GL_TRIANGLES, 0, meshComponent.Vertices);
+			glDrawArrays(GL_TRIANGLES, 0, mesh.Vertices);
 		}
 
-		tex->UnBind();
-		vao.UnBind();
+		if (hasTexture)
+			texture->Texture->UnBind();
 
+		vao.UnBind();
 	}
 
-
-	void OpenGLRenderer::Render(TransformComponent& transformComponent, MeshComponent& meshComponent,
-		ColorComponent& colorComponent)
+	void OpenGLRenderer::Render(entt::registry& registery)
 	{
-
 		Shader* shader = m_UsedShader;
-		// Color
-		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
-		glUniform4f(colorLocation, colorComponent.Color.x, colorComponent.Color.y, colorComponent.Color.z, colorComponent.Alpha);
+		Shader* defaultShader = GetShader(RENDERER_DEFAULT_SHADER);
 
-		int modelLocation = glGetUniformLocation(shader->GetID(), "model");
-		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(transformComponent.GetTransform()));
-	
-		OpenGLVAO vao = meshComponent.VAO;
+		auto LightView = registery.view<LightComponent>();
+		auto CameraView = registery.view<CameraComponent>();
+		auto view = registery.view<MeshComponent>();
+		
+		shader->Use();
+		int lightColorLocation = glGetUniformLocation(shader->GetID(), "LightColor");
+		int lightPositionLocation = glGetUniformLocation(shader->GetID(), "LightPosition");
+		int AmbientStrengthLocation = glGetUniformLocation(shader->GetID(), "AmbientStrength");
+		int SpecularStrengthLocation = glGetUniformLocation(shader->GetID(), "SpecularStrength");
+		int viewPositionLocation = glGetUniformLocation(shader->GetID(), "viewPos");
 
-		int textureSampleLocation = glGetUniformLocation(shader->GetID(), "hasTexture");
-		glUniform1i(textureSampleLocation, 0);
-
-		vao.Bind();
-
-		int n_Elements = meshComponent.Elements;
-
-		if (n_Elements > 0)
 		{
-			glDrawElements(GL_TRIANGLES, n_Elements, GL_UNSIGNED_INT, nullptr);
+			for (auto entity : CameraView)
+			{
+				auto& cc = registery.get<CameraComponent>(entity);
+				auto& tc = registery.get<TransformComponent>(entity);
+
+				if (cc.IsMainCamera)
+				{
+					glm::vec3 trans = tc.Translation;
+					glUniform3f(viewPositionLocation, trans.x, trans.y, trans.z);
+				}
+			}
 		}
 
-		else
 		{
-			glDrawArrays(GL_TRIANGLES, 0, meshComponent.Vertices);
+			// Calculate Lights
+			for (auto entity : LightView)
+			{
+				auto &lightComponent = registery.get<LightComponent>(entity);
+				auto &transformComponent = registery.get<TransformComponent>(entity);
+				glm::vec3 color = lightComponent.LightColor;
+				glm::vec3 pos = transformComponent.Translation;
+				glUniform3f(lightColorLocation, color.x, color.y, color.z);
+				glUniform1f(AmbientStrengthLocation, 0.1f);
+				glUniform1f(SpecularStrengthLocation, 0.6f);
+				glUniform3f(lightPositionLocation, pos.x, pos.y, pos.z);
+			}
+
+			for (auto entity : view)
+			{
+				// Pass on light components
+				auto lightComponent = registery.try_get<LightComponent>(entity);
+				bool hasLightComponent = !!lightComponent;
+
+				if (hasLightComponent)
+					continue;
+
+				Draw(registery, entity, shader);
+			}
 		}
 
-		vao.UnBind();
+		// Render Light Sources
+		{
+
+			for (auto entity : LightView)
+			{
+				glUniform3f(lightColorLocation, 1.0f, 1.0f, 1.0f);
+				glUniform1f(AmbientStrengthLocation, 1.0f);
+				glUniform1f(SpecularStrengthLocation, 1.0f);
+				Draw(registery, entity, shader);
+			}
+		}
 	}
-
 	
 	void OpenGLRenderer::Init(void* glfwGetProcAddress)
 	{

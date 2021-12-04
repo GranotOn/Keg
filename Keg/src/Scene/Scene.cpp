@@ -36,26 +36,7 @@ namespace Keg
 		}
 
 
-		{
-			auto view = m_Registery.view<MeshComponent>();
-
-			for (auto entity : view)
-			{
-				// TODO: Ignore LightComponent, should be in a former rendering loop
-				auto [color, transform, mesh] = m_Registery.get<ColorComponent, TransformComponent, MeshComponent>(entity);
-				auto texture = m_Registery.try_get<TextureComponent>(entity);
-
-				bool hasTexture = !!texture;
-
-				if (texture)
-					renderer->Render(transform, mesh, color, m_Registery.get<TextureComponent>(entity));
-				
-				else
-					renderer->Render(transform, mesh, color);
-
-			}
-		}
-
+		renderer->Render(m_Registery);
 		renderer->EndRender();
 	}
 

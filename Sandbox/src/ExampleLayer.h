@@ -40,11 +40,6 @@ public:
 		for (int i = 0; i < 10; ++i)
 		{
 			auto e = m_Scene->CreateEntity();
-			
-			if (i == 1)
-			{
-				m_DemoEntity = e;
-			}
 
 			Keg::TransformComponent &tra = e.GetComponent<Keg::TransformComponent>();
 			tra.Translation = cubePositions[i];
@@ -69,14 +64,18 @@ public:
 		}
 		
 		auto light = m_Scene->CreateEntity();
-
-
 		light.AddComponent<Keg::MeshComponent>(lightVAO, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
+		light.AddComponent<Keg::LightComponent>();
+		
+		m_DemoEntity = light;
+
 		Keg::TransformComponent& ltc = light.GetComponent<Keg::TransformComponent>();
 		Keg::ColorComponent& lcc = light.GetComponent<Keg::ColorComponent>();
-		ltc.Translation = glm::vec3(1.0f, 2.0f, 0.0f);
-		lcc.Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		Keg::LightComponent& llc = light.GetComponent<Keg::LightComponent>();
 
+		llc.LightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+		ltc.Translation = glm::vec3(0.0f, 4.0f, 5.0f);
+		lcc.Color = glm::vec3(1.0f, 1.0f, 1.0f);
 
 		Keg::Audio* audio = Keg::AudioBuilder::GetAudio();
 		Keg::Effect* e1 = audio->AddEffect((std::string(KEG_ASSETS) + "/AudioFiles/sample.ogg").c_str());
@@ -91,6 +90,20 @@ public:
 	virtual void OnDetach() { }
 	virtual void OnUpdate(Time &time)
 	{
+
+		// set light position
+		float lightX = 5.0f * sin(time.timeStamp);
+		float lightY = 0.0f;
+		float lightZ = 5.5f * cos(time.timeStamp);
+		float r = 0.5f * cos(time.timeStamp);
+		Keg::TransformComponent& tc = m_DemoEntity.GetComponent<Keg::TransformComponent>();
+	/*	Keg::LightComponent& lc = m_DemoEntity.GetComponent<Keg::LightComponent>();
+		Keg::ColorComponent& cc = m_DemoEntity.GetComponent<Keg::ColorComponent>();
+
+		lc.LightColor.x = r;
+		cc.Color.x = r;*/
+		tc.Translation = glm::vec3(lightX, lightY, lightZ);
+
 		Keg::WindowsInput* wi = new Keg::WindowsInput();
 
 		m_CameraController->OnCursorUpdate((float) wi->GetMouseX(), (float) wi->GetMouseY());
@@ -192,6 +205,7 @@ public:
 	{
 
 		m_CameraController = new Keg::CameraController(m_Scene);
+		m_CameraController->GetEntity().GetComponent<Keg::CameraComponent>().IsMainCamera = true;
 	}
 
 private:

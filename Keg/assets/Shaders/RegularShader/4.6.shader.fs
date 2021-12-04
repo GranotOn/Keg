@@ -3,7 +3,7 @@
 out vec4 FragColor;
 
 in vec2 texCoord;
-in vec3 Norma;
+in vec3 Normal;
 
 uniform vec4 Color;
 uniform vec3 LightColor;
