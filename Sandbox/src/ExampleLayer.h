@@ -45,19 +45,17 @@ public:
 			tra.Translation = cubePositions[i];
 			tra.RotationAngle = 20.0f * (float) i;
 
-			Keg::ColorComponent& color = e.GetComponent<Keg::ColorComponent>();
-			
 			if (i < 3)
 			{
 				e.AddComponent<Keg::TextureComponent>(containerTexture);
 			}
 			else if (i < 6)
 			{
-				color.Color = glm::vec3(0.0f, 0.3f, 1.0f);
+				e.AddComponent<Keg::MaterialComponent>(Keg::Material::CyanRubber());
 			}
 			else
 			{
-				color.Color = glm::vec3(0.2f, 1.0f, 0.2f);
+				e.AddComponent<Keg::MaterialComponent>(Keg::Material::BlackRubber());
 			}
 
 			 e.AddComponent<Keg::MeshComponent>(vao, static_cast<int>(elements.size()), static_cast<int>(vertices.size()));
@@ -70,12 +68,10 @@ public:
 		m_DemoEntity = light;
 
 		Keg::TransformComponent& ltc = light.GetComponent<Keg::TransformComponent>();
-		Keg::ColorComponent& lcc = light.GetComponent<Keg::ColorComponent>();
 		Keg::LightComponent& llc = light.GetComponent<Keg::LightComponent>();
 
 		llc.LightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 		ltc.Translation = glm::vec3(0.0f, 4.0f, 5.0f);
-		lcc.Color = glm::vec3(1.0f, 1.0f, 1.0f);
 
 		Keg::Audio* audio = Keg::AudioBuilder::GetAudio();
 		Keg::Effect* e1 = audio->AddEffect((std::string(KEG_ASSETS) + "/AudioFiles/sample.ogg").c_str());
@@ -160,7 +156,6 @@ public:
 		static bool showDemo = true;
 		auto e = m_DemoEntity;
 		Keg::TransformComponent& tc = e.GetComponent<Keg::TransformComponent>();
-
 
 		//// View
 		//HierarchyPanel.OnImGuiUpdate()

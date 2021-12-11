@@ -130,4 +130,13 @@ namespace Keg
 		glUniform1f(glGetUniformLocation(m_ID, name.c_str()), value);
 	}
 
+	void Shader::SetVec3(const std::string& name, float x, float y, float z) const
+	{
+		glUniform3f(glGetUniformLocation(m_ID, name.c_str()), x, y, z);
+	}
+
+	void Shader::SetVec4(const std::string& name, float x, float y, float z, float w) const
+	{
+		glUniform4f(glGetUniformLocation(m_ID, name.c_str()), x, y, z, w);
+	}
 }
