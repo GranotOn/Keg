@@ -6,12 +6,26 @@ in vec2 texCoord;
 in vec3 Normal;
 in vec3 FragPos;
 
+struct Material {
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float shininess;
+}; 
+
+struct Light {
+    vec3 position;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+  
+uniform Material material;
+uniform Light light;
+
 uniform vec3 viewPos;
-uniform vec4 Color;
 
 uniform vec3 LightColor;
-uniform float AmbientStrength;
-uniform float SpecularStrength;
 uniform vec3 LightPosition;
 
 uniform sampler2D aTexture;
@@ -19,24 +33,24 @@ uniform int hasTexture;
 
 void main()
 {
-    int shininess = 64;
+
+    // Ambient
+    vec3 ambient = light.ambient * LightColor * material.ambient;
 
     // Diffuse
     vec3 norm = normalize(Normal);
-    vec3 lightDirection = normalize(LightPosition - FragPos);
+    vec3 lightDirection = normalize(light.position - FragPos);
     float diff = max(dot(norm, lightDirection), 0.0);
-    vec3 diffuse = diff * LightColor;
+    vec3 diffuse = light.diffuse * diff * material.diffuse;
 
     // Specular
     vec3 viewDirection = normalize(viewPos - FragPos);
     vec3 reflectDirection = reflect(-lightDirection, norm);
-    float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), shininess);
-    vec3 specular = SpecularStrength * spec * LightColor;
+    float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), material.shininess);
+    vec3 specular = light.specular * (spec * material.specular);
 
-    // Ambient
-    vec3 ambient = AmbientStrength * LightColor;
 
-    vec4 colorResult = vec4((ambient + diffuse + specular), 1.0f) * Color;
+    vec4 colorResult = vec4((ambient + diffuse + specular), 1.0f);
 
 
     if (hasTexture == 1)

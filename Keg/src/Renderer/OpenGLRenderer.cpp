@@ -71,7 +71,6 @@ namespace Keg
 	/////////////
 	/// EndRender
 	/////////////
-
 	void OpenGLRenderer::EndRender()
 	{
 
@@ -80,15 +79,22 @@ namespace Keg
 	//////////
 	/// Render
 	//////////
-
 	void OpenGLRenderer::Draw(entt::registry& registery, entt::entity& entity, Shader* shader)
 	{
-		auto [color, transform, mesh] = registery.get<ColorComponent, TransformComponent, MeshComponent>(entity);
+		auto [transform, mesh] = registery.get<TransformComponent, MeshComponent>(entity);
 		auto texture = registery.try_get<TextureComponent>(entity);
+		auto material = registery.try_get<MaterialComponent>(entity);
+		bool hasMaterial = !!material;
 		bool hasTexture = !!texture;
 
-		int colorLocation = glGetUniformLocation(shader->GetID(), "Color");
-		glUniform4f(colorLocation, color.Color.x, color.Color.y, color.Color.z, color.Alpha);
+		if (!hasMaterial)
+			material = new MaterialComponent();
+
+
+		shader->SetVec3("material.ambient", material->ambient.x, material->ambient.y, material->ambient.z);
+		shader->SetVec3("material.diffuse", material->diffuse.x, material->diffuse.y, material->diffuse.z);
+		shader->SetVec3("material.specular", material->specular.x, material->specular.y, material->specular.z);
+		shader->SetFloat("material.shininess", material->shininess * 100);
 
 		int modelLocation = glGetUniformLocation(shader->GetID(), "model");
 		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(transform.GetTransform()));
@@ -131,10 +137,6 @@ namespace Keg
 		auto view = registery.view<MeshComponent>();
 		
 		shader->Use();
-		int lightColorLocation = glGetUniformLocation(shader->GetID(), "LightColor");
-		int lightPositionLocation = glGetUniformLocation(shader->GetID(), "LightPosition");
-		int AmbientStrengthLocation = glGetUniformLocation(shader->GetID(), "AmbientStrength");
-		int SpecularStrengthLocation = glGetUniformLocation(shader->GetID(), "SpecularStrength");
 		int viewPositionLocation = glGetUniformLocation(shader->GetID(), "viewPos");
 
 		{
@@ -159,10 +161,14 @@ namespace Keg
 				auto &transformComponent = registery.get<TransformComponent>(entity);
 				glm::vec3 color = lightComponent.LightColor;
 				glm::vec3 pos = transformComponent.Translation;
-				glUniform3f(lightColorLocation, color.x, color.y, color.z);
-				glUniform1f(AmbientStrengthLocation, 0.1f);
-				glUniform1f(SpecularStrengthLocation, 0.6f);
-				glUniform3f(lightPositionLocation, pos.x, pos.y, pos.z);
+				glm::vec3 ambient = lightComponent.ambient;
+				glm::vec3 diffuse = lightComponent.diffuse;
+				glm::vec3 specular = lightComponent.specular;
+				shader->SetVec3("light.ambient", ambient.x, ambient.y, ambient.z);
+				shader->SetVec3("light.diffuse", diffuse.x, diffuse.y, diffuse.z);
+				shader->SetVec3("light.specular", specular.x, specular.y, specular.z);
+				shader->SetVec3("light.position", pos.x, pos.y, pos.z);
+				shader->SetVec3("LightColor", color.x, color.y, color.z);
 			}
 
 			for (auto entity : view)
@@ -180,12 +186,12 @@ namespace Keg
 
 		// Render Light Sources
 		{
-
 			for (auto entity : LightView)
 			{
-				glUniform3f(lightColorLocation, 1.0f, 1.0f, 1.0f);
-				glUniform1f(AmbientStrengthLocation, 1.0f);
-				glUniform1f(SpecularStrengthLocation, 1.0f);
+				shader->SetVec3("LightColor", 1.0f, 1.0f, 1.0f);
+				shader->SetVec3("light.ambient", 1.0f, 1.0f, 1.0f);
+				shader->SetVec3("light.diffuse", 1.0f, 1.0f, 1.0f);
+				shader->SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
 				Draw(registery, entity, shader);
 			}
 		}

@@ -24,7 +24,9 @@ namespace Keg
 	struct LightComponent
 	{
 		glm::vec3 LightColor = { 1.0f, 1.0f, 1.0f };
-		float Intensity = 1.0f;
+		glm::vec3 ambient = glm::vec3(0.2f);
+		glm::vec3 diffuse = glm::vec3(0.5f);
+		glm::vec3 specular = glm::vec3(1.0f);
 	};
 
 
@@ -82,18 +84,18 @@ namespace Keg
 		CameraComponent() {}
 	};
 
-	struct ColorComponent
-	{
-		glm::vec3 Color = { 1.0f, 1.0f, 1.0f };
-		float Alpha = 1.0f;
-
-		ColorComponent() {}
-	};
-
 	struct TextureComponent
 	{
 		OpenGLTexture* Texture;
 
 		TextureComponent(OpenGLTexture *texture) : Texture(texture) {}
+	};
+
+	struct MaterialComponent
+	{
+		glm::vec3 ambient = glm::vec3(1.0f);
+		glm::vec3 diffuse = glm::vec3(1.0f);
+		glm::vec3 specular = glm::vec3(1.0f);
+		float shininess = 0.064f;
 	};
 }

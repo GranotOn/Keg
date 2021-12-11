@@ -49,7 +49,6 @@ namespace Keg
 		/////////////////////
 		entity.AddComponent<TagComponent>(tag);
 		entity.AddComponent<TransformComponent>();
-		entity.AddComponent<ColorComponent>();
 
 		return entity;
 	}
@@ -125,14 +124,7 @@ namespace Keg
 					//    mesh.Vertices = inEntity[i].at("vertices");
 					//    registry.emplace<MeshComponent>(entity, mesh);
 					//}
-					else if (inEntity[i].at("name") == "ColorComponent") {
-						ColorComponent color;
-						color.Alpha = inEntity[i].at("alpha");
-						color.Color[0] = inEntity[i].at("color").at("0");
-						color.Color[1] = inEntity[i].at("color").at("1");
-						color.Color[2] = inEntity[i].at("color").at("2");
-						registry.emplace<ColorComponent>(entity, color);
-					}
+					
 					else if (inEntity[i].at("name") == "CameraComponent") {
 						CameraComponent camera;
 						camera.CameraFront[0] = inEntity[i].at("cameraFront").at("0");
@@ -238,20 +230,7 @@ namespace Keg
 
 				ent["components"].emplace_back(comp);
 			}
-			if (e.HasComponent<ColorComponent>()) {
-				nlohmann::json comp;
-				ColorComponent cc = e.GetComponent<ColorComponent>();
-				comp["name"] = "ColorComponent";
 
-				nlohmann::json vec1;
-				vec1["0"] = cc.Color.x;
-				vec1["1"] = cc.Color.y;
-				vec1["2"] = cc.Color.z;
-				comp["color"] = vec1;
-
-				comp["alpha"] = cc.Alpha;
-				ent["components"].emplace_back(comp);
-			}
 			if (e.HasComponent<TextureComponent>()) {
 				nlohmann::json comp;
 				TextureComponent cc = e.GetComponent<TextureComponent>();
