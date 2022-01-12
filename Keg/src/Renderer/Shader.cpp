@@ -1,5 +1,4 @@
-#include <sstream>
-#include <fstream>
+#include "stadx.h"
 
 #include "Shader.h"
 #include "Core/Logger/Logger.h"
@@ -9,9 +8,9 @@ namespace Keg
 {
 	Shader::Shader(const char* vertexPath, const char* fragmentPath)
 	{
-		KEG_ENGINE_INFO("Attempting to load shaders \n\
-							\tVertex: {0} \n\
-							\tFragment: {1}", vertexPath, fragmentPath);
+		KEG_ENGINE_INFO("Loading Shaders");
+		KEG_ENGINE_TRACE("Vertex: {0}", vertexPath);
+		KEG_ENGINE_TRACE("Fragment: {0}", fragmentPath);
 
 		std::string vertexCode, fragmentCode;
 		std::ifstream vShaderFile, fShaderFile;
@@ -131,4 +130,13 @@ namespace Keg
 		glUniform1f(glGetUniformLocation(m_ID, name.c_str()), value);
 	}
 
+	void Shader::SetVec3(const std::string& name, float x, float y, float z) const
+	{
+		glUniform3f(glGetUniformLocation(m_ID, name.c_str()), x, y, z);
+	}
+
+	void Shader::SetVec4(const std::string& name, float x, float y, float z, float w) const
+	{
+		glUniform4f(glGetUniformLocation(m_ID, name.c_str()), x, y, z, w);
+	}
 }

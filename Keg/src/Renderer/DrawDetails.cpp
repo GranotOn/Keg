@@ -1,10 +1,14 @@
+#include "stadx.h"
+
 #include "DrawDetails.h"
 
 namespace Keg
 {
 	DrawDetails::~DrawDetails()
 	{
+
 	}
+
 	std::vector<Vertex> DrawDetails::GetVertices()
 	{
 		return m_Vertices;

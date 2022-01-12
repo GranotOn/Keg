@@ -1,10 +1,15 @@
+#include "stadx.h"
+
+
 #include "WindowsWindow.h"
 
+#include "stb_image.h"
+
+#include "Core/Logger/Logger.h"
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/MouseEvent.h"
 #include "Core/Event/WindowEvent.h"
 
-#include "Core/Logger/Logger.h"
 
 namespace Keg
 {
@@ -19,7 +24,21 @@ namespace Keg
 		return glfwGetProcAddress;
 	}
 
-	void WindowsWindow::Init() {
+	void WindowsWindow::SetCursorVisibility(bool& mode)
+	{
+		glfwSetInputMode(m_Window, GLFW_CURSOR, (mode ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED));
+	}
+
+	void WindowsWindow::SetWindowIcon(const char* path)
+	{
+		GLFWimage images[1];
+		images[0].pixels = stbi_load(path, &images[0].width, &images[0].height, 0, 4); //rgba channels 
+		glfwSetWindowIcon(m_Window, 1, images);
+		stbi_image_free(images[0].pixels);
+	}
+	
+	void WindowsWindow::Init()
+	{
 
 		/* Initialize GLFW */
 		if (!glfwInit())
@@ -51,12 +70,11 @@ namespace Keg
 
 		// Set the user pointer (the window data). This step is crucial so that we can query
 		// this data on each event.
-		glfwSetWindowUserPointer(m_Window, (void *) &m_Data);
+		glfwSetWindowUserPointer(m_Window, (void*)&m_Data);
 
-		
-
-
-		
+		// Hide cursor on default (So camera isn't limited).
+		// Can revert using SetCursorVisibility(bool &mode);
+		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		
 		///////////////////////
 		//// Callbacks
